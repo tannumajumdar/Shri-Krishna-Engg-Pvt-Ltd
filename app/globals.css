@@ -1,0 +1,176 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  /* ---------------------------------------------------------------------
+   * Theme tokens. Channel triplets rather than hex, so Tailwind can apply
+   * opacity modifiers (bg-surface/85, border-hairline/80).
+   *
+   * Light: paper white sections alternating with the navy ones.
+   * Dark:  navy-900 sections alternating with navy-950 — the page keeps its
+   *        rhythm instead of flattening into one slab.
+   * ------------------------------------------------------------------- */
+  :root {
+    --nav-h: 72px;
+
+    --surface: 255 255 255;
+    --surface-2: 247 248 249; /* alu-50 */
+    --ink: 12 25 54; /* navy-900 */
+    --ink-muted: 84 97 110; /* alu-700 */
+    --ink-faint: 108 122 137; /* alu-600 */
+    --hairline: 225 229 233; /* alu-200 */
+    --scroll-thumb: 203 210 217; /* alu-300 */
+    --scroll-thumb-hover: 168 179 190; /* alu-400 */
+  }
+
+  .dark {
+    --surface: 12 25 54; /* navy-900 */
+    --surface-2: 7 15 34; /* navy-950 */
+    --ink: 255 255 255;
+    --ink-muted: 186 201 236; /* navy-200 */
+    --ink-faint: 142 165 220; /* navy-300 */
+    --hairline: 22 46 109; /* navy-700 */
+    --scroll-thumb: 22 46 109; /* navy-700 */
+    --scroll-thumb-hover: 59 90 175; /* navy-500 */
+  }
+
+  @media (min-width: 1024px) {
+    :root {
+      --nav-h: 88px;
+    }
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* Anchor targets clear the fixed navbar */
+  section[id] {
+    scroll-margin-top: calc(var(--nav-h) + 8px);
+  }
+
+  body {
+    @apply bg-surface text-ink-muted font-sans antialiased;
+    text-rendering: optimizeLegibility;
+    transition:
+      background-color 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+      color 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  ::selection {
+    @apply bg-navy-800 text-white;
+  }
+  .dark ::selection {
+    @apply bg-accent-500 text-navy-950;
+  }
+
+  /* Restrained, brand-tinted scrollbar */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: rgb(var(--scroll-thumb)) transparent;
+  }
+  *::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  *::-webkit-scrollbar-thumb {
+    border-radius: 9999px;
+    background-color: rgb(var(--scroll-thumb));
+  }
+  *::-webkit-scrollbar-thumb:hover {
+    background-color: rgb(var(--scroll-thumb-hover));
+  }
+
+  :focus-visible {
+    @apply outline-none ring-2 ring-accent-500 ring-offset-2 ring-offset-surface;
+  }
+  /* Panels that are dark in both themes carry .on-dark */
+  .on-dark :focus-visible {
+    @apply ring-offset-navy-950;
+  }
+}
+
+@layer components {
+  /* Eyebrow label used above every section heading */
+  .eyebrow {
+    @apply inline-flex items-center gap-3 text-[11px] font-semibold uppercase tracking-label;
+  }
+  .eyebrow::before {
+    content: "";
+    @apply block h-px w-8 bg-current opacity-40;
+  }
+
+  /* Fine engineering grid, drawn over dark panels */
+  .blueprint-grid {
+    @apply bg-grid-fine bg-grid-fine;
+  }
+
+  /* Sections that swap surface with the theme */
+  .theme-surface {
+    transition:
+      background-color 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+      border-color 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+  .text-pretty {
+    text-wrap: pretty;
+  }
+
+  /* Edge-fade for marquees so rows dissolve instead of cutting */
+  .mask-edges {
+    -webkit-mask-image: linear-gradient(
+      to right,
+      transparent,
+      #000 6%,
+      #000 94%,
+      transparent
+    );
+    mask-image: linear-gradient(
+      to right,
+      transparent,
+      #000 6%,
+      #000 94%,
+      transparent
+    );
+  }
+
+  .mask-b {
+    -webkit-mask-image: linear-gradient(to bottom, #000 62%, transparent);
+    mask-image: linear-gradient(to bottom, #000 62%, transparent);
+  }
+
+  /* Brushed-metal type treatment for large numerals */
+  .metal-text {
+    background-image: linear-gradient(
+      170deg,
+      #ffffff 0%,
+      #cbd2d9 34%,
+      #ffffff 52%,
+      #a8b3be 68%,
+      #eff1f3 100%
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
