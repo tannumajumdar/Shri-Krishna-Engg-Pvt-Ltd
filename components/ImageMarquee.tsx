@@ -23,11 +23,16 @@ export type MarqueeItem = {
  * How many times the item set is laid down.
  *
  * The track is periodic, so translating by exactly one set width lands on
- * pixel-identical content — that is what makes the wrap invisible. Three
- * copies means at least two set widths of content always sit to the right of
- * the viewport, which is comfortably wider than any real display.
+ * pixel-identical content — that is what makes the wrap invisible. For that to
+ * hold there must always be at least a viewport of content to the right of the
+ * furthest travel, i.e. period * (repeat - 1) >= viewport width.
+ *
+ * Three copies covers a long row on any real display, but a short row — a
+ * four-product category, say — has a narrow period and needs more. The count
+ * is measured up from MIN rather than fixed, so a row can never run dry.
  */
-const REPEAT = 3;
+const MIN_REPEAT = 3;
+const MAX_REPEAT = 8;
 
 const RATIO_CLASS: Record<NonNullable<MarqueeItem["ratio"]>, string> = {
   portrait: "aspect-[3/4]",
@@ -65,6 +70,7 @@ export function ImageMarquee({
 
   const baseX = useMotionValue(0);
   const [period, setPeriod] = useState(0);
+  const [repeat, setRepeat] = useState(MIN_REPEAT);
   const [hovered, setHovered] = useState(false);
   const [onScreen, setOnScreen] = useState(true);
   const [reduceMotion, setReduceMotion] = useState(false);
@@ -83,14 +89,24 @@ export function ImageMarquee({
       // getBoundingClientRect keeps sub-pixel precision; scrollWidth rounds,
       // and a rounded period leaves a visible sliver at the seam.
       const total = track.getBoundingClientRect().width;
-      setPeriod(total > 0 ? (total + gap) / REPEAT : 0);
+      // period = one set plus its trailing gap, and is invariant of `repeat`.
+      setPeriod(total > 0 ? (total + gap) / repeat : 0);
     };
 
     measure();
     const ro = new ResizeObserver(measure);
     ro.observe(track);
     return () => ro.disconnect();
-  }, [items.length]);
+  }, [items.length, repeat]);
+
+  /* Lay down more copies if one period does not out-run the viewport. Period
+     is independent of the copy count, so this settles after one adjustment. */
+  useEffect(() => {
+    if (period <= 0) return;
+    const needed = Math.ceil(window.innerWidth / period) + 2;
+    const clamped = Math.min(MAX_REPEAT, Math.max(MIN_REPEAT, needed));
+    if (clamped > repeat) setRepeat(clamped);
+  }, [period, repeat]);
 
   /* --- environment ------------------------------------------------------ */
   useEffect(() => {
@@ -139,7 +155,7 @@ export function ImageMarquee({
 
   const x = useTransform(baseX, (v) => (period > 0 ? wrap(-period, 0, v) : 0));
 
-  const tiles = Array.from({ length: REPEAT }, (_, copy) =>
+  const tiles = Array.from({ length: repeat }, (_, copy) =>
     items.map((item, i) => ({ item, i, copy, key: `${copy}-${i}` })),
   ).flat();
 
@@ -202,8 +218,8 @@ function MarqueeTile({
     !children && cn("overflow-hidden rounded-lg", RATIO_CLASS[item.ratio ?? "landscape"]),
   );
 
-  /* Copies 2 and 3 exist only to make the loop seamless — keep them out of the
-     accessibility tree and out of the tab order. */
+  /* Every copy after the first exists only to make the loop seamless — keep
+     them out of the accessibility tree and out of the tab order. */
   const a11y = duplicate ? { "aria-hidden": true as const, tabIndex: -1 } : {};
 
   if (item.href) {

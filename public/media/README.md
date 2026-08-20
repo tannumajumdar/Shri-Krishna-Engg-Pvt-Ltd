@@ -45,16 +45,20 @@ missing path, so the layout stays intact while you collect assets.
 | File | Used by |
 | --- | --- |
 | `hero-video.mp4` | Hero background |
+| `products-video.mp4` | Products header band, behind the catalogue heading |
 | `industry-video.mp4` | "Built for Industry" band |
 | `quality-video.mp4` | Quality / sustainability panel |
+| `cta-video.mp4` | Closing call-to-action band |
 
 Each video needs a matching poster still — it is what shows before playback
 starts, when autoplay is refused (iOS Low Power Mode), and for visitors who
 have asked for reduced motion:
 
 - `hero-poster.jpg`
+- `products-poster.jpg`
 - `industry-poster.jpg`
 - `quality-poster.jpg`
+- `cta.jpg` (the CTA poster keeps its original name)
 
 **Encoding:** H.264 MP4, no audio track, 8–15 s seamless loop, ≤ 1920 px wide,
 ≤ 5 MB. Videos are muted, looped and inline, and pause while off screen.
@@ -65,11 +69,26 @@ have asked for reduced motion:
 | --- | --- |
 | `about.jpg` | About — main plate (portrait, 4:5) |
 | `about-secondary.jpg` | About — inset plate (square) |
-| `cta.jpg` | Final call-to-action background (wide) |
 
 ### `products/`
 
-`product-01.jpg` … `product-08.jpg` — portrait-ish, they fill a tall card.
+Named by category, matching the five groups in `productCategories`:
+
+| Prefix | Category | Files |
+| --- | --- | --- |
+| `extruded-` | Extruded Products | `01` – `06` |
+| `cast-` | Cast & Machined | `01` – `05` |
+| `sheet-` | Sheet & Coil | `01` – `04` |
+| `fabricated-` | Fabricated Assemblies | `01` – `05` |
+| `electrical-` | Electrical & Conductors | `01` – `04` |
+
+Portrait-ish crops work best — they fill a tall card with the copy panel
+beneath.
+
+Each category is its own marquee row, so **keep at least four products in a
+category**. The marquee lays down as many copies of the set as it needs to
+out-run the viewport, but a very short row means a lot of duplicate cards on a
+wide screen before the loop reads naturally.
 
 ### `industries/`
 

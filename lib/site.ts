@@ -56,11 +56,14 @@ export const media = {
   heroPoster: "/media/hero-poster.jpg",
   about: "/media/about.jpg",
   aboutSecondary: "/media/about-secondary.jpg",
+  productsVideo: "/media/products-video.mp4",
+  productsPoster: "/media/products-poster.jpg",
   industryVideo: "/media/industry-video.mp4",
   industryPoster: "/media/industry-poster.jpg",
   qualityVideo: "/media/quality-video.mp4",
   qualityPoster: "/media/quality-poster.jpg",
-  ctaImage: "/media/cta.jpg",
+  ctaVideo: "/media/cta-video.mp4",
+  ctaPoster: "/media/cta.jpg",
 } as const;
 
 /* ------------------------------ products -------------------------------- */
@@ -69,59 +72,213 @@ export type Product = {
   name: string;
   description: string;
   image: string;
+  /** Short technical tag shown on the card corner. */
   spec: string;
 };
 
-export const products: Product[] = [
+export type ProductCategory = {
+  /** Used for the anchor and as the marquee key. */
+  id: string;
+  name: string;
+  blurb: string;
+  products: Product[];
+};
+
+/**
+ * The catalogue, grouped by process — the same five stages the rest of the
+ * site describes the plant with. Each category becomes its own marquee row,
+ * so keep at least four products in each: a shorter row makes the loop period
+ * narrower than the viewport on very wide screens.
+ */
+export const productCategories: ProductCategory[] = [
   {
-    name: "Aluminium Extrusions",
-    description: "Mill-finish and anodised profiles drawn to tight dimensional tolerance.",
-    image: "/media/products/product-01.jpg",
-    spec: "6000-series",
+    id: "extruded",
+    name: "Extruded Products",
+    blurb:
+      "Profiles drawn through our own dies, from mill-finish stock lengths to anodised architectural systems.",
+    products: [
+      {
+        name: "Mill-Finish Profiles",
+        description: "Standard 6000-series profiles, cut to your stock lengths.",
+        image: "/media/products/extruded-01.jpg",
+        spec: "6060 · 6063",
+      },
+      {
+        name: "Anodised Profiles",
+        description: "Natural and colour anodised finishes in 10–25 micron.",
+        image: "/media/products/extruded-02.jpg",
+        spec: "10–25 µm",
+      },
+      {
+        name: "Structural Sections",
+        description: "Load-rated angles, channels and I-sections for framing.",
+        image: "/media/products/extruded-03.jpg",
+        spec: "Load-rated",
+      },
+      {
+        name: "Architectural Systems",
+        description: "Façade, glazing and curtain-wall profiles to project spec.",
+        image: "/media/products/extruded-04.jpg",
+        spec: "Bespoke die",
+      },
+      {
+        name: "Heat Sink Profiles",
+        description: "High fin-ratio extrusions for power electronics cooling.",
+        image: "/media/products/extruded-05.jpg",
+        spec: "High fin",
+      },
+      {
+        name: "Custom Die Profiles",
+        description: "Your drawing, our die shop — prototype through production.",
+        image: "/media/products/extruded-06.jpg",
+        spec: "Drawing-led",
+      },
+    ],
   },
   {
-    name: "Busbar Systems",
-    description: "High-conductivity busbars for smelter and switchgear duty.",
-    image: "/media/products/product-02.jpg",
-    spec: "EC-grade",
+    id: "cast",
+    name: "Cast & Machined",
+    blurb:
+      "Metal poured, solidified and cut to drawing, with dimensional checks between every operation.",
+    products: [
+      {
+        name: "Gravity Die Castings",
+        description: "Permanent-mould castings with repeatable wall sections.",
+        image: "/media/products/cast-01.jpg",
+        spec: "LM6 · LM25",
+      },
+      {
+        name: "Pressure Die Castings",
+        description: "High-pressure casting for thin-wall, high-volume parts.",
+        image: "/media/products/cast-02.jpg",
+        spec: "High volume",
+      },
+      {
+        name: "CNC-Turned Components",
+        description: "Turned parts for rotating and hydraulic assemblies.",
+        image: "/media/products/cast-03.jpg",
+        spec: "±0.05 mm",
+      },
+      {
+        name: "5-Axis Milled Parts",
+        description: "Complex geometry finished in a single set-up.",
+        image: "/media/products/cast-04.jpg",
+        spec: "5-axis",
+      },
+      {
+        name: "Precision Housings",
+        description: "Machined housings, bushes and bearing carriers.",
+        image: "/media/products/cast-05.jpg",
+        spec: "H7 bores",
+      },
+    ],
   },
   {
-    name: "Structural Sections",
-    description: "Load-rated sections for industrial framing and platform builds.",
-    image: "/media/products/product-03.jpg",
-    spec: "Certified",
+    id: "sheet",
+    name: "Sheet & Coil",
+    blurb:
+      "Rolled product in engineered tempers, slit and cut to the sizes your line actually runs.",
+    products: [
+      {
+        name: "Cold-Rolled Sheet",
+        description: "Flat sheet from 0.2 to 6 mm in mill or bright finish.",
+        image: "/media/products/sheet-01.jpg",
+        spec: "0.2 – 6 mm",
+      },
+      {
+        name: "Aluminium Coil",
+        description: "Slit coil wound to your mandrel and weight limits.",
+        image: "/media/products/sheet-02.jpg",
+        spec: "Slit to width",
+      },
+      {
+        name: "Treadplate",
+        description: "Five-bar and diamond patterns for flooring and steps.",
+        image: "/media/products/sheet-03.jpg",
+        spec: "Anti-slip",
+      },
+      {
+        name: "Roofing & Cladding",
+        description: "Profiled and plain sheet for industrial envelopes.",
+        image: "/media/products/sheet-04.jpg",
+        spec: "Coil-coated",
+      },
+    ],
   },
   {
-    name: "Precision Castings",
-    description: "Gravity and pressure die castings finished to drawing.",
-    image: "/media/products/product-04.jpg",
-    spec: "±0.05 mm",
-  },
-  {
+    id: "fabricated",
     name: "Fabricated Assemblies",
-    description: "Welded and bolted assemblies built from validated jigs.",
-    image: "/media/products/product-05.jpg",
-    spec: "In-house QA",
+    blurb:
+      "Cut, welded, bolted and inspected in-house — delivered as a working unit, not a kit of parts.",
+    products: [
+      {
+        name: "Welded Assemblies",
+        description: "MIG and TIG assemblies built from validated jigs.",
+        image: "/media/products/fabricated-01.jpg",
+        spec: "MIG · TIG",
+      },
+      {
+        name: "Bolted Frames",
+        description: "Site-assembled structures shipped flat and match-marked.",
+        image: "/media/products/fabricated-02.jpg",
+        spec: "Flat-packed",
+      },
+      {
+        name: "Enclosures & Cabinets",
+        description: "Sheet-metal enclosures built to IP rating and layout.",
+        image: "/media/products/fabricated-03.jpg",
+        spec: "IP-rated",
+      },
+      {
+        name: "Jigs & Fixtures",
+        description: "Production tooling built around your component.",
+        image: "/media/products/fabricated-04.jpg",
+        spec: "One-off",
+      },
+      {
+        name: "Ladders & Walkways",
+        description: "Access structures made to plant safety standards.",
+        image: "/media/products/fabricated-05.jpg",
+        spec: "To standard",
+      },
+    ],
   },
   {
-    name: "Rolled Sheets & Coils",
-    description: "Cold-rolled sheet and coil supplied in engineered tempers.",
-    image: "/media/products/product-06.jpg",
-    spec: "0.2 – 6 mm",
-  },
-  {
-    name: "Machined Components",
-    description: "CNC-turned and milled parts for critical rotating equipment.",
-    image: "/media/products/product-07.jpg",
-    spec: "5-axis",
-  },
-  {
-    name: "Custom Engineering",
-    description: "Drawing-to-despatch builds developed with your design team.",
-    image: "/media/products/product-08.jpg",
-    spec: "Bespoke",
+    id: "electrical",
+    name: "Electrical & Conductors",
+    blurb:
+      "EC-grade aluminium for current-carrying duty, machined and finished for substation and smelter work.",
+    products: [
+      {
+        name: "Busbars",
+        description: "Flat and shaped busbars in EC-grade aluminium.",
+        image: "/media/products/electrical-01.jpg",
+        spec: "EC-grade",
+      },
+      {
+        name: "Conductor Sections",
+        description: "Extruded conductors for transmission hardware.",
+        image: "/media/products/electrical-02.jpg",
+        spec: "High conductivity",
+      },
+      {
+        name: "Switchgear Components",
+        description: "Machined parts and mounts for switchgear builds.",
+        image: "/media/products/electrical-03.jpg",
+        spec: "Panel-ready",
+      },
+      {
+        name: "Earthing & Bonding",
+        description: "Bonding bars, lugs and earthing connections.",
+        image: "/media/products/electrical-04.jpg",
+        spec: "Certified",
+      },
+    ],
   },
 ];
+
+/** Flat view of the catalogue — used by the footer link list. */
+export const products: Product[] = productCategories.flatMap((c) => c.products);
 
 /* ------------------------------ industries ------------------------------ */
 

@@ -3,10 +3,30 @@
 import { useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { Mail, MapPin, Phone, type LucideIcon } from "lucide-react";
-import { MediaImage } from "@/components/ui/MediaImage";
+import { VideoBackground } from "@/components/VideoBackground";
 import { Button } from "@/components/ui/Button";
 import { Reveal, RevealHeading } from "@/components/ui/Reveal";
 import { contact, media } from "@/lib/site";
+
+/**
+ * Sets expectations for the enquiry rather than leaving the section to trail
+ * off after the buttons — and commits to a turnaround, which is the thing a
+ * buyer actually wants to know before writing in.
+ */
+const STEPS = [
+  {
+    title: "Send the drawing",
+    body: "A drawing, a specification, or a photograph of the part you need matched.",
+  },
+  {
+    title: "We review it",
+    body: "A process engineer checks feasibility, material, tooling and finish.",
+  },
+  {
+    title: "Quote within 48 hours",
+    body: "Costed, with lead time and any design notes we think are worth raising.",
+  },
+];
 
 const CHANNELS: Array<{
   icon: LucideIcon;
@@ -34,22 +54,20 @@ export function CTA() {
       ref={ref}
       className="on-dark relative overflow-hidden bg-navy-950"
     >
+      {/* Over-sized so the parallax shift never exposes a plate edge. */}
       <motion.div style={{ y }} className="absolute -inset-y-[14%] inset-x-0">
-        <MediaImage
-          src={media.ctaImage}
-          alt=""
-          className="h-full w-full"
-          sizes="100vw"
+        <VideoBackground
+          src={media.ctaVideo}
+          poster={media.ctaPoster}
+          overlayOpacity={0.74}
+          objectPosition="object-[50%_50%]"
+          grid
         />
       </motion.div>
 
-      <div className="absolute inset-0 bg-navy-950/80" aria-hidden="true" />
+      {/* seat the band between the quality panel above and the footer below */}
       <div
-        className="absolute inset-0 bg-gradient-to-b from-navy-950 via-navy-950/60 to-navy-950"
-        aria-hidden="true"
-      />
-      <div
-        className="absolute inset-0 bg-grid-fine bg-grid-fine opacity-30"
+        className="absolute inset-0 bg-gradient-to-b from-navy-950 via-transparent to-navy-950"
         aria-hidden="true"
       />
 
@@ -120,8 +138,35 @@ export function CTA() {
           })}
         </div>
 
-        <Reveal delay={0.6}>
-          <p className="mt-10 text-center text-[12.5px] text-white/35">
+        {/* ------------------------- what happens next ------------------- */}
+        <div className="mx-auto mt-20 max-w-5xl">
+          {/* .eyebrow is inline-flex, so it is centred by the parent's
+              text-align, not by a justify-* on itself */}
+          <Reveal className="text-center">
+            <p className="eyebrow text-white/40">What happens next</p>
+          </Reveal>
+
+          <ol className="mt-9 grid gap-x-8 gap-y-9 sm:grid-cols-3">
+            {STEPS.map((step, i) => (
+              <Reveal key={step.title} delay={0.1 + i * 0.1}>
+                <li className="group border-t border-white/15 pt-5 transition-colors duration-500 hover:border-white/40">
+                  <span className="font-mono text-[11px] leading-none text-accent-400">
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+                  <h3 className="mt-3.5 font-display text-[15px] font-medium leading-snug text-white">
+                    {step.title}
+                  </h3>
+                  <p className="mt-2 text-[13px] leading-relaxed text-white/50">
+                    {step.body}
+                  </p>
+                </li>
+              </Reveal>
+            ))}
+          </ol>
+        </div>
+
+        <Reveal delay={0.5}>
+          <p className="mt-14 text-center text-[12.5px] text-white/35">
             {contact.hours}
           </p>
         </Reveal>

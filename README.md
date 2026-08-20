@@ -57,7 +57,7 @@ components/
 ├── Hero.tsx              full-screen video hero, parallax, line-by-line reveal
 ├── About.tsx             split layout, clip-path reveal, parallax plate
 ├── Stats.tsx             animated counters (light and dark variants)
-├── ProductShowcase.tsx   product cards on a marquee
+├── ProductShowcase.tsx   one marquee row per product category
 ├── ImageMarquee.tsx      reusable infinite marquee
 ├── VideoBackground.tsx   reusable background video
 ├── IndustrialShowcase.tsx full-bleed parallax band
@@ -136,11 +136,14 @@ brand colours until those files are in place. See
 
 A few behaviours are load-bearing and worth knowing before editing:
 
-- **`ImageMarquee`** lays the item set down three times and measures one period
+- **`ImageMarquee`** lays the item set down repeatedly and measures one period
   from the live track, so translating by that period lands on pixel-identical
-  content and the wrap is invisible. It pauses on hover, idles while off
-  screen, scales speed down on smaller viewports, and falls back to a plain
-  swipeable row under reduced motion.
+  content and the wrap is invisible. The copy count is *measured*, not fixed:
+  the loop needs `period × (copies − 1)` to exceed the viewport, so a short row
+  — a four-product category — is given extra copies automatically. Verified to
+  hold at 1440, 2560 and 3440 px. It pauses on hover, idles while off screen,
+  scales speed down on smaller viewports, and falls back to a plain swipeable
+  row under reduced motion.
 - **In-view triggers must sit on unclipped elements.** An element clipped to
   zero by its own `clip-path` reports no intersection, so a `whileInView` on it
   would wait forever on a reveal only it could start. `About.tsx` observes from
