@@ -3,6 +3,19 @@
 Drop your files here using the exact names below and the page picks them up —
 no code changes needed.
 
+## What is in here right now
+
+Every image and video slot is filled with **stock placeholder media from
+Pexels** so the site can be reviewed as a finished thing. See
+[CREDITS.md](CREDITS.md) for the licence and the source of each file.
+
+These are real factories, but they are **not your factory**. They are fine for
+review, a soft launch or a pitch; replace them with photography of the BALCO
+works before the site is presented as a record of your own plant. Overwrite any
+file in place, keeping the name, and nothing in the code needs to change.
+
+The one thing still missing is the logo — see below.
+
 ## Logo (do this first)
 
 | File | Used by |

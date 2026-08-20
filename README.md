@@ -12,17 +12,27 @@ npm run build    # production build
 npm start        # serve the production build
 ```
 
-## Adding your media
+## Media
+
+Every slot is currently filled with **stock placeholder media from Pexels**
+(free for commercial use, no attribution required) so the site can be reviewed
+as a finished thing. Provenance for each file is in
+[`public/media/CREDITS.md`](public/media/CREDITS.md).
+
+They are real factories but not *your* factory — fine for review or a pitch,
+worth replacing with photography of the BALCO works before the site stands as a
+record of your own plant. The logo files are the one thing still outstanding.
 
 Nothing is hardcoded. Every image and video path lives in the `media`,
 `products`, `industries` and `facilities` exports of [`lib/site.ts`](lib/site.ts),
 and the files themselves go in [`public/media/`](public/media/) — see
 [`public/media/README.md`](public/media/README.md) for the full file list,
-aspect ratios and encoding guidance.
+aspect ratios and encoding guidance. Overwrite a file in place, keeping its
+name, and nothing in the code changes.
 
-Until a file exists, `<MediaImage>` renders a blueprint placeholder that names
-the missing path, so the layout holds its shape while you gather assets. Drop
-the file in with the expected name and it appears — no code change.
+If a file is ever missing, `<MediaImage>` renders a blueprint placeholder that
+names the expected path rather than a broken image, so the layout holds its
+shape.
 
 Background videos autoplay muted, loop, play inline, pause while off screen,
 and fall back **video → poster → placeholder**. Visitors who have asked for
