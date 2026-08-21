@@ -2,7 +2,7 @@ import { type NextRequest } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { handle, ok, parseBody, requireAuth } from "@/lib/api";
 import { statusFilter, wantsAll } from "@/lib/query";
-import { verifySession, AUTH_COOKIE } from "@/lib/auth";
+import { verifySession, AUTH_COOKIE } from "@/lib/session";
 import { featureCreateSchema } from "@/lib/validations";
 
 export const GET = handle(async (req: NextRequest) => {

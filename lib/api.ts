@@ -1,7 +1,7 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { ZodError, type ZodType } from "zod";
 import { Prisma } from "@/lib/generated/prisma/client";
-import { AUTH_COOKIE, verifySession, type SessionPayload } from "@/lib/auth";
+import { AUTH_COOKIE, verifySession, type SessionPayload } from "@/lib/session";
 
 /**
  * Shared plumbing for every route handler: one response envelope, one place

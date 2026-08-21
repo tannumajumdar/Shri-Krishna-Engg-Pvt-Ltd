@@ -1,5 +1,5 @@
 import { NextResponse, type NextRequest } from "next/server";
-import { verifySession, AUTH_COOKIE } from "@/lib/auth";
+import { verifySession, AUTH_COOKIE } from "@/lib/session";
 
 /**
  * Edge guard for the admin UI.

@@ -10,7 +10,7 @@ import {
   stringParam,
   type RouteCtx,
 } from "@/lib/api";
-import { verifySession, AUTH_COOKIE } from "@/lib/auth";
+import { verifySession, AUTH_COOKIE } from "@/lib/session";
 import { productUpdateSchema } from "@/lib/validations";
 import { slugify } from "@/lib/utils/slug";
 

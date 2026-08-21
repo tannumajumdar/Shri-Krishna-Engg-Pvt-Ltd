@@ -1,5 +1,5 @@
 import { type NextRequest } from "next/server";
-import { authCookieOptions, AUTH_COOKIE } from "@/lib/auth";
+import { authCookieOptions, AUTH_COOKIE } from "@/lib/session";
 import { handle, ok } from "@/lib/api";
 
 /** POST /api/auth/logout — clear the session cookie. Idempotent. */
