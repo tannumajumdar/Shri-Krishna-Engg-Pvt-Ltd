@@ -11,7 +11,25 @@ import {
   socials,
 } from "@/lib/site";
 
-export function Footer() {
+type FooterContact = {
+  address: readonly string[];
+  phone: string;
+  phoneHref: string;
+  email: string;
+  emailHref: string;
+  hours: string;
+};
+type FooterSocial = { label: string; href: string; icon: string };
+
+export function Footer({
+  contact: contactProp,
+  socials: socialsProp,
+}: {
+  contact?: FooterContact;
+  socials?: readonly FooterSocial[];
+} = {}) {
+  const _contact = contactProp ?? contact;
+  const _socials = socialsProp ?? socials;
   const year = new Date().getFullYear();
 
   return (
@@ -35,7 +53,7 @@ export function Footer() {
             </p>
 
             <ul className="mt-8 flex items-center gap-2.5">
-              {socials.map((social) => (
+              {_socials.map((social) => (
                 <li key={social.label}>
                   <a
                     href={social.href}
@@ -91,7 +109,7 @@ export function Footer() {
                   aria-hidden="true"
                 />
                 <p className="text-[13.5px] leading-relaxed text-white/55">
-                  {contact.address.map((line) => (
+                  {_contact.address.map((line) => (
                     <span key={line} className="block">
                       {line}
                     </span>
@@ -106,10 +124,10 @@ export function Footer() {
                   aria-hidden="true"
                 />
                 <a
-                  href={contact.phoneHref}
+                  href={_contact.phoneHref}
                   className="text-[13.5px] text-white/55 transition-colors hover:text-white"
                 >
-                  {contact.phone}
+                  {_contact.phone}
                 </a>
               </div>
 
@@ -120,15 +138,15 @@ export function Footer() {
                   aria-hidden="true"
                 />
                 <a
-                  href={contact.emailHref}
+                  href={_contact.emailHref}
                   className="break-all text-[13.5px] text-white/55 transition-colors hover:text-white"
                 >
-                  {contact.email}
+                  {_contact.email}
                 </a>
               </div>
             </address>
 
-            <p className="mt-6 text-[12.5px] text-white/35">{contact.hours}</p>
+            <p className="mt-6 text-[12.5px] text-white/35">{_contact.hours}</p>
           </div>
         </div>
 

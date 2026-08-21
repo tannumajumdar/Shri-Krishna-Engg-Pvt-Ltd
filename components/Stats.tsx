@@ -2,8 +2,10 @@
 
 import { useEffect, useRef, useState } from "react";
 import { motion, useInView } from "framer-motion";
-import { stats } from "@/lib/site";
+import { stats as staticStats } from "@/lib/site";
 import { cn } from "@/lib/utils";
+
+type Stat = { value: number; suffix: string; label: string; detail?: string };
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
@@ -63,10 +65,13 @@ function Counter({
 export function Stats({
   className,
   variant = "light",
+  items,
 }: {
   className?: string;
   variant?: "light" | "dark";
+  items?: Stat[];
 }) {
+  const stats = items ?? staticStats;
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, margin: "-100px" });
   const dark = variant === "dark";

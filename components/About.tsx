@@ -10,7 +10,11 @@ import { company, media } from "@/lib/site";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
-export function About() {
+export function About({
+  stats,
+}: {
+  stats?: { value: number; suffix: string; label: string; detail?: string }[];
+} = {}) {
   const imageRef = useRef<HTMLDivElement>(null);
 
   const { scrollYProgress } = useScroll({
@@ -134,7 +138,7 @@ export function About() {
         </div>
 
         {/* ------------------------------- stats -------------------------- */}
-        <Stats className="mt-20 border border-hairline lg:mt-28" />
+        <Stats items={stats} className="mt-20 border border-hairline lg:mt-28" />
       </div>
     </section>
   );

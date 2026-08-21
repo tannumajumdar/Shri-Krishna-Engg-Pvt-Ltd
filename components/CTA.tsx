@@ -39,7 +39,11 @@ const CHANNELS: Array<{
   { icon: MapPin, label: "Works", value: "BALCO Nagar, Korba, Chhattisgarh" },
 ];
 
-export function CTA() {
+export function CTA({
+  video,
+}: {
+  video?: { src: string; poster: string };
+} = {}) {
   const ref = useRef<HTMLElement>(null);
 
   const { scrollYProgress } = useScroll({
@@ -57,8 +61,8 @@ export function CTA() {
       {/* Over-sized so the parallax shift never exposes a plate edge. */}
       <motion.div style={{ y }} className="absolute -inset-y-[14%] inset-x-0">
         <VideoBackground
-          src={media.ctaVideo}
-          poster={media.ctaPoster}
+          src={video?.src ?? media.ctaVideo}
+          poster={video?.poster ?? media.ctaPoster}
           overlayOpacity={0.74}
           objectPosition="object-[50%_50%]"
           grid

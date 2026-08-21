@@ -15,7 +15,7 @@ import {
 import { MediaImage } from "@/components/ui/MediaImage";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Reveal } from "@/components/ui/Reveal";
-import { industries, type Industry } from "@/lib/site";
+import { industries as staticIndustries, type Industry } from "@/lib/site";
 import { cn } from "@/lib/utils";
 
 const ICONS: Record<Industry["icon"], LucideIcon> = {
@@ -29,7 +29,8 @@ const ICONS: Record<Industry["icon"], LucideIcon> = {
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
-export function Industries() {
+export function Industries({ items }: { items?: Industry[] } = {}) {
+  const industries = items ?? staticIndustries;
   return (
     <section
       id="industries"
@@ -45,7 +46,7 @@ export function Industries() {
 
       {/* --------------------- desktop: expanding panels ------------------ */}
       <div className="container mt-14 hidden lg:mt-20 lg:block">
-        <IndustryAccordion />
+        <IndustryAccordion industries={industries} />
       </div>
 
       {/* ----------------------- mobile / tablet grid --------------------- */}
@@ -67,7 +68,7 @@ export function Industries() {
  * two-and-a-half shares, which pushes its copy open without any layout jump —
  * flex-grow interpolates, so nothing reflows outside the row.
  */
-function IndustryAccordion() {
+function IndustryAccordion({ industries }: { industries: Industry[] }) {
   const [activeIndex, setActiveIndex] = useState(0);
 
   return (

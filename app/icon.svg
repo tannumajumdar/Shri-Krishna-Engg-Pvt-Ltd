@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" fill="none">
+  <rect width="120" height="120" rx="22" fill="#0C1936"/>
+  <!-- compact SKE monogram: white S / lime K / white reversed-E -->
+  <g fill="#FFFFFF">
+    <rect x="14" y="24" width="30" height="9"/>
+    <rect x="14" y="31" width="10" height="24"/>
+    <rect x="14" y="48" width="30" height="9"/>
+    <rect x="34" y="55" width="10" height="24"/>
+    <rect x="14" y="72" width="30" height="9"/>
+  </g>
+  <polygon fill="#5CB531" points="50,24 60,24 60,46 74,24 86,24 67,52 87,81 74,81 60,58 60,81 50,81"/>
+  <g fill="#FFFFFF">
+    <rect x="98" y="24" width="9" height="57"/>
+    <rect x="76" y="24" width="31" height="9"/>
+    <rect x="76" y="48" width="26" height="9"/>
+    <rect x="76" y="72" width="31" height="9"/>
+  </g>
+</svg>

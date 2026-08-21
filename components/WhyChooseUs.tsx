@@ -11,7 +11,7 @@ import {
 } from "lucide-react";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { RevealGroup, RevealItem } from "@/components/ui/Reveal";
-import { features, type Feature } from "@/lib/site";
+import { features as staticFeatures, type Feature } from "@/lib/site";
 
 const ICONS: Record<Feature["icon"], LucideIcon> = {
   expertise: Cog,
@@ -22,7 +22,8 @@ const ICONS: Record<Feature["icon"], LucideIcon> = {
   custom: Layers,
 };
 
-export function WhyChooseUs() {
+export function WhyChooseUs({ items }: { items?: Feature[] } = {}) {
+  const features = items ?? staticFeatures;
   return (
     <section className="theme-surface relative bg-surface-2 py-24 lg:py-32">
       {/* faint sheet-metal wash */}

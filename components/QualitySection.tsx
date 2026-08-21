@@ -5,19 +5,26 @@ import { Award, Leaf, ScrollText, Gauge, type LucideIcon } from "lucide-react";
 import { VideoBackground } from "@/components/VideoBackground";
 import { Reveal, RevealHeading } from "@/components/ui/Reveal";
 import { Button } from "@/components/ui/Button";
-import { media, qualityPoints } from "@/lib/site";
+import { media, qualityPoints as staticQualityPoints } from "@/lib/site";
 
 const POINT_ICONS: LucideIcon[] = [Award, ScrollText, Leaf, Gauge];
 
-export function QualitySection() {
+export function QualitySection({
+  points,
+  video,
+}: {
+  points?: { title: string; description: string }[];
+  video?: { src: string; poster: string };
+} = {}) {
+  const qualityPoints = points ?? staticQualityPoints;
   return (
     <section id="quality" className="relative bg-navy-950 lg:min-h-[92svh]">
       <div className="grid lg:grid-cols-2">
         {/* ------------------------------ media ------------------------- */}
         <div className="relative min-h-[380px] overflow-hidden lg:min-h-full">
           <VideoBackground
-            src={media.qualityVideo}
-            poster={media.qualityPoster}
+            src={video?.src ?? media.qualityVideo}
+            poster={video?.poster ?? media.qualityPoster}
             overlayOpacity={0.4}
             objectPosition="object-[50%_45%]"
           />

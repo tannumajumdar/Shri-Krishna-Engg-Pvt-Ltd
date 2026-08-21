@@ -4,9 +4,9 @@ import { ImageMarquee, type MarqueeItem } from "@/components/ImageMarquee";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Button } from "@/components/ui/Button";
 import { Reveal } from "@/components/ui/Reveal";
-import { facilities } from "@/lib/site";
+import { facilities as staticFacilities, type Facility } from "@/lib/site";
 
-const toItems = (list: typeof facilities): MarqueeItem[] =>
+const toItems = (list: Facility[]): MarqueeItem[] =>
   list.map((f) => ({
     src: f.src,
     alt: f.caption,
@@ -18,10 +18,12 @@ const toItems = (list: typeof facilities): MarqueeItem[] =>
 /* Both rows carry the full set — rotating the second keeps the same tile from
    sitting directly above itself, and a long set keeps the loop period wider
    than any viewport. */
-const topRow = toItems(facilities);
-const bottomRow = toItems([...facilities.slice(5), ...facilities.slice(0, 5)]);
 
-export function Infrastructure() {
+
+export function Infrastructure({ items }: { items?: Facility[] } = {}) {
+  const facilities = items ?? staticFacilities;
+  const topRow = toItems(facilities);
+  const bottomRow = toItems([...facilities.slice(5), ...facilities.slice(0, 5)]);
   return (
     <section
       id="infrastructure"

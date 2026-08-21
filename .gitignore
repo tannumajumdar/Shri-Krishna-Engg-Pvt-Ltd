@@ -1,3 +1,4 @@
+.env
 node_modules
 .next
 out
@@ -9,3 +10,9 @@ npm-debug.log*
 next-env.d.ts
 .vercel
 *.tsbuildinfo
+
+/lib/generated/prisma
+
+# Uploaded media (served from /public/uploads); keep the folder, ignore files
+/public/uploads/*
+!/public/uploads/.gitkeep

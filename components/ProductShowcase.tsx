@@ -10,12 +10,18 @@ import { Reveal } from "@/components/ui/Reveal";
 import {
   media,
   productCategories,
-  products,
   type Product,
   type ProductCategory,
 } from "@/lib/site";
 
-export function ProductShowcase() {
+export function ProductShowcase({
+  categories,
+  video,
+}: {
+  categories?: typeof productCategories;
+  video?: { src: string; poster: string };
+} = {}) {
+  const cats = categories ?? productCategories;
   return (
     <section
       id="products"
@@ -27,8 +33,8 @@ export function ProductShowcase() {
       {/* ---- header band, set over the extrusion line ---- */}
       <div className="relative">
         <VideoBackground
-          src={media.productsVideo}
-          poster={media.productsPoster}
+          src={video?.src ?? media.productsVideo}
+          poster={video?.poster ?? media.productsPoster}
           overlayOpacity={0.74}
           objectPosition="object-[50%_45%]"
           grid
@@ -48,7 +54,7 @@ export function ProductShowcase() {
         <div className="container relative pb-20 pt-24 lg:pb-28 lg:pt-32">
           <SectionHeading
             tone="dark"
-            eyebrow={`Products · ${productCategories.length} categories`}
+            eyebrow={`Products · ${cats.length} categories`}
             title="A catalogue engineered around how our clients actually build."
             intro="From mill-finish extrusions to fully machined assemblies — every line is produced in-house, inspected against drawing and released with its own test record."
             action={
@@ -64,7 +70,7 @@ export function ProductShowcase() {
               drifts rather than sliding as a single block ---- */}
       <div className="relative">
         <div className="space-y-14 lg:space-y-20">
-          {productCategories.map((category, i) => (
+          {cats.map((category, i) => (
             <CategoryRow key={category.id} category={category} index={i} />
           ))}
         </div>
@@ -73,7 +79,7 @@ export function ProductShowcase() {
           <Reveal>
             <p className="flex flex-wrap items-center justify-center gap-x-3 gap-y-2 text-center text-[11px] uppercase tracking-label text-white/35">
               <span className="h-px w-10 bg-white/20" />
-              Hover to pause · {products.length} product lines
+              Hover to pause · {cats.reduce((n, c) => n + c.products.length, 0)} product lines
               <span className="h-px w-10 bg-white/20" />
             </p>
           </Reveal>

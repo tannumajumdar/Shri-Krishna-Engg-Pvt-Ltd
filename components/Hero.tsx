@@ -16,7 +16,11 @@ const MARKERS = [
   { k: "Scope", v: "Design to Despatch" },
 ];
 
-export function Hero() {
+export function Hero({
+  video,
+}: {
+  video?: { src: string; poster: string };
+} = {}) {
   const ref = useRef<HTMLElement>(null);
 
   /* Footage drifts slower than the page; content lifts and fades out. */
@@ -36,8 +40,8 @@ export function Hero() {
     >
       <motion.div style={{ y: mediaY }} className="absolute inset-0 -bottom-[22%]">
         <VideoBackground
-          src={media.heroVideo}
-          poster={media.heroPoster}
+          src={video?.src ?? media.heroVideo}
+          poster={video?.poster ?? media.heroPoster}
           overlayOpacity={0.58}
           grid
           objectPosition="object-[50%_45%]"

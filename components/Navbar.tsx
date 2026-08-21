@@ -7,7 +7,7 @@ import {
   useMotionValueEvent,
   useScroll,
 } from "framer-motion";
-import { Menu, X, Phone } from "lucide-react";
+import { Menu, X, Phone, LogIn } from "lucide-react";
 import { Logo } from "@/components/ui/Logo";
 import { Button } from "@/components/ui/Button";
 import { ThemeToggle } from "@/components/ui/ThemeToggle";
@@ -142,6 +142,21 @@ export function Navbar() {
 
             <ThemeToggle onDark={onDark} className="h-10 w-10" />
 
+            {/* Admin sign-in. Discreet — a text link, not a primary button —
+                since it is for staff, not visitors. */}
+            <a
+              href="/admin"
+              className={cn(
+                "hidden items-center gap-1.5 text-[13px] font-medium transition-colors duration-300 sm:flex",
+                onDark
+                  ? "text-white/75 hover:text-white"
+                  : "text-ink-faint hover:text-ink",
+              )}
+            >
+              <LogIn className="h-3.5 w-3.5" strokeWidth={1.75} aria-hidden="true" />
+              Login
+            </a>
+
             <Button
               href="#contact"
               size="sm"
@@ -262,6 +277,14 @@ export function Navbar() {
                 >
                   Enquire Now
                 </Button>
+                <a
+                  href="/admin"
+                  onClick={() => setOpen(false)}
+                  className="flex items-center justify-center gap-2 rounded-full border border-white/20 py-3 text-[13px] font-medium text-white/80 transition-colors hover:bg-white/10 hover:text-white"
+                >
+                  <LogIn className="h-4 w-4" strokeWidth={1.75} aria-hidden="true" />
+                  Admin Login
+                </a>
                 <div className="space-y-1 text-[13px] text-white/55">
                   <a
                     href={contact.phoneHref}

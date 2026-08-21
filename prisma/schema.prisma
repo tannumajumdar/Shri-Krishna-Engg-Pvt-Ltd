@@ -1,0 +1,243 @@
+// Shri Krishna Engineering — content backend.
+// Prisma 7 with the MariaDB driver adapter (see lib/prisma.ts). MySQL 8.4.
+
+generator client {
+  provider = "prisma-client"
+  output   = "../lib/generated/prisma"
+}
+
+datasource db {
+  provider = "mysql"
+}
+
+/// Status shared by every content model. Only PUBLISHED rows are returned to
+/// the public site; the admin sees all of them.
+enum Status {
+  DRAFT
+  PUBLISHED
+}
+
+enum Role {
+  ADMIN
+  EDITOR
+}
+
+enum MediaType {
+  IMAGE
+  VIDEO
+}
+
+/// Which part of the landing page a media item belongs to. The frontend
+/// fetches by section, e.g. /api/media?section=HERO.
+enum MediaSection {
+  HERO
+  ABOUT
+  PRODUCTS
+  INDUSTRIES
+  INFRASTRUCTURE
+  QUALITY
+  CTA
+}
+
+/// New enquiries start NEW; the admin moves them through the pipeline.
+enum EnquiryStatus {
+  NEW
+  READ
+  RESPONDED
+  ARCHIVED
+}
+
+model Admin {
+  id        Int      @id @default(autoincrement())
+  name      String
+  email     String   @unique
+  /// bcrypt hash — never selected into any API response.
+  password  String
+  role      Role     @default(ADMIN)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("admins")
+}
+
+model ProductCategory {
+  id          Int       @id @default(autoincrement())
+  name        String
+  slug        String    @unique
+  description String?   @db.Text
+  image       String?
+  status      Status    @default(PUBLISHED)
+  sortOrder   Int       @default(0)
+  products    Product[]
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@index([status])
+  @@index([createdAt])
+  @@map("product_categories")
+}
+
+model Product {
+  id               Int             @id @default(autoincrement())
+  categoryId       Int
+  category         ProductCategory @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  name             String
+  slug             String          @unique
+  shortDescription String?         @db.Text
+  description      String?         @db.Text
+  image            String?
+  pdf              String?
+  /// Free-form spec sheet, stored as JSON (array of {label, value} pairs).
+  specifications   Json?
+  /// List of applications, stored as JSON string array.
+  applications     Json?
+  status           Status          @default(PUBLISHED)
+  sortOrder        Int             @default(0)
+  images           ProductImage[]
+  createdAt        DateTime        @default(now())
+  updatedAt        DateTime        @updatedAt
+
+  @@index([categoryId])
+  @@index([status])
+  @@index([createdAt])
+  @@map("products")
+}
+
+model ProductImage {
+  id        Int      @id @default(autoincrement())
+  productId Int
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  imageUrl  String
+  sortOrder Int      @default(0)
+  createdAt DateTime @default(now())
+
+  @@index([productId])
+  @@map("product_images")
+}
+
+model Industry {
+  id          Int      @id @default(autoincrement())
+  name        String
+  slug        String   @unique
+  description String?  @db.Text
+  image       String?
+  status      Status   @default(PUBLISHED)
+  sortOrder   Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([status])
+  @@index([createdAt])
+  @@map("industries")
+}
+
+model Media {
+  id        Int          @id @default(autoincrement())
+  type      MediaType    @default(IMAGE)
+  title     String?
+  fileUrl   String
+  /// Optional poster still for a VIDEO item (shown before playback).
+  poster    String?
+  alt       String?
+  section   MediaSection
+  sortOrder Int          @default(0)
+  status    Status       @default(PUBLISHED)
+  createdAt DateTime     @default(now())
+  updatedAt DateTime     @updatedAt
+
+  @@index([section])
+  @@index([status])
+  @@index([createdAt])
+  @@map("media")
+}
+
+model Statistic {
+  id        Int      @id @default(autoincrement())
+  title     String
+  value     String
+  suffix    String?
+  sortOrder Int      @default(0)
+  status    Status   @default(PUBLISHED)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([status])
+  @@map("statistics")
+}
+
+model Feature {
+  id          Int      @id @default(autoincrement())
+  title       String
+  description String?  @db.Text
+  /// lucide-react icon name, e.g. "ShieldCheck".
+  icon        String?
+  sortOrder   Int      @default(0)
+  status      Status   @default(PUBLISHED)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([status])
+  @@map("features")
+}
+
+/// Quality / sustainability copy blocks — one row per point.
+model QualityPoint {
+  id          Int      @id @default(autoincrement())
+  title       String
+  description String?  @db.Text
+  icon        String?
+  sortOrder   Int      @default(0)
+  status      Status   @default(PUBLISHED)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([status])
+  @@map("quality_points")
+}
+
+model Enquiry {
+  id        Int           @id @default(autoincrement())
+  name      String
+  company   String?
+  email     String
+  phone     String?
+  subject   String?
+  product   String?
+  message   String        @db.Text
+  status    EnquiryStatus @default(NEW)
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+
+  @@index([status])
+  @@index([createdAt])
+  @@map("enquiries")
+}
+
+/// Single-row table. There is always exactly one ContactInfo (id = 1); the
+/// API upserts it rather than creating more.
+model ContactInfo {
+  id        Int      @id @default(autoincrement())
+  address   String?  @db.Text
+  phone     String?
+  email     String?
+  whatsapp  String?
+  mapUrl    String?  @db.Text
+  hours     String?
+  updatedAt DateTime @updatedAt
+
+  @@map("contact_info")
+}
+
+model SocialLink {
+  id        Int      @id @default(autoincrement())
+  platform  String
+  url       String   @db.Text
+  icon      String?
+  sortOrder Int      @default(0)
+  status    Status   @default(PUBLISHED)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([status])
+  @@map("social_links")
+}

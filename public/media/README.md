@@ -14,9 +14,9 @@ review, a soft launch or a pitch; replace them with photography of the BALCO
 works before the site is presented as a record of your own plant. Overwrite any
 file in place, keeping the name, and nothing in the code needs to change.
 
-The one thing still missing is the logo — see below.
+The logo now ships as a vector recreation of your brand mark (see below).
 
-## Logo (do this first)
+## Logo
 
 | File | Used by |
 | --- | --- |
@@ -32,8 +32,13 @@ Export with a tight bounding box (no baked-in padding); the header sizes the
 lockup by height, so extra whitespace shrinks the artwork. PNG works too —
 point `media.logo` / `media.logoLight` in `lib/site.ts` at the `.png` names.
 
-Until both exist, the header renders a slatted SKE monogram in the brand
-colours rather than a broken image. Every path is declared once in [`lib/site.ts`](../../lib/site.ts)
+**Both files now ship as vector recreations of your brand artwork**
+(`logo.svg`, `logo-light.svg`) — the royal-blue slatted S/E, the lime K, and
+the wordmark. They are drawn from the supplied logo image, so if you have the
+original vector (AI/EPS/SVG) or a high-res PNG, dropping it in over these two
+names will be pixel-perfect. Until then the vector recreation is used; if a
+file is ever missing the header falls back to a slatted SKE monogram rather
+than a broken image. Every path is declared once in [`lib/site.ts`](../../lib/site.ts)
 under `media`, `products`, `industries` and `facilities`, so renaming a file is a
 one-line edit there.
 

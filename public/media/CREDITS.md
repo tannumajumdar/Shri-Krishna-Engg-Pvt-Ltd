@@ -45,6 +45,12 @@ Posters are matched to their clip by subject and mood, not frame-accurately —
 there was no `ffmpeg` available to pull an actual first frame. If a swap ever
 looks abrupt, export frame 1 of the clip over the poster.
 
+## Admin
+
+| File | Pexels ID | Subject |
+| --- | --- | --- |
+| `admin/login-bg.jpg` | 36398099 | Molten steel pouring at night — admin login backdrop |
+
 ## Stills
 
 | File | Pexels ID | Subject |
