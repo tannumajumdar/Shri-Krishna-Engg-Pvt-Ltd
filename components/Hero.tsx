@@ -8,12 +8,12 @@ import { company, media } from "@/lib/site";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
-const HEADLINE = ["Engineering", "Excellence", "in Aluminium"];
+const HEADLINE = ["Engineering", "Fabrication", "& Erection"];
 
 const MARKERS = [
   { k: "Est.", v: String(company.established) },
   { k: "Unit", v: "BALCO, Korba" },
-  { k: "Scope", v: "Design to Despatch" },
+  { k: "Scope", v: "Turnkey Execution" },
 ];
 
 export function Hero({
@@ -105,7 +105,7 @@ export function Hero({
           className="mt-11 flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-4"
         >
           <Button href="#products" variant="light" size="lg" withArrow>
-            Explore Products
+            Our Services
           </Button>
           <Button href="#contact" variant="outline" size="lg">
             Contact Us

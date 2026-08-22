@@ -18,22 +18,23 @@ const display = Sora({
 
 export const metadata: Metadata = {
   title: {
-    default: `${company.legalName} — Engineering Excellence in Aluminium`,
+    default: `${company.legalName} — Mechanical, Fabrication & Erection`,
     template: `%s | ${company.name}`,
   },
   description:
-    "Shri Krishna Engineering Pvt. Ltd., BALCO — aluminium extrusions, busbars, castings and precision fabrication for power, infrastructure, construction, manufacturing, automotive and electrical industries.",
+    "Shri Krishna Engineering, BALCO Korba — mechanical works, fabrication, erection, civil works, transportation and round-the-clock plant operations & maintenance for heavy industry.",
   keywords: [
-    "aluminium engineering",
-    "aluminium extrusions",
-    "busbar systems",
-    "precision manufacturing",
+    "mechanical works",
+    "industrial fabrication",
+    "erection and commissioning",
+    "civil works",
+    "plant maintenance",
     "BALCO",
     "Korba",
     "Shri Krishna Engineering",
   ],
   openGraph: {
-    title: `${company.legalName} — Engineering Excellence in Aluminium`,
+    title: `${company.legalName} — Mechanical, Fabrication & Erection`,
     description: company.tagline,
     type: "website",
     locale: "en_IN",

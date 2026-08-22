@@ -13,7 +13,7 @@ export function PageHeader({
   action?: ReactNode;
 }) {
   return (
-    <div className="flex items-start justify-between gap-4 border-b border-slate-200 bg-white px-8 py-5">
+    <div className="flex items-start justify-between gap-4 border-b border-white/60 bg-white/70 px-8 py-5 backdrop-blur-md">
       <div>
         <h1 className="text-lg font-semibold text-slate-900">{title}</h1>
         {subtitle && <p className="mt-0.5 text-sm text-slate-500">{subtitle}</p>}

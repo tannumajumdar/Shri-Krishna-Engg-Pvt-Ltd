@@ -23,9 +23,24 @@ export default async function AdminLayout({
   if (bare) return <>{children}</>;
 
   return (
-    <div className="flex min-h-screen bg-slate-50 text-slate-800">
+    <div className="flex min-h-screen bg-slate-100 text-slate-800">
       <AdminNav />
-      <main className="flex-1 overflow-x-hidden">{children}</main>
+      {/* Industrial backdrop behind every admin page. Scoped INSIDE <main> as
+          an absolute layer (z-0) so it paints above the container's own
+          background — a fixed/-z-10 layer would hide behind it. The white
+          content cards (z-10) stay perfectly readable over a light wash. */}
+      <main className="relative flex-1 overflow-x-hidden">
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 z-0 bg-[url('/media/admin/admin-bg.jpg')] bg-cover bg-center bg-no-repeat"
+        />
+        {/* Light wash so the photo clearly shows through while cards read cleanly. */}
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 z-0 bg-gradient-to-br from-white/45 via-white/35 to-slate-200/45"
+        />
+        <div className="relative z-10 min-h-screen">{children}</div>
+      </main>
     </div>
   );
 }

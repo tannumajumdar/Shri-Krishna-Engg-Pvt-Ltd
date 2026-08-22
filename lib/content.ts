@@ -220,11 +220,19 @@ export function getContact() {
         email: c.email ?? fallback.contact.email,
         emailHref: c.email ? `mailto:${c.email}` : fallback.contact.emailHref,
         hours: c.hours ?? fallback.contact.hours,
-        whatsapp: c.whatsapp ?? undefined,
+        // Digits only, with country code — used to build wa.me links. Falls
+        // back to the phone number if no dedicated WhatsApp is set.
+        whatsapp:
+          (c.whatsapp ?? "").replace(/[^\d]/g, "") || fallback.contact.whatsapp,
         mapUrl: c.mapUrl ?? undefined,
       };
     },
-    { ...fallback.contact, address: [...fallback.contact.address], whatsapp: undefined, mapUrl: undefined },
+    {
+      ...fallback.contact,
+      address: [...fallback.contact.address],
+      whatsapp: fallback.contact.whatsapp,
+      mapUrl: undefined,
+    },
     "contact",
   );
 }

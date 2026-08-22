@@ -68,7 +68,11 @@ export default async function Page() {
       <main id="main">
         <Hero video={heroVideo} />
         <About stats={statistics} />
-        <ProductShowcase categories={productCategories} video={productsVideo} />
+        <ProductShowcase
+          categories={productCategories}
+          video={productsVideo}
+          whatsapp={contact.whatsapp}
+        />
         <IndustrialShowcase />
         <Industries items={industries} />
         <Infrastructure items={infrastructure} />

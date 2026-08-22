@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE `enquiries` ADD COLUMN `source` ENUM('WEBSITE', 'WHATSAPP') NOT NULL DEFAULT 'WEBSITE',
+    MODIFY `email` VARCHAR(191) NULL;

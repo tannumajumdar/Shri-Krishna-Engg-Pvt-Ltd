@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowUpRight } from "lucide-react";
+import { MessageCircle } from "lucide-react";
 import { ImageMarquee, type MarqueeItem } from "@/components/ImageMarquee";
 import { VideoBackground } from "@/components/VideoBackground";
 import { MediaImage } from "@/components/ui/MediaImage";
@@ -8,8 +8,11 @@ import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Button } from "@/components/ui/Button";
 import { Reveal } from "@/components/ui/Reveal";
 import {
+  contact,
   media,
   productCategories,
+  productEnquiryMessage,
+  whatsappLink,
   type Product,
   type ProductCategory,
 } from "@/lib/site";
@@ -17,11 +20,15 @@ import {
 export function ProductShowcase({
   categories,
   video,
+  whatsapp,
 }: {
   categories?: typeof productCategories;
   video?: { src: string; poster: string };
+  /** WhatsApp number (digits, with country code) for product enquiries. */
+  whatsapp?: string;
 } = {}) {
   const cats = categories ?? productCategories;
+  const waNumber = whatsapp || contact.whatsapp;
   return (
     <section
       id="products"
@@ -30,7 +37,7 @@ export function ProductShowcase({
       {/* engineering grid, carried under the rows */}
       <div className="absolute inset-0 bg-grid-fine bg-grid-fine opacity-[0.35]" aria-hidden="true" />
 
-      {/* ---- header band, set over the extrusion line ---- */}
+      {/* ---- header band, set over the service footage ---- */}
       <div className="relative">
         <VideoBackground
           src={video?.src ?? media.productsVideo}
@@ -54,12 +61,12 @@ export function ProductShowcase({
         <div className="container relative pb-20 pt-24 lg:pb-28 lg:pt-32">
           <SectionHeading
             tone="dark"
-            eyebrow={`Products · ${cats.length} categories`}
-            title="A catalogue engineered around how our clients actually build."
-            intro="From mill-finish extrusions to fully machined assemblies — every line is produced in-house, inspected against drawing and released with its own test record."
+            eyebrow={`Services · ${cats.length} verticals`}
+            title="Engineering services that keep heavy plants running."
+            intro="From mechanical maintenance and fabrication to civil works, erection and round-the-clock plant O&M — delivered by our own trained crews."
             action={
               <Button href="#contact" variant="outline" size="lg" withArrow>
-                Request Full Catalogue
+                Request a Quote
               </Button>
             }
           />
@@ -71,7 +78,12 @@ export function ProductShowcase({
       <div className="relative">
         <div className="space-y-14 lg:space-y-20">
           {cats.map((category, i) => (
-            <CategoryRow key={category.id} category={category} index={i} />
+            <CategoryRow
+              key={category.id}
+              category={category}
+              index={i}
+              whatsapp={waNumber}
+            />
           ))}
         </div>
 
@@ -79,7 +91,7 @@ export function ProductShowcase({
           <Reveal>
             <p className="flex flex-wrap items-center justify-center gap-x-3 gap-y-2 text-center text-[11px] uppercase tracking-label text-white/35">
               <span className="h-px w-10 bg-white/20" />
-              Hover to pause · {cats.reduce((n, c) => n + c.products.length, 0)} product lines
+              Hover to pause · {cats.reduce((n, c) => n + c.products.length, 0)} services
               <span className="h-px w-10 bg-white/20" />
             </p>
           </Reveal>
@@ -94,14 +106,15 @@ export function ProductShowcase({
 function CategoryRow({
   category,
   index,
+  whatsapp,
 }: {
   category: ProductCategory;
   index: number;
+  whatsapp: string;
 }) {
   const items: MarqueeItem[] = category.products.map((p) => ({
     src: p.image,
     alt: p.name,
-    href: "#contact",
   }));
 
   return (
@@ -124,7 +137,7 @@ function CategoryRow({
             </div>
 
             <span className="shrink-0 whitespace-nowrap pl-9 font-mono text-[10px] uppercase tracking-[0.16em] text-white/30 sm:pl-0">
-              {category.products.length} lines
+              {category.products.length} services
             </span>
           </div>
         </Reveal>
@@ -137,13 +150,63 @@ function CategoryRow({
         direction={index % 2 === 0 ? "left" : "right"}
         heightClass="h-[340px] sm:h-[380px] lg:h-[420px]"
         gapClass="gap-4 lg:gap-5"
-        renderItem={(_, i) => <ProductCard product={category.products[i]} />}
+        renderItem={(_, i) => (
+          <ProductCard
+            product={category.products[i]}
+            categoryName={category.name}
+            whatsapp={whatsapp}
+          />
+        )}
       />
     </div>
   );
 }
 
-function ProductCard({ product }: { product: Product }) {
+function ProductCard({
+  product,
+  categoryName,
+  whatsapp,
+}: {
+  product: Product;
+  categoryName: string;
+  whatsapp: string;
+}) {
+  const enquireHref = whatsappLink(
+    whatsapp,
+    productEnquiryMessage({
+      name: product.name,
+      category: categoryName,
+      spec: product.spec,
+    }),
+  );
+
+  /**
+   * Log the lead so it appears in the admin Enquiries inbox. WhatsApp messages
+   * never reach our server, so this records the *intent* — who is enquiring
+   * about which product — while the actual chat continues on WhatsApp.
+   * Fire-and-forget: it must not block or delay the link opening.
+   */
+  function logLead() {
+    const body = JSON.stringify({
+      name: "WhatsApp lead",
+      product: product.name,
+      subject: `${categoryName} - ${product.spec}`,
+      source: "WHATSAPP",
+      message: `Website visitor tapped "Enquire on WhatsApp" for "${product.name}" (${categoryName}, spec: ${product.spec}). The conversation continues on WhatsApp.`,
+    });
+    try {
+      // keepalive lets the request finish even as the tab navigates to WhatsApp.
+      fetch("/api/enquiries", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body,
+        keepalive: true,
+      }).catch(() => {});
+    } catch {
+      /* never let logging break the enquiry */
+    }
+  }
+
   return (
     <article className="group/card flex h-full w-[248px] flex-col overflow-hidden rounded-xl border border-white/10 bg-navy-900 transition-colors duration-500 ease-brand hover:border-white/25 sm:w-[286px] lg:w-[320px]">
       <div className="relative flex-1 overflow-hidden">
@@ -164,19 +227,26 @@ function ProductCard({ product }: { product: Product }) {
         </span>
       </div>
 
-      <div className="relative flex items-start justify-between gap-3 p-5">
-        <div className="min-w-0">
-          <h4 className="font-display text-[15.5px] font-medium leading-snug text-white">
-            {product.name}
-          </h4>
-          <p className="mt-2 text-[12.5px] leading-relaxed text-white/50">
-            {product.description}
-          </p>
-        </div>
+      <div className="relative p-5">
+        <h4 className="font-display text-[15.5px] font-medium leading-snug text-white">
+          {product.name}
+        </h4>
+        <p className="mt-2 line-clamp-2 text-[12.5px] leading-relaxed text-white/50">
+          {product.description}
+        </p>
 
-        <span className="mt-0.5 grid h-8 w-8 shrink-0 place-items-center rounded-full border border-white/15 text-white/70 transition-all duration-500 ease-brand group-hover/card:border-white/40 group-hover/card:bg-white group-hover/card:text-navy-900">
-          <ArrowUpRight className="h-[15px] w-[15px]" strokeWidth={1.75} aria-hidden="true" />
-        </span>
+        {/* Enquire on WhatsApp — carries the product details into the chat.
+            No price shown; pricing is handled over the enquiry. */}
+        <a
+          href={enquireHref}
+          target="_blank"
+          rel="noopener noreferrer"
+          onClick={logLead}
+          className="mt-4 flex items-center justify-center gap-2 rounded-lg bg-[#25D366] py-2.5 text-[13px] font-semibold text-[#0C1936] transition-transform duration-300 ease-brand hover:scale-[1.02] hover:bg-[#20c65c]"
+        >
+          <MessageCircle className="h-4 w-4" strokeWidth={2.25} aria-hidden="true" />
+          Enquire on WhatsApp
+        </a>
       </div>
     </article>
   );

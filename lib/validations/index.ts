@@ -113,10 +113,18 @@ export const qualityPointUpdateSchema = featureUpdateSchema;
 export const enquiryCreateSchema = z.object({
   name: shortText(191),
   company: shortText(191).optional(),
-  email: z.string().trim().toLowerCase().email("Enter a valid email"),
+  // Optional — WhatsApp leads have no email until the chat begins.
+  email: z
+    .string()
+    .trim()
+    .toLowerCase()
+    .email("Enter a valid email")
+    .optional()
+    .or(z.literal("").transform(() => undefined)),
   phone: shortText(40).optional(),
   subject: shortText(191).optional(),
   product: shortText(191).optional(),
+  source: z.enum(["WEBSITE", "WHATSAPP"]).default("WEBSITE"),
   message: z.string().trim().min(5, "Message is too short").max(5000),
   /** Honeypot — bots fill hidden fields; humans leave it empty. Accepted by
    *  validation on purpose: the handler silently drops a filled one with a
@@ -155,3 +163,20 @@ export const socialLinkCreateSchema = z.object({
   status: StatusEnum.default("PUBLISHED"),
 });
 export const socialLinkUpdateSchema = socialLinkCreateSchema.partial();
+
+/* -------------------------------- profile -------------------------------- */
+
+/** Admin editing their own account. currentPassword confirms identity; it is
+ *  required whenever the email or password changes. newPassword is optional. */
+export const profileUpdateSchema = z
+  .object({
+    name: shortText(191).optional(),
+    email: z.string().trim().toLowerCase().email("Enter a valid email").optional(),
+    currentPassword: z.string().min(1, "Current password is required"),
+    newPassword: z
+      .string()
+      .min(8, "New password must be at least 8 characters")
+      .max(200)
+      .optional()
+      .or(z.literal("").transform(() => undefined)),
+  });

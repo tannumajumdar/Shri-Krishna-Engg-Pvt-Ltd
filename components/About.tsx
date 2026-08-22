@@ -76,7 +76,7 @@ export function About({
                 <div className="overflow-hidden rounded-xl border-4 border-surface shadow-lift-lg">
                   <MediaImage
                     src={media.aboutSecondary}
-                    alt="Precision inspection of an aluminium profile"
+                    alt="Site team on the shop floor at BALCO"
                     className="aspect-square w-full"
                   />
                 </div>
@@ -109,29 +109,30 @@ export function About({
             <RevealHeading
               as="h2"
               delay={0.08}
-              text="Twenty-five years of aluminium know-how, built into every section we ship."
+              text="Twenty-five years of engineering, fabrication and plant services at BALCO."
               className="mt-6 font-display text-display-sm font-light text-ink"
             />
 
             <Reveal delay={0.15} className="mt-7 space-y-5 text-[15px] leading-relaxed text-ink-muted">
               <p>
-                Operating from the BALCO industrial belt in Korba, Shri Krishna
-                Engineering Pvt. Ltd. designs and manufactures aluminium
-                products for some of India’s most demanding industrial
-                environments — smelters, substations, plant structures and
-                production lines that cannot afford a part that almost fits.
+                Based in the BALCO industrial belt at Korba, Shri Krishna
+                Engineering is an engineering contractor serving some of
+                India’s most demanding plants — running mechanical, fabrication,
+                erection, civil and transportation work where downtime is not
+                an option.
               </p>
               <p>
-                Extrusion, casting, machining, fabrication and finishing all sit
-                under one roof. That vertical control is what lets us hold
-                tolerance, protect delivery dates and take on the bespoke work
-                that larger suppliers turn away.
+                At BALCO Rolled Product we run round-the-clock operations and
+                maintenance across the foundry, rolling mills and material
+                handling. Our own workforce, fabrication yard and transport
+                fleet let us hold schedules and take single-point
+                responsibility from foundation to commissioning.
               </p>
             </Reveal>
 
             <Reveal delay={0.22} className="mt-9">
               <Button href="#products" variant="solid" size="lg" withArrow>
-                Discover More
+                Our Services
               </Button>
             </Reveal>
           </div>

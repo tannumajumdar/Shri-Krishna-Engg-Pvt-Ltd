@@ -7,12 +7,12 @@ import { RevealHeading, Reveal } from "@/components/ui/Reveal";
 import { media } from "@/lib/site";
 
 const CAPABILITIES = [
-  "Extrusion",
-  "Casting",
-  "CNC Machining",
+  "Mechanical",
   "Fabrication",
-  "Anodising",
-  "Powder Coating",
+  "Erection",
+  "Civil Works",
+  "Transportation",
+  "Plant O&M",
 ];
 
 /**

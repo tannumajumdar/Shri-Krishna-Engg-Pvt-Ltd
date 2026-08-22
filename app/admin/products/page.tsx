@@ -1,7 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { Pencil, Trash2, Plus } from "lucide-react";
+import Link from "next/link";
+import { useSearchParams } from "next/navigation";
+import { Pencil, Trash2, Plus, X } from "lucide-react";
 import { PageHeader, Button, Modal, Field, Notice, inputClass, useResource } from "../ui";
 import { UploadField } from "../UploadField";
 import { api, ApiClientError } from "@/lib/admin/api-client";
@@ -25,18 +27,31 @@ type Product = {
 };
 
 export default function ProductsPage() {
-  const { data, loading, error, reload } = useResource<Product[]>("/api/products?all=1");
+  const params = useSearchParams();
+  const categoryFilter = params.get("category"); // slug, from a category click
+
+  // Ask the API for just this category when filtered (still admin ?all=1).
+  const endpoint = categoryFilter
+    ? `/api/products?all=1&category=${encodeURIComponent(categoryFilter)}`
+    : "/api/products?all=1";
+
+  const { data, loading, error, reload } = useResource<Product[]>(endpoint);
   const { data: cats } = useResource<Category[]>("/api/categories?all=1");
   const [editing, setEditing] = useState<Product | null>(null);
   const [creating, setCreating] = useState(false);
   const rows = data ?? [];
   const categories = cats ?? [];
+  const filteredName = rows[0]?.category?.name ?? categoryFilter;
 
   return (
     <>
       <PageHeader
         title="Products"
-        subtitle="Catalogue items grouped by category"
+        subtitle={
+          categoryFilter
+            ? `Showing products in one category`
+            : "Catalogue items grouped by category"
+        }
         action={
           <Button onClick={() => setCreating(true)} disabled={!categories.length}>
             <Plus className="mr-1 inline h-4 w-4" /> New
@@ -47,6 +62,23 @@ export default function ProductsPage() {
         {error && <Notice kind="error">{error}</Notice>}
         {!categories.length && !loading && (
           <div className="mb-4"><Notice kind="error">Create a category first.</Notice></div>
+        )}
+
+        {categoryFilter && (
+          <div className="mb-4 flex items-center gap-2">
+            <span className="inline-flex items-center gap-2 rounded-full bg-[#0C1936] px-3 py-1.5 text-xs font-medium text-white">
+              Category: {filteredName}
+              <span className="rounded-full bg-white/20 px-1.5 text-[10px]">
+                {rows.length}
+              </span>
+            </span>
+            <Link
+              href="/admin/products"
+              className="inline-flex items-center gap-1 rounded-full border border-slate-300 px-3 py-1.5 text-xs font-medium text-slate-600 hover:bg-slate-50"
+            >
+              <X className="h-3 w-3" /> Clear filter
+            </Link>
+          </div>
         )}
 
         <div className="overflow-x-auto rounded-2xl border border-slate-200 bg-white">

@@ -39,7 +39,7 @@ export function Industries({ items }: { items?: Industry[] } = {}) {
       <div className="container">
         <SectionHeading
           eyebrow="Industries We Serve"
-          title="Six sectors that depend on aluminium behaving exactly as specified."
+          title="Six sectors that rely on us to keep their plants running."
           intro="Each brings its own standards, tolerances and paperwork. We work to theirs, not to a house average."
         />
       </div>

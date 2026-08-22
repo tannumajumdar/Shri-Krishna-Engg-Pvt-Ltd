@@ -81,20 +81,19 @@ export function QualitySection({
 
             <Reveal delay={0.14}>
               <p className="mt-7 text-pretty text-[15px] leading-relaxed text-white/65">
-                Quality is not an inspection stage at the end of our line — it
-                is the reason the line is laid out the way it is. Material is
-                verified on arrival, dimensions are checked between operations,
-                and nothing is released without a record that can be traced back
-                to the billet it came from.
+                Quality is not a stage at the end of a job — it is how the
+                job is planned. Materials are verified on arrival, work is
+                checked between stages, and nothing is handed over without an
+                inspection record that can be traced back to the drawing.
               </p>
             </Reveal>
 
             <Reveal delay={0.2}>
               <p className="mt-5 text-pretty text-[15px] leading-relaxed text-white/65">
-                Aluminium is endlessly recyclable, and we treat that as an
-                obligation rather than a talking point. Process scrap returns to
-                our own furnace, recovered heat is put back to work, and energy
-                drawn per tonne is measured the same way we measure tolerance.
+                Safety carries the same weight as quality — it is our first
+                priority on every site. Trained crews, PPE discipline, toolbox
+                talks and LLF observation closure are built into how we work,
+                not added on afterwards.
               </p>
             </Reveal>
 

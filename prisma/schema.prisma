@@ -47,6 +47,14 @@ enum EnquiryStatus {
   ARCHIVED
 }
 
+/// Where an enquiry came from. WHATSAPP records are logged when a visitor taps
+/// "Enquire on WhatsApp" on a product — the actual chat happens on WhatsApp,
+/// this is the lead marker so the admin sees the intent and the product.
+enum EnquirySource {
+  WEBSITE
+  WHATSAPP
+}
+
 model Admin {
   id        Int      @id @default(autoincrement())
   name      String
@@ -199,10 +207,12 @@ model Enquiry {
   id        Int           @id @default(autoincrement())
   name      String
   company   String?
-  email     String
+  /// Optional: WhatsApp leads have no email until the chat starts.
+  email     String?
   phone     String?
   subject   String?
   product   String?
+  source    EnquirySource @default(WEBSITE)
   message   String        @db.Text
   status    EnquiryStatus @default(NEW)
   createdAt DateTime      @default(now())

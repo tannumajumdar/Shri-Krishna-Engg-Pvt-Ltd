@@ -47,9 +47,9 @@ export function Footer({
             <Logo onDark />
 
             <p className="mt-7 max-w-xs text-pretty text-[13.5px] leading-relaxed text-white/50">
-              Aluminium extrusion, casting, machining and fabrication for
-              India’s heavy industry — engineered, inspected and despatched
-              from our works at BALCO, Korba.
+              Mechanical, fabrication, erection, civil and transportation
+              services for India’s heavy industry — executed by our own crews
+              from our base at BALCO, Korba.
             </p>
 
             <ul className="mt-8 flex items-center gap-2.5">
@@ -81,10 +81,10 @@ export function Footer({
             </ul>
           </nav>
 
-          {/* products */}
-          <nav className="lg:col-span-3" aria-label="Products">
+          {/* services */}
+          <nav className="lg:col-span-3" aria-label="Services">
             <h2 className="text-[10px] font-semibold uppercase tracking-label text-white/35">
-              Products
+              Services
             </h2>
             <ul className="mt-6 space-y-3">
               {products.slice(0, 6).map((product) => (

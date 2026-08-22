@@ -1,7 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { Pencil, Trash2, Plus } from "lucide-react";
+import Link from "next/link";
+import { Pencil, Trash2, Plus, ArrowRight } from "lucide-react";
 import {
   PageHeader, Button, Modal, Field, Notice, inputClass, useResource,
 } from "./ui";
@@ -30,6 +31,8 @@ export function ResourceManager({
   endpoint,
   fields,
   columns,
+  rowLink,
+  rowLinkLabel = "View",
 }: {
   title: string;
   subtitle?: string;
@@ -37,6 +40,9 @@ export function ResourceManager({
   fields: FieldDef[];
   /** Field names to show as table columns. */
   columns: string[];
+  /** When set, each row links here (e.g. a category → its products). */
+  rowLink?: (row: Row) => string;
+  rowLinkLabel?: string;
 }) {
   const { data, loading, error, reload } = useResource<Row[]>(`${endpoint}?all=1`);
   const [editing, setEditing] = useState<Row | null>(null);
@@ -70,24 +76,48 @@ export function ResourceManager({
               </tr>
             </thead>
             <tbody>
-              {rows.map((row) => (
-                <tr key={row.id} className="border-t border-slate-100">
-                  {columns.map((c) => (
-                    <td key={c} className="px-5 py-3 text-slate-700">
-                      <Cell value={row[c]} field={fields.find((f) => f.name === c)} />
+              {rows.map((row) => {
+                const href = rowLink?.(row);
+                return (
+                  <tr
+                    key={row.id}
+                    className={`border-t border-slate-100 ${href ? "transition-colors hover:bg-slate-50" : ""}`}
+                  >
+                    {columns.map((c, ci) => (
+                      <td key={c} className="px-5 py-3 text-slate-700">
+                        {href && ci === 0 ? (
+                          <Link
+                            href={href}
+                            className="font-medium text-slate-800 underline-offset-2 hover:text-blue-600 hover:underline"
+                          >
+                            <Cell value={row[c]} field={fields.find((f) => f.name === c)} />
+                          </Link>
+                        ) : (
+                          <Cell value={row[c]} field={fields.find((f) => f.name === c)} />
+                        )}
+                      </td>
+                    ))}
+                    <td className="px-5 py-3 text-right">
+                      {href && (
+                        <Link
+                          href={href}
+                          className="mr-1 inline-flex items-center gap-1 rounded-md px-2 py-1 text-xs font-medium text-slate-500 hover:bg-slate-100 hover:text-blue-600"
+                        >
+                          {rowLinkLabel}
+                          <ArrowRight className="h-3.5 w-3.5" />
+                        </Link>
+                      )}
+                      <button
+                        onClick={() => setEditing(row)}
+                        className="mr-1 rounded-md p-1.5 text-slate-400 hover:bg-slate-100 hover:text-blue-600"
+                      >
+                        <Pencil className="h-4 w-4" />
+                      </button>
+                      <DeleteButton endpoint={endpoint} id={row.id} onDone={reload} />
                     </td>
-                  ))}
-                  <td className="px-5 py-3 text-right">
-                    <button
-                      onClick={() => setEditing(row)}
-                      className="mr-1 rounded-md p-1.5 text-slate-400 hover:bg-slate-100 hover:text-blue-600"
-                    >
-                      <Pencil className="h-4 w-4" />
-                    </button>
-                    <DeleteButton endpoint={endpoint} id={row.id} onDone={reload} />
-                  </td>
-                </tr>
-              ))}
+                  </tr>
+                );
+              })}
               {!loading && !rows.length && (
                 <tr>
                   <td colSpan={columns.length + 1} className="px-5 py-6 text-center text-slate-400">

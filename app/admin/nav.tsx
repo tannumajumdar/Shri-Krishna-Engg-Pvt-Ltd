@@ -19,7 +19,7 @@ const LINKS: { href: string; label: string; icon: LucideIcon }[] = [
   { href: "/admin/enquiries", label: "Enquiries", icon: Inbox },
   { href: "/admin/contact", label: "Contact Info", icon: Phone },
   { href: "/admin/social-links", label: "Social Links", icon: Share2 },
-  { href: "/admin/settings", label: "Settings", icon: Settings },
+  { href: "/admin/settings", label: "Profile & Settings", icon: Settings },
 ];
 
 export function AdminNav() {
@@ -41,7 +41,7 @@ export function AdminNav() {
   return (
     <aside className="flex w-64 shrink-0 flex-col border-r border-slate-200 bg-white">
       <div className="flex items-center gap-2.5 border-b border-slate-200 px-5 py-5">
-        <img src="/media/logo.svg" alt="Shri Krishna Engineering" className="h-8 w-auto" />
+        <img src="/media/logo.png" alt="Shri Krishna Engineering" className="h-8 w-auto" />
         <span className="rounded-md bg-slate-100 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-slate-500">
           Admin
         </span>

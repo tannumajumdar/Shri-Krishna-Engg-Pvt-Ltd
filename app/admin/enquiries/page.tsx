@@ -1,7 +1,7 @@
 "use client";
 
 import { Fragment, useState } from "react";
-import { Trash2 } from "lucide-react";
+import { Trash2, MessageCircle, Globe } from "lucide-react";
 import { PageHeader, Notice, useResource } from "../ui";
 import { api, ApiClientError } from "@/lib/admin/api-client";
 
@@ -9,10 +9,11 @@ type Enquiry = {
   id: number;
   name: string;
   company: string | null;
-  email: string;
+  email: string | null;
   phone: string | null;
   subject: string | null;
   product: string | null;
+  source: "WEBSITE" | "WHATSAPP";
   message: string;
   status: "NEW" | "READ" | "RESPONDED" | "ARCHIVED";
   createdAt: string;
@@ -74,10 +75,21 @@ export default function EnquiriesPage() {
                     onClick={() => setOpen(open === e.id ? null : e.id)}
                   >
                     <td className="px-5 py-3">
-                      <div className="font-medium text-slate-800">{e.name}</div>
-                      <div className="text-xs text-slate-500">{e.email}</div>
+                      <div className="flex items-center gap-2">
+                        <span className="font-medium text-slate-800">{e.name}</span>
+                        {e.source === "WHATSAPP" ? (
+                          <span className="inline-flex items-center gap-1 rounded-full bg-[#25D366]/15 px-2 py-0.5 text-[10px] font-semibold text-[#128C3E]">
+                            <MessageCircle className="h-3 w-3" /> WhatsApp
+                          </span>
+                        ) : (
+                          <span className="inline-flex items-center gap-1 rounded-full bg-slate-100 px-2 py-0.5 text-[10px] font-semibold text-slate-500">
+                            <Globe className="h-3 w-3" /> Website
+                          </span>
+                        )}
+                      </div>
+                      <div className="text-xs text-slate-500">{e.email || "—"}</div>
                     </td>
-                    <td className="px-5 py-3 text-slate-600">{e.subject || e.product || "—"}</td>
+                    <td className="px-5 py-3 text-slate-600">{e.product || e.subject || "—"}</td>
                     <td className="px-5 py-3 text-xs text-slate-500">
                       {new Date(e.createdAt).toLocaleString()}
                     </td>

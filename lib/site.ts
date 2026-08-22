@@ -9,22 +9,63 @@ export const company = {
   legalName: "Shri Krishna Engineering Pvt. Ltd.",
   short: "SKE",
   unit: "BALCO",
-  tagline: "Precision engineering. Advanced manufacturing. Built for performance.",
+  tagline: "Mechanical · Fabrication · Erection · Civil · Transportation.",
   established: 1999,
 } as const;
 
 export const contact = {
   address: [
-    "Shri Krishna Engineering Pvt. Ltd.",
-    "BALCO Industrial Area, Balco Nagar",
-    "Korba, Chhattisgarh 495684, India",
+    "Shri Krishna Engineering",
+    "Near 1 MVA Sub Station, Sector-5",
+    "PO Balco Township, Korba, Chhattisgarh 495684",
   ],
-  phone: "+91 00000 00000",
-  phoneHref: "tel:+910000000000",
-  email: "info@shrikrishnaengineering.in",
-  emailHref: "mailto:info@shrikrishnaengineering.in",
+  phone: "+91 98263 62831",
+  phoneHref: "tel:+919826362831",
+  /** Extra numbers from the letterhead, shown in the footer/contact list. */
+  altPhones: ["+91 73891 50849", "+91 73892 95122"],
+  email: "shreekrishna1.engg@gmail.com",
+  emailHref: "mailto:shreekrishna1.engg@gmail.com",
+  altEmail: "shreekrishna1.engg@rediffmail.com",
+  /** Digits only, with country code — used to build wa.me enquiry links. */
+  whatsapp: "919826362831",
   hours: "Mon – Sat · 09:00 – 18:00 IST",
 } as const;
+
+/** Build a WhatsApp click-to-chat link with a pre-filled message. */
+export function whatsappLink(number: string, message: string): string {
+  return `https://wa.me/${number}?text=${encodeURIComponent(message)}`;
+}
+
+/**
+ * The enquiry message a customer sends when they tap "Enquire" on a service.
+ * Carries the service details (no price — pricing happens over chat) and leaves
+ * blank fields for the customer to fill before sending.
+ */
+export function productEnquiryMessage(p: {
+  name: string;
+  category?: string;
+  spec?: string;
+}): string {
+  const lines = [
+    "Hello Shri Krishna Engineering,",
+    "",
+    "I would like to enquire about this service:",
+    "",
+    `• Service: ${p.name}`,
+  ];
+  if (p.category) lines.push(`• Category: ${p.category}`);
+  if (p.spec) lines.push(`• Scope: ${p.spec}`);
+  lines.push(
+    "",
+    "Please share details and a quotation.",
+    "",
+    "My details —",
+    "Name: ",
+    "Company: ",
+    "Requirement: ",
+  );
+  return lines.join("\n");
+}
 
 export const socials = [
   { label: "LinkedIn", href: "#", icon: "linkedin" },
@@ -36,7 +77,7 @@ export const socials = [
 export const navLinks = [
   { label: "Home", href: "#home" },
   { label: "About", href: "#about" },
-  { label: "Products", href: "#products" },
+  { label: "Services", href: "#products" },
   { label: "Industries", href: "#industries" },
   { label: "Infrastructure", href: "#infrastructure" },
   { label: "Quality", href: "#quality" },
@@ -49,8 +90,8 @@ export const media = {
   /* Full SKE lockup. `logoLight` is the white knockout used wherever the bar
      sits over dark imagery — the blue letterforms disappear there. SVG is
      preferred; point these at .png files if that is what you have. */
-  logo: "/media/logo.svg",
-  logoLight: "/media/logo-light.svg",
+  logo: "/media/logo.png",
+  logoLight: "/media/logo-light.png",
 
   heroVideo: "/media/hero-video.mp4",
   heroPoster: "/media/hero-poster.jpg",
@@ -85,199 +126,90 @@ export type ProductCategory = {
 };
 
 /**
- * The catalogue, grouped by process — the same five stages the rest of the
- * site describes the plant with. Each category becomes its own marquee row,
- * so keep at least four products in each: a shorter row makes the loop period
- * narrower than the viewport on very wide screens.
+ * Our services, grouped by trade — the six things Shri Krishna Engineering
+ * actually does. The data model is still called `productCategories` so the API
+ * and admin stay unchanged; the site labels it "Services". Each group becomes
+ * its own marquee row, so keep at least four items in each.
  */
 export const productCategories: ProductCategory[] = [
   {
-    id: "extruded",
-    name: "Extruded Products",
+    id: "mechanical",
+    name: "Mechanical Works",
     blurb:
-      "Profiles drawn through our own dies, from mill-finish stock lengths to anodised architectural systems.",
+      "Erection, alignment, overhauling and maintenance of rotating and static plant equipment.",
     products: [
-      {
-        name: "Mill-Finish Profiles",
-        description: "Standard 6000-series profiles, cut to your stock lengths.",
-        image: "/media/products/extruded-01.jpg",
-        spec: "6060 · 6063",
-      },
-      {
-        name: "Anodised Profiles",
-        description: "Natural and colour anodised finishes in 10–25 micron.",
-        image: "/media/products/extruded-02.jpg",
-        spec: "10–25 µm",
-      },
-      {
-        name: "Structural Sections",
-        description: "Load-rated angles, channels and I-sections for framing.",
-        image: "/media/products/extruded-03.jpg",
-        spec: "Load-rated",
-      },
-      {
-        name: "Architectural Systems",
-        description: "Façade, glazing and curtain-wall profiles to project spec.",
-        image: "/media/products/extruded-04.jpg",
-        spec: "Bespoke die",
-      },
-      {
-        name: "Heat Sink Profiles",
-        description: "High fin-ratio extrusions for power electronics cooling.",
-        image: "/media/products/extruded-05.jpg",
-        spec: "High fin",
-      },
-      {
-        name: "Custom Die Profiles",
-        description: "Your drawing, our die shop — prototype through production.",
-        image: "/media/products/extruded-06.jpg",
-        spec: "Drawing-led",
-      },
+      { name: "Equipment Erection & Alignment", description: "Precision installation and laser alignment of drives, pumps and gearboxes.", image: "/media/services/mechanical-01.jpg", spec: "On-site" },
+      { name: "Rotary Equipment Maintenance", description: "Bearings, couplings and shafts serviced to OEM tolerances.", image: "/media/services/mechanical-02.jpg", spec: "PM · CBM" },
+      { name: "Pump & Gearbox Overhaul", description: "In-house repair and rebuild of hydraulic and gear assemblies.", image: "/media/services/mechanical-03.jpg", spec: "Rebuild" },
+      { name: "Preventive Maintenance", description: "Planned PM schedules that keep critical lines available.", image: "/media/services/mechanical-04.jpg", spec: "Scheduled" },
+      { name: "Breakdown Support", description: "Rapid-response teams for unplanned stoppages, round the clock.", image: "/media/services/mechanical-05.jpg", spec: "24x7" },
     ],
   },
   {
-    id: "cast",
-    name: "Cast & Machined",
+    id: "fabrication",
+    name: "Fabrication",
     blurb:
-      "Metal poured, solidified and cut to drawing, with dimensional checks between every operation.",
+      "Structural, plate and pipe fabrication built in-house to drawing, then delivered ready to erect.",
     products: [
-      {
-        name: "Gravity Die Castings",
-        description: "Permanent-mould castings with repeatable wall sections.",
-        image: "/media/products/cast-01.jpg",
-        spec: "LM6 · LM25",
-      },
-      {
-        name: "Pressure Die Castings",
-        description: "High-pressure casting for thin-wall, high-volume parts.",
-        image: "/media/products/cast-02.jpg",
-        spec: "High volume",
-      },
-      {
-        name: "CNC-Turned Components",
-        description: "Turned parts for rotating and hydraulic assemblies.",
-        image: "/media/products/cast-03.jpg",
-        spec: "±0.05 mm",
-      },
-      {
-        name: "5-Axis Milled Parts",
-        description: "Complex geometry finished in a single set-up.",
-        image: "/media/products/cast-04.jpg",
-        spec: "5-axis",
-      },
-      {
-        name: "Precision Housings",
-        description: "Machined housings, bushes and bearing carriers.",
-        image: "/media/products/cast-05.jpg",
-        spec: "H7 bores",
-      },
+      { name: "Structural Fabrication", description: "Beams, columns and trusses fabricated from certified sections.", image: "/media/services/fabrication-01.jpg", spec: "MIG · TIG" },
+      { name: "Plate & Pipe Work", description: "Chutes, hoppers, ducting and pipe spools made to spec.", image: "/media/services/fabrication-02.jpg", spec: "To drawing" },
+      { name: "Tanks & Enclosures", description: "Storage tanks, vessels and sheet-metal enclosures.", image: "/media/services/fabrication-03.jpg", spec: "Sealed" },
+      { name: "Platforms & Walkways", description: "Access structures, ladders and handrails to plant safety norms.", image: "/media/services/fabrication-04.jpg", spec: "To standard" },
+      { name: "On-site Welding", description: "Qualified welders for site fabrication and modification.", image: "/media/services/fabrication-05.jpg", spec: "Certified" },
     ],
   },
   {
-    id: "sheet",
-    name: "Sheet & Coil",
+    id: "erection",
+    name: "Erection & Commissioning",
     blurb:
-      "Rolled product in engineered tempers, slit and cut to the sizes your line actually runs.",
+      "Heavy equipment and structural erection — aligned, tested and handed over ready to run.",
     products: [
-      {
-        name: "Cold-Rolled Sheet",
-        description: "Flat sheet from 0.2 to 6 mm in mill or bright finish.",
-        image: "/media/products/sheet-01.jpg",
-        spec: "0.2 – 6 mm",
-      },
-      {
-        name: "Aluminium Coil",
-        description: "Slit coil wound to your mandrel and weight limits.",
-        image: "/media/products/sheet-02.jpg",
-        spec: "Slit to width",
-      },
-      {
-        name: "Treadplate",
-        description: "Five-bar and diamond patterns for flooring and steps.",
-        image: "/media/products/sheet-03.jpg",
-        spec: "Anti-slip",
-      },
-      {
-        name: "Roofing & Cladding",
-        description: "Profiled and plain sheet for industrial envelopes.",
-        image: "/media/products/sheet-04.jpg",
-        spec: "Coil-coated",
-      },
+      { name: "Heavy Equipment Erection", description: "Mills, furnaces and drives set, aligned and grouted.", image: "/media/services/erection-01.jpg", spec: "Heavy lift" },
+      { name: "Structural Erection", description: "Steel structures raised and bolted to GA drawings.", image: "/media/services/erection-02.jpg", spec: "Bolted" },
+      { name: "Crane & EOT Installation", description: "EOT and gantry cranes installed and load-tested.", image: "/media/services/erection-03.jpg", spec: "Load-tested" },
+      { name: "Alignment & Commissioning", description: "Cold and hot commissioning with full alignment records.", image: "/media/services/erection-04.jpg", spec: "Commissioned" },
     ],
   },
   {
-    id: "fabricated",
-    name: "Fabricated Assemblies",
+    id: "civil",
+    name: "Civil Works",
     blurb:
-      "Cut, welded, bolted and inspected in-house — delivered as a working unit, not a kit of parts.",
+      "Foundations, RCC, flooring and site development that carry heavy plant and stand up to it.",
     products: [
-      {
-        name: "Welded Assemblies",
-        description: "MIG and TIG assemblies built from validated jigs.",
-        image: "/media/products/fabricated-01.jpg",
-        spec: "MIG · TIG",
-      },
-      {
-        name: "Bolted Frames",
-        description: "Site-assembled structures shipped flat and match-marked.",
-        image: "/media/products/fabricated-02.jpg",
-        spec: "Flat-packed",
-      },
-      {
-        name: "Enclosures & Cabinets",
-        description: "Sheet-metal enclosures built to IP rating and layout.",
-        image: "/media/products/fabricated-03.jpg",
-        spec: "IP-rated",
-      },
-      {
-        name: "Jigs & Fixtures",
-        description: "Production tooling built around your component.",
-        image: "/media/products/fabricated-04.jpg",
-        spec: "One-off",
-      },
-      {
-        name: "Ladders & Walkways",
-        description: "Access structures made to plant safety standards.",
-        image: "/media/products/fabricated-05.jpg",
-        spec: "To standard",
-      },
+      { name: "Foundations & Grouting", description: "Machine foundations, anchor bolts and epoxy grouting.", image: "/media/services/civil-01.jpg", spec: "Load-bearing" },
+      { name: "RCC & Concrete Work", description: "Reinforced concrete for structures, pits and pedestals.", image: "/media/services/civil-02.jpg", spec: "M20 – M40" },
+      { name: "Rebar & Reinforcement", description: "Cutting, bending and tying of reinforcement to BBS.", image: "/media/services/civil-03.jpg", spec: "Per BBS" },
+      { name: "Industrial Flooring", description: "Heavy-duty and trimix floors for shop-floor traffic.", image: "/media/services/civil-04.jpg", spec: "Trimix" },
+      { name: "Site Development", description: "Grading, drains and hardstands for plant areas.", image: "/media/services/civil-05.jpg", spec: "Turnkey" },
     ],
   },
   {
-    id: "electrical",
-    name: "Electrical & Conductors",
+    id: "transportation",
+    name: "Transportation & Logistics",
     blurb:
-      "EC-grade aluminium for current-carrying duty, machined and finished for substation and smelter work.",
+      "Heavy haulage, crane hire and in-plant material movement — the right equipment, on time.",
     products: [
-      {
-        name: "Busbars",
-        description: "Flat and shaped busbars in EC-grade aluminium.",
-        image: "/media/products/electrical-01.jpg",
-        spec: "EC-grade",
-      },
-      {
-        name: "Conductor Sections",
-        description: "Extruded conductors for transmission hardware.",
-        image: "/media/products/electrical-02.jpg",
-        spec: "High conductivity",
-      },
-      {
-        name: "Switchgear Components",
-        description: "Machined parts and mounts for switchgear builds.",
-        image: "/media/products/electrical-03.jpg",
-        spec: "Panel-ready",
-      },
-      {
-        name: "Earthing & Bonding",
-        description: "Bonding bars, lugs and earthing connections.",
-        image: "/media/products/electrical-04.jpg",
-        spec: "Certified",
-      },
+      { name: "Heavy Haulage", description: "Trailers and low-beds for oversized plant equipment.", image: "/media/services/transport-01.jpg", spec: "Over-dimension" },
+      { name: "Trailer Transport", description: "Scheduled movement of materials and finished goods.", image: "/media/services/transport-02.jpg", spec: "Fleet" },
+      { name: "Crane & Hydra Hire", description: "Mobile cranes and hydras for lifting and shifting.", image: "/media/services/transport-03.jpg", spec: "On hire" },
+      { name: "In-plant Logistics", description: "Material shifting and yard handling inside the works.", image: "/media/services/transport-04.jpg", spec: "In-plant" },
+    ],
+  },
+  {
+    id: "om",
+    name: "Plant Operations & Maintenance",
+    blurb:
+      "Round-the-clock O&M of foundry, rolling mill and material-handling equipment at BALCO Rolled Product.",
+    products: [
+      { name: "Furnace & Foundry O&M", description: "Melting, casting and furnace operations and upkeep.", image: "/media/services/om-01.jpg", spec: "Foundry" },
+      { name: "Rolling Mill Maintenance", description: "HRM and CRM mechanical and hydraulic maintenance.", image: "/media/services/om-02.jpg", spec: "HRM · CRM" },
+      { name: "Furnace Relining & Repair", description: "Refractory, burners and furnace shutdown work.", image: "/media/services/om-03.jpg", spec: "Shutdown" },
+      { name: "Material Handling O&M", description: "Coil cars, conveyors and forklifts kept running.", image: "/media/services/om-04.jpg", spec: "Availability" },
+      { name: "Crane & EOT Maintenance", description: "Preventive and breakdown maintenance of plant cranes.", image: "/media/services/om-05.jpg", spec: "PM & repair" },
     ],
   },
 ];
 
-/** Flat view of the catalogue — used by the footer link list. */
 export const products: Product[] = productCategories.flatMap((c) => c.products);
 
 /* ------------------------------ industries ------------------------------ */
@@ -292,37 +224,37 @@ export type Industry = {
 export const industries: Industry[] = [
   {
     name: "Power",
-    description: "Busbars, conductors and structural hardware for generation and transmission.",
+    description: "Mechanical, structural and civil works for generation and transmission plants.",
     image: "/media/industries/power.jpg",
     icon: "power",
   },
   {
     name: "Infrastructure",
-    description: "Long-span sections and cladding systems for public works at scale.",
+    description: "Fabrication and heavy erection for large public-works projects.",
     image: "/media/industries/infrastructure.jpg",
     icon: "infrastructure",
   },
   {
     name: "Construction",
-    description: "Façade, glazing and formwork profiles engineered to project spec.",
+    description: "Civil works, structural steel and site development, turnkey.",
     image: "/media/industries/construction.jpg",
     icon: "construction",
   },
   {
     name: "Manufacturing",
-    description: "Jigs, frames and machined parts that keep production lines running.",
+    description: "Plant maintenance and equipment erection that keep production lines running.",
     image: "/media/industries/manufacturing.jpg",
     icon: "manufacturing",
   },
   {
     name: "Automotive",
-    description: "Lightweight structural components for mobility and heavy vehicles.",
+    description: "Fabrication, machining and maintenance support for process plants.",
     image: "/media/industries/automotive.jpg",
     icon: "automotive",
   },
   {
     name: "Electrical",
-    description: "Enclosures, conductors and switchgear components built to standard.",
+    description: "Electrical erection and panel work, executed to standard.",
     image: "/media/industries/electrical.jpg",
     icon: "electrical",
   },
@@ -338,25 +270,25 @@ export type Facility = {
 };
 
 export const facilities: Facility[] = [
-  { src: "/media/infrastructure/facility-01.jpg", caption: "Extrusion Press Line", ratio: "wide" },
-  { src: "/media/infrastructure/facility-02.jpg", caption: "CNC Machining Bay", ratio: "portrait" },
-  { src: "/media/infrastructure/facility-03.jpg", caption: "Melting & Casting", ratio: "landscape" },
-  { src: "/media/infrastructure/facility-04.jpg", caption: "Anodising Plant", ratio: "square" },
-  { src: "/media/infrastructure/facility-05.jpg", caption: "Fabrication Shop", ratio: "landscape" },
-  { src: "/media/infrastructure/facility-06.jpg", caption: "Metrology Lab", ratio: "portrait" },
-  { src: "/media/infrastructure/facility-07.jpg", caption: "Die Correction Cell", ratio: "square" },
-  { src: "/media/infrastructure/facility-08.jpg", caption: "Despatch & Logistics", ratio: "wide" },
-  { src: "/media/infrastructure/facility-09.jpg", caption: "Ageing Ovens", ratio: "landscape" },
-  { src: "/media/infrastructure/facility-10.jpg", caption: "Powder Coating Line", ratio: "portrait" },
+  { src: "/media/infrastructure/facility-01.jpg", caption: "Rolled Product Team, BALCO", ratio: "wide" },
+  { src: "/media/infrastructure/facility-02.jpg", caption: "Machine Shop", ratio: "portrait" },
+  { src: "/media/infrastructure/facility-03.jpg", caption: "Foundry Operations", ratio: "landscape" },
+  { src: "/media/infrastructure/facility-04.jpg", caption: "Fabrication Yard", ratio: "square" },
+  { src: "/media/infrastructure/facility-05.jpg", caption: "Downstream Shop Floor", ratio: "landscape" },
+  { src: "/media/infrastructure/facility-06.jpg", caption: "Measurement & QC", ratio: "portrait" },
+  { src: "/media/infrastructure/facility-07.jpg", caption: "Machining Cell", ratio: "square" },
+  { src: "/media/infrastructure/facility-08.jpg", caption: "Material Handling", ratio: "wide" },
+  { src: "/media/infrastructure/facility-09.jpg", caption: "Furnace Area", ratio: "landscape" },
+  { src: "/media/infrastructure/facility-10.jpg", caption: "Finishing Line", ratio: "portrait" },
 ];
 
 /* --------------------------------- stats -------------------------------- */
 
 export const stats = [
-  { value: 25, suffix: "+", label: "Years of Engineering", detail: "Operating since 1999" },
-  { value: 100, suffix: "+", label: "Products Manufactured", detail: "Standard & bespoke" },
-  { value: 500, suffix: "+", label: "Projects Delivered", detail: "Across six sectors" },
-  { value: 50, suffix: "+", label: "Long-term Clients", detail: "India & export" },
+  { value: 25, suffix: "+", label: "Years in Engineering", detail: "Since 1999" },
+  { value: 250, suffix: "+", label: "Skilled Workforce", detail: "Trades & operators" },
+  { value: 500, suffix: "+", label: "Jobs Delivered", detail: "Mechanical to civil" },
+  { value: 6, suffix: "", label: "Service Verticals", detail: "Under one roof" },
 ] as const;
 
 /* ------------------------------- features ------------------------------- */
@@ -371,37 +303,37 @@ export const features: Feature[] = [
   {
     title: "Engineering Expertise",
     description:
-      "A resident team of design and process engineers who read your drawings before quoting, not after.",
+      "Site and design engineers who plan the job before mobilising, not after.",
     icon: "expertise",
   },
   {
-    title: "Advanced Infrastructure",
+    title: "In-house Fabrication",
     description:
-      "Presses, CNC cells, casting and finishing lines under one roof — nothing critical is sub-contracted.",
+      "Our own fabrication yard, machines and tools — critical work is never sub-let.",
     icon: "infrastructure",
   },
   {
     title: "Quality Assurance",
     description:
-      "Documented inspection at every stage, with full material traceability from billet to despatch.",
+      "Documented checks at every stage, with inspection records kept for every job.",
     icon: "quality",
   },
   {
-    title: "Precision Manufacturing",
+    title: "Safety First",
     description:
-      "Tolerances held to ±0.05 mm and verified on calibrated metrology equipment before release.",
+      "Safety and quality is our first priority — the standard we hold on every site.",
     icon: "precision",
   },
   {
     title: "Reliable Delivery",
     description:
-      "Committed schedules backed by capacity planning, buffer stock and our own despatch fleet.",
+      "Committed schedules backed by planning, manpower and our own transport fleet.",
     icon: "delivery",
   },
   {
-    title: "Custom Solutions",
+    title: "Turnkey Execution",
     description:
-      "Die development, prototyping and short-run production for requirements no catalogue covers.",
+      "Single-point responsibility from foundation to erection and commissioning.",
     icon: "custom",
   },
 ];
@@ -411,18 +343,18 @@ export const features: Feature[] = [
 export const qualityPoints = [
   {
     title: "Certified Processes",
-    description: "Quality management aligned to ISO 9001 discipline across every production cell.",
+    description: "Work planned and executed to ISO-aligned quality and safety systems.",
   },
   {
     title: "Full Traceability",
-    description: "Heat numbers, test certificates and inspection records retained for every batch.",
+    description: "Inspection records, test certificates and job reports retained for every job.",
   },
   {
-    title: "Responsible Aluminium",
-    description: "Closed-loop scrap recovery returns process metal to the furnace, not to landfill.",
+    title: "Safety-First Culture",
+    description: "Trained crews, PPE discipline and toolbox talks on every shift.",
   },
   {
-    title: "Energy Stewardship",
-    description: "Recovered furnace heat and metered load management cut energy drawn per tonne.",
+    title: "Skilled Manpower",
+    description: "Certified welders, riggers, fitters and operators on our own rolls.",
   },
 ] as const;

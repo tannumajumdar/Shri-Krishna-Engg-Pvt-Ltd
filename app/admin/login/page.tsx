@@ -42,14 +42,14 @@ export default function AdminLogin() {
         <div className="absolute inset-0 bg-[#0C1936]/30" />
 
         <div className="relative flex h-full flex-col justify-between p-12">
-          <img src="/media/logo-light.svg" alt="Shri Krishna Engineering" className="h-11 w-auto" />
+          <img src="/media/logo-light.png" alt="Shri Krishna Engineering" className="h-11 w-auto" />
           <div className="max-w-md">
             <span className="mb-5 inline-flex items-center gap-2.5 text-[11px] font-semibold uppercase tracking-[0.22em] text-white/50">
               <span className="h-px w-8 bg-[#5CB531]" />
               Content Management
             </span>
             <h2 className="text-4xl font-semibold leading-[1.1] text-white">
-              Engineering Excellence in Aluminium
+              Mechanical · Fabrication · Erection
             </h2>
             <p className="mt-5 text-sm leading-relaxed text-white/60">
               Manage products, media, enquiries and site content for the Shri
@@ -78,7 +78,7 @@ export default function AdminLogin() {
         >
           {/* logo lockup on mobile, where the left panel is hidden */}
           <img
-            src="/media/logo.svg"
+            src="/media/logo.png"
             alt="Shri Krishna Engineering"
             className="mb-6 h-9 w-auto lg:hidden"
           />
