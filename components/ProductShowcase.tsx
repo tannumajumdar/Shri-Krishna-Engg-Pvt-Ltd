@@ -1,8 +1,10 @@
 "use client";
 
+import { useState } from "react";
 import { MessageCircle } from "lucide-react";
 import { ImageMarquee, type MarqueeItem } from "@/components/ImageMarquee";
 import { VideoBackground } from "@/components/VideoBackground";
+import { ServiceEnquiryModal } from "@/components/ServiceEnquiryModal";
 import { MediaImage } from "@/components/ui/MediaImage";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Button } from "@/components/ui/Button";
@@ -11,11 +13,12 @@ import {
   contact,
   media,
   productCategories,
-  productEnquiryMessage,
-  whatsappLink,
   type Product,
   type ProductCategory,
 } from "@/lib/site";
+
+/** The service a visitor is enquiring about, carried up to the modal. */
+type Enquiring = { product: Product; categoryName: string };
 
 export function ProductShowcase({
   categories,
@@ -29,6 +32,9 @@ export function ProductShowcase({
 } = {}) {
   const cats = categories ?? productCategories;
   const waNumber = whatsapp || contact.whatsapp;
+
+  // Lifted here so the modal overlays the whole section, not a scrolling card.
+  const [enquiring, setEnquiring] = useState<Enquiring | null>(null);
   return (
     <section
       id="products"
@@ -82,7 +88,9 @@ export function ProductShowcase({
               key={category.id}
               category={category}
               index={i}
-              whatsapp={waNumber}
+              onEnquire={(product) =>
+                setEnquiring({ product, categoryName: category.name })
+              }
             />
           ))}
         </div>
@@ -97,6 +105,16 @@ export function ProductShowcase({
           </Reveal>
         </div>
       </div>
+
+      {/* Enquiry form — opens on "Enquire", saves the lead only on submit. */}
+      {enquiring && (
+        <ServiceEnquiryModal
+          product={enquiring.product}
+          categoryName={enquiring.categoryName}
+          whatsapp={waNumber}
+          onClose={() => setEnquiring(null)}
+        />
+      )}
     </section>
   );
 }
@@ -106,11 +124,11 @@ export function ProductShowcase({
 function CategoryRow({
   category,
   index,
-  whatsapp,
+  onEnquire,
 }: {
   category: ProductCategory;
   index: number;
-  whatsapp: string;
+  onEnquire: (product: Product) => void;
 }) {
   const items: MarqueeItem[] = category.products.map((p) => ({
     src: p.image,
@@ -153,8 +171,7 @@ function CategoryRow({
         renderItem={(_, i) => (
           <ProductCard
             product={category.products[i]}
-            categoryName={category.name}
-            whatsapp={whatsapp}
+            onEnquire={() => onEnquire(category.products[i])}
           />
         )}
       />
@@ -164,49 +181,12 @@ function CategoryRow({
 
 function ProductCard({
   product,
-  categoryName,
-  whatsapp,
+  onEnquire,
 }: {
   product: Product;
-  categoryName: string;
-  whatsapp: string;
+  /** Opens the enquiry form for this service. No lead is created on click. */
+  onEnquire: () => void;
 }) {
-  const enquireHref = whatsappLink(
-    whatsapp,
-    productEnquiryMessage({
-      name: product.name,
-      category: categoryName,
-      spec: product.spec,
-    }),
-  );
-
-  /**
-   * Log the lead so it appears in the admin Enquiries inbox. WhatsApp messages
-   * never reach our server, so this records the *intent* — who is enquiring
-   * about which product — while the actual chat continues on WhatsApp.
-   * Fire-and-forget: it must not block or delay the link opening.
-   */
-  function logLead() {
-    const body = JSON.stringify({
-      name: "WhatsApp lead",
-      product: product.name,
-      subject: `${categoryName} - ${product.spec}`,
-      source: "WHATSAPP",
-      message: `Website visitor tapped "Enquire on WhatsApp" for "${product.name}" (${categoryName}, spec: ${product.spec}). The conversation continues on WhatsApp.`,
-    });
-    try {
-      // keepalive lets the request finish even as the tab navigates to WhatsApp.
-      fetch("/api/enquiries", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body,
-        keepalive: true,
-      }).catch(() => {});
-    } catch {
-      /* never let logging break the enquiry */
-    }
-  }
-
   return (
     <article className="group/card flex h-full w-[248px] flex-col overflow-hidden rounded-xl border border-white/10 bg-navy-900 transition-colors duration-500 ease-brand hover:border-white/25 sm:w-[286px] lg:w-[320px]">
       <div className="relative flex-1 overflow-hidden">
@@ -235,18 +215,16 @@ function ProductCard({
           {product.description}
         </p>
 
-        {/* Enquire on WhatsApp — carries the product details into the chat.
-            No price shown; pricing is handled over the enquiry. */}
-        <a
-          href={enquireHref}
-          target="_blank"
-          rel="noopener noreferrer"
-          onClick={logLead}
-          className="mt-4 flex items-center justify-center gap-2 rounded-lg bg-[#25D366] py-2.5 text-[13px] font-semibold text-[#0C1936] transition-transform duration-300 ease-brand hover:scale-[1.02] hover:bg-[#20c65c]"
+        {/* Opens the enquiry form. The lead is created only when the visitor
+            submits it — an accidental tap here costs nothing. */}
+        <button
+          type="button"
+          onClick={onEnquire}
+          className="mt-4 flex w-full items-center justify-center gap-2 rounded-lg bg-[#25D366] py-2.5 text-[13px] font-semibold text-[#0C1936] transition-transform duration-300 ease-brand hover:scale-[1.02] hover:bg-[#20c65c]"
         >
           <MessageCircle className="h-4 w-4" strokeWidth={2.25} aria-hidden="true" />
           Enquire on WhatsApp
-        </a>
+        </button>
       </div>
     </article>
   );

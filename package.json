@@ -15,7 +15,8 @@
     "postinstall": "prisma generate",
     "migrate:deploy": "prisma migrate deploy",
     "db:seed:prod": "tsx prisma/seed.ts",
-    "start:prod": "prisma migrate deploy && next start"
+    "start:prod": "prisma migrate deploy && next start",
+    "build:cpanel": "next build && node scripts/assemble-standalone.mjs"
   },
   "dependencies": {
     "@prisma/adapter-mariadb": "^7.9.1",
