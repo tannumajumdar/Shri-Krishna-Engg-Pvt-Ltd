@@ -42,7 +42,7 @@ export default function AdminLogin() {
         <div className="absolute inset-0 bg-[#0C1936]/30" />
 
         <div className="relative flex h-full flex-col justify-between p-12">
-          <img src="/media/logo-light.png" alt="Shri Krishna Engineering" className="h-11 w-auto" />
+          <img src="/media/logo-light.png" alt="Shree Krishna Engineering Balco" className="h-11 w-auto" />
           <div className="max-w-md">
             <span className="mb-5 inline-flex items-center gap-2.5 text-[11px] font-semibold uppercase tracking-[0.22em] text-white/50">
               <span className="h-px w-8 bg-[#5CB531]" />
@@ -52,12 +52,12 @@ export default function AdminLogin() {
               Mechanical · Fabrication · Erection
             </h2>
             <p className="mt-5 text-sm leading-relaxed text-white/60">
-              Manage products, media, enquiries and site content for the Shri
-              Krishna Engineering website — all from one place.
+              Manage products, media, enquiries and site content for the Shree
+              Krishna Engineering Balco website — all from one place.
             </p>
           </div>
           <p className="text-xs text-white/40">
-            © {new Date().getFullYear()} Shri Krishna Engineering Pvt. Ltd. · BALCO
+            © {new Date().getFullYear()} Shree Krishna Engineering Balco · BALCO
           </p>
         </div>
       </div>
@@ -79,7 +79,7 @@ export default function AdminLogin() {
           {/* logo lockup on mobile, where the left panel is hidden */}
           <img
             src="/media/logo.png"
-            alt="Shri Krishna Engineering"
+            alt="Shree Krishna Engineering Balco"
             className="mb-6 h-9 w-auto lg:hidden"
           />
 

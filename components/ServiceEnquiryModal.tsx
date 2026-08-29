@@ -52,7 +52,7 @@ export function ServiceEnquiryModal({
 
   function buildMessage() {
     const lines = [
-      "Hello Shri Krishna Engineering,",
+      "Hello Shree Krishna Engineering Balco,",
       "",
       "I would like to enquire about:",
       `• Service: ${product.name}`,

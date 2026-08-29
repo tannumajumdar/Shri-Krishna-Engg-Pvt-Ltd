@@ -7,3 +7,7 @@ export function wrap(min: number, max: number, value: number) {
   const range = max - min;
   return ((((value - min) % range) + range) % range) + min;
 }
+
+export function slugify(str: string) {
+  return str.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+}

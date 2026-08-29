@@ -5,17 +5,17 @@
  * ------------------------------------------------------------------------ */
 
 export const company = {
-  name: "Shri Krishna Engineering",
-  legalName: "Shri Krishna Engineering Pvt. Ltd.",
+  name: "Shree Krishna Engineering",
+  legalName: "Shree Krishna Engineering Balco",
   short: "SKE",
   unit: "BALCO",
-  tagline: "Mechanical · Fabrication · Erection · Civil · Transportation.",
-  established: 1999,
+  tagline: "Engineering Excellence Since 2006 — Mechanical · Fabrication · Erection · Civil · Transportation.",
+  established: 2006,
 } as const;
 
 export const contact = {
   address: [
-    "Shri Krishna Engineering",
+    "Shree Krishna Engineering Balco",
     "Near 1 MVA Sub Station, Sector-5",
     "PO Balco Township, Korba, Chhattisgarh 495684",
   ],
@@ -47,7 +47,7 @@ export function productEnquiryMessage(p: {
   spec?: string;
 }): string {
   const lines = [
-    "Hello Shri Krishna Engineering,",
+    "Hello Shree Krishna Engineering Balco,",
     "",
     "I would like to enquire about this service:",
     "",
@@ -77,7 +77,7 @@ export const socials = [
 export const navLinks = [
   { label: "Home", href: "#home" },
   { label: "About", href: "#about" },
-  { label: "Services", href: "#products" },
+  { label: "Products", href: "#products" },
   { label: "Industries", href: "#industries" },
   { label: "Infrastructure", href: "#infrastructure" },
   { label: "Quality", href: "#quality" },
@@ -126,7 +126,7 @@ export type ProductCategory = {
 };
 
 /**
- * Our services, grouped by trade — the six things Shri Krishna Engineering
+ * Our services, grouped by trade — the six things Shree Krishna Engineering
  * actually does. The data model is still called `productCategories` so the API
  * and admin stay unchanged; the site labels it "Services". Each group becomes
  * its own marquee row, so keep at least four items in each.
@@ -212,6 +212,14 @@ export const productCategories: ProductCategory[] = [
 
 export const products: Product[] = productCategories.flatMap((c) => c.products);
 
+/** Generate a URL-friendly slug from a product/category name. */
+export function slugify(text: string): string {
+  return text
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/(^-|-$)/g, "");
+}
+
 /* ------------------------------ industries ------------------------------ */
 
 export type Industry = {
@@ -285,9 +293,9 @@ export const facilities: Facility[] = [
 /* --------------------------------- stats -------------------------------- */
 
 export const stats = [
-  { value: 25, suffix: "+", label: "Years in Engineering", detail: "Since 1999" },
+  { value: 19, suffix: "+", label: "Years of Excellence", detail: "Established in 2006" },
   { value: 250, suffix: "+", label: "Skilled Workforce", detail: "Trades & operators" },
-  { value: 500, suffix: "+", label: "Jobs Delivered", detail: "Mechanical to civil" },
+  { value: 500, suffix: "+", label: "Projects Delivered", detail: "Mechanical to civil" },
   { value: 6, suffix: "", label: "Service Verticals", detail: "Under one roof" },
 ] as const;
 
@@ -301,40 +309,40 @@ export type Feature = {
 
 export const features: Feature[] = [
   {
-    title: "Engineering Expertise",
+    title: "Established Experience Since 2006",
     description:
-      "Site and design engineers who plan the job before mobilising, not after.",
+      "Nearly two decades of hands-on engineering at BALCO — delivering mechanical, fabrication, erection, civil and transportation services with proven reliability.",
     icon: "expertise",
   },
   {
-    title: "In-house Fabrication",
+    title: "Consistent Product Quality",
     description:
-      "Our own fabrication yard, machines and tools — critical work is never sub-let.",
-    icon: "infrastructure",
-  },
-  {
-    title: "Quality Assurance",
-    description:
-      "Documented checks at every stage, with inspection records kept for every job.",
+      "Every job follows documented quality plans with stage-wise inspections, material traceability and certified test reports retained for full accountability.",
     icon: "quality",
   },
   {
-    title: "Safety First",
+    title: "Reliable Engineering Solutions",
     description:
-      "Safety and quality is our first priority — the standard we hold on every site.",
+      "From concept to commissioning, our engineering team plans each project meticulously — ensuring solutions that perform under the most demanding industrial conditions.",
     icon: "precision",
   },
   {
-    title: "Reliable Delivery",
+    title: "In-house Manufacturing",
     description:
-      "Committed schedules backed by planning, manpower and our own transport fleet.",
-    icon: "delivery",
+      "Our own fabrication yard, welding bays, machines and tooling mean critical work never leaves our control — faster turnaround, tighter quality.",
+    icon: "infrastructure",
   },
   {
-    title: "Turnkey Execution",
+    title: "Customer-Focused Service",
     description:
-      "Single-point responsibility from foundation to erection and commissioning.",
+      "We work as an extension of our clients' teams — understanding their processes, anticipating needs and adapting our approach to their schedules and priorities.",
     icon: "custom",
+  },
+  {
+    title: "Timely Project Delivery",
+    description:
+      "Committed schedules backed by manpower planning, our own transport fleet and single-point project management that keeps every milestone on track.",
+    icon: "delivery",
   },
 ];
 
@@ -343,18 +351,18 @@ export const features: Feature[] = [
 export const qualityPoints = [
   {
     title: "Certified Processes",
-    description: "Work planned and executed to ISO-aligned quality and safety systems.",
+    description: "Work planned and executed to ISO-aligned quality and safety systems, with documented procedures for every trade.",
   },
   {
     title: "Full Traceability",
-    description: "Inspection records, test certificates and job reports retained for every job.",
+    description: "Inspection records, material test certificates and job completion reports retained for every project, ensuring complete accountability.",
   },
   {
     title: "Safety-First Culture",
-    description: "Trained crews, PPE discipline and toolbox talks on every shift.",
+    description: "Trained crews, mandatory PPE compliance, daily toolbox talks and regular safety audits on every shift and every site.",
   },
   {
     title: "Skilled Manpower",
-    description: "Certified welders, riggers, fitters and operators on our own rolls.",
+    description: "Certified welders, qualified riggers, experienced fitters and trained crane operators — all on our own rolls, not sub-contracted.",
   },
 ] as const;

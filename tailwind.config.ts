@@ -65,6 +65,21 @@ const config: Config = {
           500: "#8CC63F",
           600: "#6E9F2B",
         },
+        /* Full brand-green scale — derived from the logo K (#8CC63F).
+           Used on primary buttons, CTA highlights and keyword accents
+           so the entire site speaks the same green. */
+        brand: {
+          50:  "#F4FBE8",
+          100: "#E4F5C8",
+          200: "#CBE89D",
+          300: "#AED86E",
+          400: "#9ED14F",
+          500: "#8CC63F",
+          600: "#6E9F2B",
+          700: "#5A8322",
+          800: "#486A1C",
+          900: "#3A5617",
+        },
       },
       fontFamily: {
         sans: ["var(--font-body)", "system-ui", "sans-serif"],

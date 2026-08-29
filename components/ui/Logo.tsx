@@ -65,7 +65,7 @@ function LogoArtwork({
     <img
       ref={imgRef}
       src={src}
-      alt="Shri Krishna Engineering"
+      alt="Shree Krishna Engineering Balco"
       onError={() => setFailed(true)}
       className={cn("h-9 w-auto lg:h-10", className)}
     />
@@ -117,7 +117,7 @@ function LogoFallback({
           onDark ? "text-white" : "text-navy-800 dark:text-white",
         )}
       >
-        Shri Krishna Engineering
+        Shree Krishna Engineering Balco
       </span>
     </span>
   );

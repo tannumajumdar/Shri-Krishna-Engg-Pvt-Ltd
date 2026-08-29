@@ -36,7 +36,8 @@ export function WhyChooseUs({ items }: { items?: Feature[] } = {}) {
         <SectionHeading
           align="center"
           eyebrow="Why Choose Us"
-          title="Six reasons engineers keep sending us the difficult drawings."
+          title="Built on experience, driven by engineering excellence."
+          intro="Since 2006, we have delivered reliable mechanical, fabrication and erection services that keep India's heavy industry running."
         />
 
         <RevealGroup className="mt-16 grid gap-px overflow-hidden rounded-2xl border border-hairline bg-hairline sm:grid-cols-2 lg:mt-20 lg:grid-cols-3">

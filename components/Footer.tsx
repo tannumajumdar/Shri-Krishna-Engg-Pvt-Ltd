@@ -8,8 +8,10 @@ import {
   contact,
   navLinks,
   products,
+  productCategories,
   socials,
 } from "@/lib/site";
+import { slugify } from "@/lib/utils";
 
 type FooterContact = {
   address: readonly string[];
@@ -47,9 +49,9 @@ export function Footer({
             <Logo onDark />
 
             <p className="mt-7 max-w-xs text-pretty text-[13.5px] leading-relaxed text-white/50">
-              Mechanical, fabrication, erection, civil and transportation
-              services for India’s heavy industry — executed by our own crews
-              from our base at BALCO, Korba.
+              Established in 2006, delivering mechanical, fabrication, erection,
+              civil and transportation services for India&apos;s heavy industry —
+              executed by our own crews from our base at BALCO, Korba.
             </p>
 
             <ul className="mt-8 flex items-center gap-2.5">
@@ -87,9 +89,9 @@ export function Footer({
               Services
             </h2>
             <ul className="mt-6 space-y-3">
-              {products.slice(0, 6).map((product) => (
-                <li key={product.name}>
-                  <FooterLink href="#products">{product.name}</FooterLink>
+              {productCategories.map((cat) => (
+                <li key={cat.id}>
+                  <FooterLink href={`/products#${cat.id}`}>{cat.name}</FooterLink>
                 </li>
               ))}
             </ul>
@@ -180,7 +182,7 @@ export function Footer({
         aria-hidden="true"
       >
         <p className="mask-b translate-y-[18%] whitespace-nowrap text-center font-display text-[clamp(1.5rem,6.1vw,7.5rem)] font-semibold leading-none tracking-tightest text-white/[0.045]">
-          SHRI KRISHNA ENGINEERING
+          SHREE KRISHNA ENGINEERING BALCO
         </p>
       </div>
     </footer>

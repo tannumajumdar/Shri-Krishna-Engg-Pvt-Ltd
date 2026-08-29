@@ -8,7 +8,7 @@ import { company, media } from "@/lib/site";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
-const HEADLINE = ["Engineering", "Fabrication", "& Erection"];
+const HEADLINE = ["Precision", "Engineering &", "Manufacturing"];
 
 const MARKERS = [
   { k: "Est.", v: String(company.established) },
@@ -64,7 +64,7 @@ export function Hero({
           transition={{ delay: 0.25, duration: 0.8, ease: EASE }}
           className="eyebrow text-white/65"
         >
-          {company.legalName} · {company.unit}
+          {company.legalName} · Established in {company.established}
         </motion.p>
 
         <h1 className="mt-7 max-w-5xl font-display text-display-lg font-light text-white">
@@ -79,7 +79,9 @@ export function Hero({
                 animate={{ y: "0%" }}
                 transition={{ delay: 0.35 + i * 0.11, duration: 1.05, ease: EASE }}
               >
-                {i === 2 ? (
+                {i === 0 ? (
+                  <span className="text-brand-400">{line}</span>
+                ) : i === 2 ? (
                   <span className="metal-text font-normal">{line}</span>
                 ) : (
                   line
@@ -95,7 +97,9 @@ export function Hero({
           transition={{ delay: 0.85, duration: 0.9, ease: EASE }}
           className="mt-8 max-w-xl text-pretty text-base leading-relaxed text-white/70 sm:text-lg"
         >
-          {company.tagline}
+          Delivering reliable mechanical, fabrication, erection, civil and transportation
+          solutions for India&apos;s heavy industry — with nearly two decades of proven
+          expertise at BALCO, Korba.
         </motion.p>
 
         <motion.div
@@ -105,7 +109,7 @@ export function Hero({
           className="mt-11 flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-4"
         >
           <Button href="#products" variant="light" size="lg" withArrow>
-            Our Services
+            Explore Products
           </Button>
           <Button href="#contact" variant="outline" size="lg">
             Contact Us

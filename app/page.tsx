@@ -9,6 +9,7 @@ import { WhyChooseUs } from "@/components/WhyChooseUs";
 import { QualitySection } from "@/components/QualitySection";
 import { CTA } from "@/components/CTA";
 import { Footer } from "@/components/Footer";
+import { WhatsAppFloat } from "@/components/WhatsAppFloat";
 import { media as staticMedia } from "@/lib/site";
 import {
   getSectionVideo,
@@ -81,6 +82,7 @@ export default async function Page() {
         <CTA video={ctaVideo} />
       </main>
       <Footer contact={contact} socials={socials} />
+      <WhatsAppFloat />
     </>
   );
 }

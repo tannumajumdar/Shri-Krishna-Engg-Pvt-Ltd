@@ -22,7 +22,7 @@ export const metadata: Metadata = {
     template: `%s | ${company.name}`,
   },
   description:
-    "Shri Krishna Engineering, BALCO Korba — mechanical works, fabrication, erection, civil works, transportation and round-the-clock plant operations & maintenance for heavy industry.",
+    "Shree Krishna Engineering Balco, BALCO Korba — mechanical works, fabrication, erection, civil works, transportation and round-the-clock plant operations & maintenance for heavy industry.",
   keywords: [
     "mechanical works",
     "industrial fabrication",
@@ -31,7 +31,7 @@ export const metadata: Metadata = {
     "plant maintenance",
     "BALCO",
     "Korba",
-    "Shri Krishna Engineering",
+    "Shree Krishna Engineering Balco",
   ],
   openGraph: {
     title: `${company.legalName} — Mechanical, Fabrication & Erection`,

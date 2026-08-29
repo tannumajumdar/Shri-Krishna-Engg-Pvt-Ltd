@@ -7,7 +7,7 @@ import {
   useMotionValueEvent,
   useScroll,
 } from "framer-motion";
-import { Menu, X, Phone, LogIn } from "lucide-react";
+import { Menu, X, LogIn } from "lucide-react";
 import { Logo } from "@/components/ui/Logo";
 import { Button } from "@/components/ui/Button";
 import { ThemeToggle } from "@/components/ui/ThemeToggle";
@@ -123,23 +123,6 @@ export function Navbar() {
 
           {/* ------------------------------ actions ------------------------ */}
           <div className="flex items-center gap-2 sm:gap-3">
-            <a
-              href={contact.phoneHref}
-              className={cn(
-                "hidden items-center gap-2 text-[13px] font-medium transition-colors duration-300 xl:flex",
-                onDark
-                  ? "text-white/75 hover:text-white"
-                  : "text-ink-faint hover:text-ink",
-              )}
-            >
-              <Phone
-                className="h-3.5 w-3.5"
-                strokeWidth={1.75}
-                aria-hidden="true"
-              />
-              {contact.phone}
-            </a>
-
             <ThemeToggle onDark={onDark} className="h-10 w-10" />
 
             {/* Admin sign-in. Discreet — a text link, not a primary button —

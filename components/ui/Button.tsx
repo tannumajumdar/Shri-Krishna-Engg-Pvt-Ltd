@@ -13,14 +13,14 @@ const base =
   "active:scale-[0.985] disabled:pointer-events-none disabled:opacity-50";
 
 const variants: Record<Variant, string> = {
-  /* Primary action — the brand blue, lifting to the logo tone on hover */
+  /* Primary action — the brand green, lifting to a brighter tone on hover */
   solid:
-    "bg-navy-700 text-white shadow-lift hover:bg-navy-600 hover:shadow-lift-lg",
+    "bg-brand-500 text-white shadow-lift hover:bg-brand-600 hover:shadow-lift-lg",
   /* On dark imagery: hairline metal outline that fills on hover */
   outline:
-    "border border-white/30 text-white backdrop-blur-sm hover:border-white/70 hover:bg-white/10",
-  /* On dark imagery: solid white pill */
-  light: "bg-white text-navy-900 shadow-lift hover:bg-alu-100 hover:shadow-lift-lg",
+    "border border-white/30 text-white backdrop-blur-sm hover:border-brand-400/70 hover:bg-brand-500/15",
+  /* On dark imagery: solid green pill */
+  light: "bg-brand-400 text-navy-950 shadow-lift hover:bg-brand-300 hover:shadow-lift-lg",
   ghost: "text-ink hover:bg-surface-2",
 };
 
