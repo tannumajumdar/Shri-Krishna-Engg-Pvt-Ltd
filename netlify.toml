@@ -8,34 +8,13 @@
 [[plugins]]
   package = "@netlify/plugin-nextjs"
 
-# Exclude heavy static assets and unused Prisma 7 WASM database compilers (cockroachdb, postgresql, sqlite, sqlserver).
-# This application only uses MySQL/MariaDB. Excluding the unused 51MB+ of other database compilers shrinks the Netlify function zip from >90MB down to <5MB.
+# Exclude heavy static media assets from being zipped inside Netlify serverless functions.
+# Public assets are served directly by Netlify's CDN.
+# All Prisma dependencies are handled automatically by Next.js and Netlify dependency tracing.
 [functions]
-  node_bundler = "esbuild"
   included_files = [
     "!public/media/**",
-    "!public/uploads/**",
-    "!node_modules/@prisma/client/runtime/*.cockroachdb.*",
-    "!node_modules/@prisma/client/runtime/*.postgresql.*",
-    "!node_modules/@prisma/client/runtime/*.sqlite.*",
-    "!node_modules/@prisma/client/runtime/*.sqlserver.*",
-    "!node_modules/@prisma/client/runtime/*.map",
-    "!node_modules/@prisma/engines/**",
-    "!node_modules/prisma/**"
-  ]
-
-[functions."___netlify-server-handler"]
-  node_bundler = "esbuild"
-  included_files = [
-    "!public/media/**",
-    "!public/uploads/**",
-    "!node_modules/@prisma/client/runtime/*.cockroachdb.*",
-    "!node_modules/@prisma/client/runtime/*.postgresql.*",
-    "!node_modules/@prisma/client/runtime/*.sqlite.*",
-    "!node_modules/@prisma/client/runtime/*.sqlserver.*",
-    "!node_modules/@prisma/client/runtime/*.map",
-    "!node_modules/@prisma/engines/**",
-    "!node_modules/prisma/**"
+    "!public/uploads/**"
   ]
 
 # Cache headers for media files served by Netlify CDN
