@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "prisma generate && next build",
     "start": "next start",
     "lint": "next lint",
     "db:generate": "prisma generate",
@@ -12,11 +12,11 @@
     "db:push": "prisma db push",
     "db:seed": "tsx prisma/seed.ts",
     "db:studio": "prisma studio",
-    "postinstall": "prisma generate",
+    "postinstall": "prisma generate || true",
     "migrate:deploy": "prisma migrate deploy",
     "db:seed:prod": "tsx prisma/seed.ts",
     "start:prod": "prisma migrate deploy && next start",
-    "build:cpanel": "npx cross-env NEXT_OUTPUT=standalone next build && node scripts/assemble-standalone.mjs"
+    "build:cpanel": "npx cross-env NEXT_OUTPUT=standalone prisma generate && next build && node scripts/assemble-standalone.mjs"
   },
   "dependencies": {
     "@prisma/adapter-mariadb": "^7.9.1",
