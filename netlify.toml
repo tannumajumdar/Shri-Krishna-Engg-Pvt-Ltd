@@ -7,18 +7,3 @@
 
 [[plugins]]
   package = "@netlify/plugin-nextjs"
-
-# Exclude heavy static media assets from being zipped inside Netlify serverless functions.
-# Public assets are served directly by Netlify's CDN.
-# All Prisma dependencies are handled automatically by Next.js and Netlify dependency tracing.
-[functions]
-  included_files = [
-    "!public/media/**",
-    "!public/uploads/**"
-  ]
-
-# Cache headers for media files served by Netlify CDN
-[[headers]]
-  for = "/media/*"
-  [headers.values]
-    Cache-Control = "public, max-age=31536000, immutable"
