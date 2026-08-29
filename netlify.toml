@@ -2,8 +2,30 @@
   command = "npm run build"
   publish = ".next"
 
+[build.environment]
+  NODE_VERSION = "20.x"
+
 [[plugins]]
   package = "@netlify/plugin-nextjs"
 
+# Exclude heavy video and media assets from being zipped inside Netlify serverless functions.
+# Public assets are served directly by Netlify's CDN and must NOT be bundled into the function handler zip (>50MB).
 [functions]
   node_bundler = "esbuild"
+  included_files = [
+    "!public/media/**",
+    "!public/uploads/**"
+  ]
+
+[functions."___netlify-server-handler"]
+  node_bundler = "esbuild"
+  included_files = [
+    "!public/media/**",
+    "!public/uploads/**"
+  ]
+
+# Cache headers for media files on Netlify CDN
+[[headers]]
+  for = "/media/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
