@@ -7,6 +7,7 @@ const nextConfig = {
 
   serverExternalPackages: [
     "mysql2",
+    "mariadb",
     "@prisma/adapter-mariadb",
   ],
 };

@@ -15,24 +15,48 @@ import { PrismaMariaDb } from "@prisma/adapter-mariadb";
  * open a new connection pool on every edit.
  */
 
-function makeAdapter() {
+/**
+ * Turn DATABASE_URL into the discrete fields the adapter wants. An empty
+ * password (local root) is legitimate, so treat "" as a real value.
+ *
+ * Shared hosts (cPanel/CloudLinux) often expose MySQL only over a unix socket,
+ * with TCP on 127.0.0.1:3306 unreachable — which surfaces as a connection-pool
+ * timeout rather than a refusal, since nothing ever answers. Passing
+ * `?socket=/path/to/mysql.sock` in DATABASE_URL (or setting MYSQL_SOCKET_PATH)
+ * switches the driver to that socket; host/port are then irrelevant.
+ */
+export function connectionConfig() {
   const url = process.env.DATABASE_URL;
   if (!url) {
     throw new Error("DATABASE_URL is not set — see .env.example");
   }
 
-  // The adapter wants discrete fields, not a URL string. An empty password
-  // (local root) is legitimate, so treat "" as a real value.
   const parsed = new URL(url);
-  return new PrismaMariaDb({
-    host: parsed.hostname,
-    port: parsed.port ? Number(parsed.port) : 3306,
+  const socketPath =
+    parsed.searchParams.get("socket") ??
+    parsed.searchParams.get("socketPath") ??
+    process.env.MYSQL_SOCKET_PATH ??
+    null;
+
+  const common = {
     user: decodeURIComponent(parsed.username),
     password: decodeURIComponent(parsed.password),
     database: parsed.pathname.replace(/^\//, ""),
     connectionLimit: 5,
     allowPublicKeyRetrieval: true,
-  });
+  };
+
+  return socketPath
+    ? { ...common, socketPath }
+    : {
+        ...common,
+        host: parsed.hostname,
+        port: parsed.port ? Number(parsed.port) : 3306,
+      };
+}
+
+function makeAdapter() {
+  return new PrismaMariaDb(connectionConfig());
 }
 
 function createClient() {
