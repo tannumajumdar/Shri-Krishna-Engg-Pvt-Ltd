@@ -16,3 +16,6 @@ next-env.d.ts
 # Uploaded media (served from /public/uploads); keep the folder, ignore files
 /public/uploads/*
 !/public/uploads/.gitkeep
+
+# Deploy bundle (built artifact, never commit)
+ske-cpanel-deploy.zip
