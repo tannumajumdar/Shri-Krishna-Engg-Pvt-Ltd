@@ -42,7 +42,13 @@ export function connectionConfig() {
     user: decodeURIComponent(parsed.username),
     password: decodeURIComponent(parsed.password),
     database: parsed.pathname.replace(/^\//, ""),
-    connectionLimit: 5,
+    // Shared cPanel accounts cap concurrent connections per MySQL user
+    // (max_user_connections, often 5-10). A pool of 5 leaves no headroom and
+    // the account starts erroring with ER_TOO_MANY_USER_CONNECTIONS; 2 is
+    // ample for this site's traffic. Override with DB_POOL_LIMIT if needed.
+    connectionLimit: Number(process.env.DB_POOL_LIMIT ?? 2),
+    // Do not sit on idle connections that count against the same cap.
+    idleTimeout: 30,
     allowPublicKeyRetrieval: true,
   };
 
