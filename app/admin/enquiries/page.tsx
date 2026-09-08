@@ -2,7 +2,7 @@
 
 import { Fragment, useState } from "react";
 import { Trash2, MessageCircle, Globe } from "lucide-react";
-import { PageHeader, Notice, useResource } from "../ui";
+import { PageHeader, PageBody, Notice, useResource } from "../ui";
 import { api, ApiClientError } from "@/lib/admin/api-client";
 
 type Enquiry = {
@@ -52,7 +52,7 @@ export default function EnquiriesPage() {
   return (
     <>
       <PageHeader title="Enquiries" subtitle="Messages submitted through the contact form" />
-      <div className="p-8">
+      <PageBody>
         {error && <Notice kind="error">{error}</Notice>}
         {msg && <Notice kind="error">{msg}</Notice>}
 
@@ -149,7 +149,7 @@ export default function EnquiriesPage() {
             </tbody>
           </table>
         </div>
-      </div>
+      </PageBody>
     </>
   );
 }

@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { UserCog } from "lucide-react";
-import { PageHeader, Button, Field, Notice, inputClass } from "../ui";
+import { PageHeader, PageBody, Button, Field, Notice, inputClass } from "../ui";
 import { api, ApiClientError } from "@/lib/admin/api-client";
 
 type Me = { id: number; name: string; email: string; role: string; createdAt: string };
@@ -66,7 +66,7 @@ export default function SettingsPage() {
   return (
     <>
       <PageHeader title="Settings" subtitle="Your admin profile and account" />
-      <div className="max-w-2xl p-8">
+      <PageBody width="narrow">
         {/* -------------------------- profile ----------------------------- */}
         <form
           onSubmit={save}
@@ -161,7 +161,7 @@ export default function SettingsPage() {
             <code className="rounded bg-slate-100 px-1">/public/uploads</code>.
           </p>
         </div>
-      </div>
+      </PageBody>
     </>
   );
 }

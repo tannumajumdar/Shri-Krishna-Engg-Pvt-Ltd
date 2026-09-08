@@ -42,7 +42,16 @@ export default function AdminLogin() {
         <div className="absolute inset-0 bg-[#0C1936]/30" />
 
         <div className="relative flex h-full flex-col justify-between p-12">
-          <img src="/media/logo-light.png" alt="Shree Krishna Engineering Balco" className="h-11 w-auto" />
+          {/* self-start is load-bearing: this is a flex-column, whose default
+              align-items:stretch would pull a w-auto image out to the full
+              panel width and squash the 3.2:1 logo to roughly 12:1. */}
+          <img
+            src="/media/logo-light.png"
+            alt="Shree Krishna Engineering Balco"
+            width={640}
+            height={197}
+            className="h-11 w-auto self-start"
+          />
           <div className="max-w-md">
             <span className="mb-5 inline-flex items-center gap-2.5 text-[11px] font-semibold uppercase tracking-[0.22em] text-white/50">
               <span className="h-px w-8 bg-[#5CB531]" />
@@ -80,6 +89,8 @@ export default function AdminLogin() {
           <img
             src="/media/logo.png"
             alt="Shree Krishna Engineering Balco"
+            width={640}
+            height={197}
             className="mb-6 h-9 w-auto lg:hidden"
           />
 

@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { PageHeader, Button, Field, Notice, inputClass } from "../ui";
+import { PageHeader, PageBody, Button, Field, Notice, inputClass } from "../ui";
 import { api, ApiClientError } from "@/lib/admin/api-client";
 
 type Contact = {
@@ -54,28 +54,30 @@ export default function ContactPage() {
   return (
     <>
       <PageHeader title="Contact Information" subtitle="Shown in the contact section and footer" />
-      <form onSubmit={save} className="max-w-2xl p-8">
-        {msg && <div className="mb-4"><Notice kind={msg.kind}>{msg.text}</Notice></div>}
-        {FIELDS.map((f) => (
-          <Field key={f.name} label={f.label}>
-            {f.textarea ? (
-              <textarea
-                className={inputClass}
-                rows={2}
-                value={values[f.name] ?? ""}
-                onChange={(e) => setValues((v) => ({ ...v, [f.name]: e.target.value }))}
-              />
-            ) : (
-              <input
-                className={inputClass}
-                value={values[f.name] ?? ""}
-                onChange={(e) => setValues((v) => ({ ...v, [f.name]: e.target.value }))}
-              />
-            )}
-          </Field>
-        ))}
-        <Button type="submit" disabled={busy}>{busy ? "Saving…" : "Save changes"}</Button>
-      </form>
+      <PageBody width="narrow">
+        <form onSubmit={save}>
+          {msg && <div className="mb-4"><Notice kind={msg.kind}>{msg.text}</Notice></div>}
+          {FIELDS.map((f) => (
+            <Field key={f.name} label={f.label}>
+              {f.textarea ? (
+                <textarea
+                  className={inputClass}
+                  rows={2}
+                  value={values[f.name] ?? ""}
+                  onChange={(e) => setValues((v) => ({ ...v, [f.name]: e.target.value }))}
+                />
+              ) : (
+                <input
+                  className={inputClass}
+                  value={values[f.name] ?? ""}
+                  onChange={(e) => setValues((v) => ({ ...v, [f.name]: e.target.value }))}
+                />
+              )}
+            </Field>
+          ))}
+            <Button type="submit" disabled={busy}>{busy ? "Saving…" : "Save changes"}</Button>
+        </form>
+      </PageBody>
     </>
   );
 }

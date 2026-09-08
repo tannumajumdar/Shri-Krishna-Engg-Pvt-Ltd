@@ -4,7 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { Pencil, Trash2, Plus, X } from "lucide-react";
-import { PageHeader, Button, Modal, Field, Notice, inputClass, useResource } from "../ui";
+import { PageHeader, PageBody, Button, Modal, Field, Notice, inputClass, useResource } from "../ui";
 import { UploadField } from "../UploadField";
 import { api, ApiClientError } from "@/lib/admin/api-client";
 
@@ -58,7 +58,7 @@ export default function ProductsPage() {
           </Button>
         }
       />
-      <div className="p-8">
+      <PageBody>
         {error && <Notice kind="error">{error}</Notice>}
         {!categories.length && !loading && (
           <div className="mb-4"><Notice kind="error">Create a category first.</Notice></div>
@@ -126,7 +126,7 @@ export default function ProductsPage() {
             </tbody>
           </table>
         </div>
-      </div>
+      </PageBody>
 
       {(creating || editing) && (
         <ProductForm

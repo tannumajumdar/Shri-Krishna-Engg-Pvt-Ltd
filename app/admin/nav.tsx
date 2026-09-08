@@ -39,9 +39,15 @@ export function AdminNav() {
   }
 
   return (
-    <aside className="flex w-64 shrink-0 flex-col border-r border-slate-200 bg-white">
+    <aside className="sticky top-0 flex h-screen w-64 shrink-0 flex-col border-r border-slate-200 bg-white">
       <div className="flex items-center gap-2.5 border-b border-slate-200 px-5 py-5">
-        <img src="/media/logo.png" alt="Shree Krishna Engineering Balco" className="h-8 w-auto" />
+        <img
+          src="/media/logo.png"
+          alt="Shree Krishna Engineering Balco"
+          width={640}
+          height={197}
+          className="h-8 w-auto shrink-0"
+        />
         <span className="rounded-md bg-slate-100 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-slate-500">
           Admin
         </span>

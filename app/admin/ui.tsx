@@ -2,7 +2,12 @@
 
 import { useEffect, useState, type ReactNode } from "react";
 
-/** Page header with a title and optional action slot. */
+/**
+ * Page header with a title and optional action slot.
+ *
+ * Sticks to the top so the page title and its primary action stay reachable
+ * while scrolling a long table.
+ */
 export function PageHeader({
   title,
   subtitle,
@@ -13,12 +18,41 @@ export function PageHeader({
   action?: ReactNode;
 }) {
   return (
-    <div className="flex items-start justify-between gap-4 border-b border-white/60 bg-white/70 px-8 py-5 backdrop-blur-md">
-      <div>
-        <h1 className="text-lg font-semibold text-slate-900">{title}</h1>
-        {subtitle && <p className="mt-0.5 text-sm text-slate-500">{subtitle}</p>}
+    <div className="sticky top-0 z-30 border-b border-slate-200 bg-white">
+      <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-8 py-5">
+        <div className="min-w-0">
+          <h1 className="truncate text-lg font-semibold text-slate-900">
+            {title}
+          </h1>
+          {subtitle && (
+            <p className="mt-0.5 truncate text-sm text-slate-500">{subtitle}</p>
+          )}
+        </div>
+        {action && <div className="shrink-0">{action}</div>}
       </div>
-      {action}
+    </div>
+  );
+}
+
+/**
+ * Standard page body. Caps the line length on wide monitors and keeps the
+ * padding identical everywhere, so pages stop drifting apart as they are
+ * edited. `width="narrow"` is for single-column forms.
+ */
+export function PageBody({
+  children,
+  width = "wide",
+}: {
+  children: ReactNode;
+  width?: "wide" | "narrow";
+}) {
+  // The outer max-w-7xl matches PageHeader's, so a narrow form still starts on
+  // the same left edge as the page title instead of drifting to the middle.
+  return (
+    <div className="mx-auto w-full max-w-7xl px-8 py-8">
+      <div className={width === "narrow" ? "max-w-2xl" : undefined}>
+        {children}
+      </div>
     </div>
   );
 }

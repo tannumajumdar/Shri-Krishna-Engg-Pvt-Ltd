@@ -3,7 +3,7 @@
 import {
   Package, FolderTree, Factory, Image as ImageIcon, Inbox, MailWarning,
 } from "lucide-react";
-import { PageHeader, useResource } from "./ui";
+import { PageHeader, PageBody, useResource } from "./ui";
 
 type Dashboard = {
   counts: {
@@ -39,31 +39,36 @@ export default function DashboardPage() {
   return (
     <>
       <PageHeader title="Dashboard" subtitle="Overview of website content" />
-      <div className="p-8">
-        {error && <p className="text-sm text-red-600">{error}</p>}
+      <PageBody>
+        {error && <p className="mb-4 text-sm text-red-600">{error}</p>}
 
-        <div className="grid grid-cols-2 gap-4 md:grid-cols-3">
+        {/* Six tiles: two up on phones, six across on a desktop monitor. At
+            md:grid-cols-3 they grew into huge half-empty panels on a wide
+            screen — a stat tile should stay small enough to scan at a glance. */}
+        <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 xl:grid-cols-6">
           {CARDS.map(({ key, label, icon: Icon, tint, href }) => (
             <a
               key={key}
               href={href}
-              className="group rounded-2xl border border-slate-200 bg-white p-5 transition hover:border-slate-300 hover:shadow-[0_8px_30px_-12px_rgba(12,25,54,0.15)]"
+              className="group rounded-xl border border-slate-200 bg-white p-4 transition hover:border-slate-300 hover:shadow-[0_8px_30px_-12px_rgba(12,25,54,0.15)]"
             >
-              <span className={`inline-grid h-10 w-10 place-items-center rounded-xl ${tint}`}>
-                <Icon className="h-5 w-5" strokeWidth={1.75} />
+              <span className={`inline-grid h-9 w-9 place-items-center rounded-lg ${tint}`}>
+                <Icon className="h-[18px] w-[18px]" strokeWidth={1.75} />
               </span>
-              <div className="mt-4 text-3xl font-semibold tracking-tight text-slate-900">
+              <div className="mt-3 text-2xl font-semibold tracking-tight text-slate-900">
                 {loading ? "—" : (data?.counts[key] ?? 0)}
               </div>
-              <span className="mt-1 block text-sm text-slate-500">{label}</span>
+              <span className="mt-0.5 block truncate text-xs text-slate-500">
+                {label}
+              </span>
             </a>
           ))}
         </div>
 
-        <h2 className="mb-3 mt-9 text-sm font-semibold text-slate-700">
+        <h2 className="mb-3 mt-8 text-sm font-semibold text-slate-700">
           Recent Enquiries
         </h2>
-        <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white">
+        <div className="overflow-x-auto rounded-xl border border-slate-200 bg-white">
           <table className="w-full text-sm">
             <thead className="bg-slate-50 text-left text-xs text-slate-500">
               <tr>
@@ -96,7 +101,7 @@ export default function DashboardPage() {
             </tbody>
           </table>
         </div>
-      </div>
+      </PageBody>
     </>
   );
 }

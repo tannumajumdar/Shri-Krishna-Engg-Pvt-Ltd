@@ -4,7 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { Pencil, Trash2, Plus, ArrowRight } from "lucide-react";
 import {
-  PageHeader, Button, Modal, Field, Notice, inputClass, useResource,
+  PageHeader, PageBody, Button, Modal, Field, Notice, inputClass, useResource,
 } from "./ui";
 import { api, ApiClientError } from "@/lib/admin/api-client";
 import { UploadField } from "./UploadField";
@@ -60,7 +60,7 @@ export function ResourceManager({
           </Button>
         }
       />
-      <div className="p-8">
+      <PageBody>
         {error && <Notice kind="error">{error}</Notice>}
 
         <div className="overflow-x-auto rounded-2xl border border-slate-200 bg-white">
@@ -128,7 +128,7 @@ export function ResourceManager({
             </tbody>
           </table>
         </div>
-      </div>
+      </PageBody>
 
       {(creating || editing) && (
         <ResourceForm

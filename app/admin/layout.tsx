@@ -23,24 +23,14 @@ export default async function AdminLayout({
   if (bare) return <>{children}</>;
 
   return (
-    <div className="flex min-h-screen bg-slate-100 text-slate-800">
+    <div className="flex min-h-screen bg-slate-50 text-slate-800">
       <AdminNav />
-      {/* Industrial backdrop behind every admin page. Scoped INSIDE <main> as
-          an absolute layer (z-0) so it paints above the container's own
-          background — a fixed/-z-10 layer would hide behind it. The white
-          content cards (z-10) stay perfectly readable over a light wash. */}
-      <main className="relative flex-1 overflow-x-hidden">
-        <div
-          aria-hidden="true"
-          className="pointer-events-none absolute inset-0 z-0 bg-[url('/media/admin/admin-bg.jpg')] bg-cover bg-center bg-no-repeat"
-        />
-        {/* Light wash so the photo clearly shows through while cards read cleanly. */}
-        <div
-          aria-hidden="true"
-          className="pointer-events-none absolute inset-0 z-0 bg-gradient-to-br from-white/45 via-white/35 to-slate-200/45"
-        />
-        <div className="relative z-10 min-h-screen">{children}</div>
-      </main>
+      {/* A plain surface, deliberately. An admin panel is a work tool: the
+          photograph that used to sit here competed with every table and form
+          on top of it, and the translucent chrome it required made headings
+          hard to read. The brand shows up in the sidebar and the login screen
+          instead, where it costs nothing. */}
+      <main className="min-w-0 flex-1 overflow-x-hidden">{children}</main>
     </div>
   );
 }
