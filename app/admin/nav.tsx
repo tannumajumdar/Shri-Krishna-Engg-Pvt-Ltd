@@ -39,16 +39,16 @@ export function AdminNav() {
   }
 
   return (
-    <aside className="sticky top-0 flex h-screen w-64 shrink-0 flex-col border-r border-slate-200 bg-white">
-      <div className="flex items-center gap-2.5 border-b border-slate-200 px-5 py-5">
+    <aside className="sticky top-0 flex h-screen w-64 shrink-0 flex-col border-r border-adm-line bg-adm-surface">
+      <div className="flex items-center gap-2.5 border-b border-adm-line px-5 py-5">
         <img
-          src="/media/logo.png"
+          src="/media/logo-light.png"
           alt="Shree Krishna Engineering Balco"
           width={640}
           height={197}
           className="h-8 w-auto shrink-0"
         />
-        <span className="rounded-md bg-slate-100 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-slate-500">
+        <span className="rounded-md bg-adm-raised px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-adm-muted">
           Admin
         </span>
       </div>
@@ -63,12 +63,12 @@ export function AdminNav() {
               href={href}
               className={`group flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm transition ${
                 active
-                  ? "bg-[#0C1936] font-medium text-white shadow-sm"
-                  : "text-slate-600 hover:bg-slate-100"
+                  ? "bg-adm-accent font-medium text-adm-accent-ink shadow-sm"
+                  : "text-adm-muted hover:bg-adm-raised"
               }`}
             >
               <Icon
-                className={`h-[18px] w-[18px] ${active ? "text-[#8CC63F]" : "text-slate-400 group-hover:text-slate-600"}`}
+                className={`h-[18px] w-[18px] ${active ? "text-adm-accent-ink" : "text-adm-accent"}`}
                 strokeWidth={1.75}
               />
               {label}
@@ -77,23 +77,23 @@ export function AdminNav() {
         })}
       </nav>
 
-      <div className="border-t border-slate-200 p-3">
+      <div className="border-t border-adm-line p-3">
         {me && (
           <div className="mb-2 flex items-center gap-2.5 px-2 py-1">
-            <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-[#0C1936] text-xs font-semibold text-white">
+            <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-adm-accent text-xs font-semibold text-adm-accent-ink">
               {me.name?.[0]?.toUpperCase() ?? "A"}
             </span>
             <div className="min-w-0">
-              <div className="truncate text-xs font-medium text-slate-700">{me.name}</div>
-              <div className="truncate text-[11px] text-slate-400">{me.email}</div>
+              <div className="truncate text-xs font-medium text-adm-ink-2">{me.name}</div>
+              <div className="truncate text-[11px] text-adm-faint">{me.email}</div>
             </div>
           </div>
         )}
         <button
           onClick={logout}
-          className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm text-slate-600 transition hover:bg-red-50 hover:text-red-600"
+          className="group flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm text-adm-muted transition hover:bg-adm-danger-soft hover:text-adm-danger"
         >
-          <LogOut className="h-4 w-4" strokeWidth={1.75} />
+          <LogOut className="h-4 w-4 text-adm-accent transition-colors group-hover:text-adm-danger" strokeWidth={1.75} />
           Sign out
         </button>
       </div>

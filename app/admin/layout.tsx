@@ -20,10 +20,12 @@ export default async function AdminLayout({
   const pathname = (await headers()).get("x-admin-path") || "";
   const bare = pathname.endsWith("/admin/login");
 
-  if (bare) return <>{children}</>;
+  // .admin-root carries the panel's palette (globals.css). Scoping it here is
+  // what keeps the dark theme off the public pages.
+  if (bare) return <div className="admin-root">{children}</div>;
 
   return (
-    <div className="flex min-h-screen bg-slate-50 text-slate-800">
+    <div className="admin-root flex min-h-screen bg-adm-bg text-adm-ink-2">
       <AdminNav />
       {/* A plain surface, deliberately. An admin panel is a work tool: the
           photograph that used to sit here competed with every table and form

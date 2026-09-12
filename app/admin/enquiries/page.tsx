@@ -22,10 +22,10 @@ type Enquiry = {
 const STATUSES: Enquiry["status"][] = ["NEW", "READ", "RESPONDED", "ARCHIVED"];
 
 const BADGE: Record<Enquiry["status"], string> = {
-  NEW: "bg-blue-50 text-blue-700",
-  READ: "bg-slate-100 text-slate-600",
-  RESPONDED: "bg-green-50 text-green-700",
-  ARCHIVED: "bg-amber-50 text-amber-700",
+  NEW: "bg-[#12224A] text-[#8EA5DC]",
+  READ: "bg-adm-raised text-adm-muted",
+  RESPONDED: "bg-adm-ok-soft text-adm-ok",
+  ARCHIVED: "bg-adm-warn-soft text-adm-warn",
 };
 
 export default function EnquiriesPage() {
@@ -56,9 +56,9 @@ export default function EnquiriesPage() {
         {error && <Notice kind="error">{error}</Notice>}
         {msg && <Notice kind="error">{msg}</Notice>}
 
-        <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white">
+        <div className="overflow-hidden rounded-2xl border border-adm-line bg-adm-surface">
           <table className="w-full text-sm">
-            <thead className="bg-slate-50 text-left text-xs text-slate-500">
+            <thead className="bg-adm-raised text-left text-xs text-adm-muted">
               <tr>
                 <th className="px-5 py-3 font-medium">From</th>
                 <th className="px-5 py-3 font-medium">Subject</th>
@@ -71,26 +71,26 @@ export default function EnquiriesPage() {
               {rows.map((e) => (
                 <Fragment key={e.id}>
                   <tr
-                    className="cursor-pointer border-t border-slate-100 hover:bg-slate-50"
+                    className="cursor-pointer border-t border-adm-line-soft hover:bg-adm-raised"
                     onClick={() => setOpen(open === e.id ? null : e.id)}
                   >
                     <td className="px-5 py-3">
                       <div className="flex items-center gap-2">
-                        <span className="font-medium text-slate-800">{e.name}</span>
+                        <span className="font-medium text-adm-ink">{e.name}</span>
                         {e.source === "WHATSAPP" ? (
-                          <span className="inline-flex items-center gap-1 rounded-full bg-[#25D366]/15 px-2 py-0.5 text-[10px] font-semibold text-[#128C3E]">
+                          <span className="inline-flex items-center gap-1 rounded-full bg-[#25D366]/15 px-2 py-0.5 text-[10px] font-semibold text-[#4EE08A]">
                             <MessageCircle className="h-3 w-3" /> WhatsApp
                           </span>
                         ) : (
-                          <span className="inline-flex items-center gap-1 rounded-full bg-slate-100 px-2 py-0.5 text-[10px] font-semibold text-slate-500">
-                            <Globe className="h-3 w-3" /> Website
+                          <span className="inline-flex items-center gap-1 rounded-full bg-adm-raised px-2 py-0.5 text-[10px] font-semibold text-adm-muted">
+                            <Globe className="h-3 w-3 text-adm-accent" /> Website
                           </span>
                         )}
                       </div>
-                      <div className="text-xs text-slate-500">{e.email || "—"}</div>
+                      <div className="text-xs text-adm-muted">{e.email || "—"}</div>
                     </td>
-                    <td className="px-5 py-3 text-slate-600">{e.product || e.subject || "—"}</td>
-                    <td className="px-5 py-3 text-xs text-slate-500">
+                    <td className="px-5 py-3 text-adm-muted">{e.product || e.subject || "—"}</td>
+                    <td className="px-5 py-3 text-xs text-adm-muted">
                       {new Date(e.createdAt).toLocaleString()}
                     </td>
                     <td className="px-5 py-3">
@@ -101,33 +101,33 @@ export default function EnquiriesPage() {
                     <td className="px-5 py-3 text-right">
                       <button
                         onClick={(ev) => { ev.stopPropagation(); remove(e.id); }}
-                        className="rounded-md p-1.5 text-slate-400 hover:bg-red-50 hover:text-red-600"
+                        className="group rounded-md p-1.5 hover:bg-adm-danger-soft"
                       >
-                        <Trash2 className="h-4 w-4" />
+                        <Trash2 className="h-4 w-4 text-adm-accent transition-colors group-hover:text-adm-danger" />
                       </button>
                     </td>
                   </tr>
                   {open === e.id && (
-                    <tr className="border-t border-slate-100 bg-slate-50/60">
+                    <tr className="border-t border-adm-line-soft bg-adm-raised/60">
                       <td colSpan={5} className="px-5 py-4">
                         <div className="grid gap-2 text-sm sm:grid-cols-2">
                           {e.company && <Detail label="Company" value={e.company} />}
                           {e.phone && <Detail label="Phone" value={e.phone} />}
                           {e.product && <Detail label="Product" value={e.product} />}
                         </div>
-                        <div className="mt-3 whitespace-pre-wrap rounded-lg bg-white p-3 text-sm text-slate-700">
+                        <div className="mt-3 whitespace-pre-wrap rounded-lg bg-adm-surface p-3 text-sm text-adm-ink-2">
                           {e.message}
                         </div>
                         <div className="mt-3 flex items-center gap-2">
-                          <span className="text-xs text-slate-500">Set status:</span>
+                          <span className="text-xs text-adm-muted">Set status:</span>
                           {STATUSES.map((s) => (
                             <button
                               key={s}
                               onClick={() => setStatus(e.id, s)}
                               className={`rounded-full px-2.5 py-1 text-xs transition ${
                                 e.status === s
-                                  ? "bg-blue-600 text-white"
-                                  : "bg-white text-slate-600 ring-1 ring-slate-200 hover:bg-slate-100"
+                                  ? "bg-adm-accent text-adm-accent-ink"
+                                  : "bg-adm-surface text-adm-muted ring-1 ring-adm-line hover:bg-adm-raised"
                               }`}
                             >
                               {s}
@@ -141,7 +141,7 @@ export default function EnquiriesPage() {
               ))}
               {!loading && !rows.length && (
                 <tr>
-                  <td colSpan={5} className="px-5 py-6 text-center text-slate-400">
+                  <td colSpan={5} className="px-5 py-6 text-center text-adm-faint">
                     No enquiries yet
                   </td>
                 </tr>
@@ -157,8 +157,8 @@ export default function EnquiriesPage() {
 function Detail({ label, value }: { label: string; value: string }) {
   return (
     <div>
-      <span className="text-xs text-slate-400">{label}: </span>
-      <span className="text-slate-700">{value}</span>
+      <span className="text-xs text-adm-faint">{label}: </span>
+      <span className="text-adm-ink-2">{value}</span>
     </div>
   );
 }

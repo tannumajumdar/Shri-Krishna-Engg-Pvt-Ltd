@@ -57,9 +57,9 @@ export function UploadField({
           type="button"
           onClick={() => inputRef.current?.click()}
           disabled={busy}
-          className="flex shrink-0 items-center gap-1.5 rounded-lg border border-slate-300 px-3 text-sm text-slate-700 transition hover:bg-slate-50 disabled:opacity-60"
+          className="flex shrink-0 items-center gap-1.5 rounded-lg border border-adm-line px-3 text-sm text-adm-ink-2 transition hover:bg-adm-raised disabled:opacity-60"
         >
-          <Upload className="h-4 w-4" />
+          <Upload className="h-4 w-4 text-adm-accent" />
           {busy ? "…" : "Upload"}
         </button>
         <input
@@ -71,7 +71,7 @@ export function UploadField({
         />
       </div>
 
-      {error && <p className="mt-1 text-xs text-red-600">{error}</p>}
+      {error && <p className="mt-1 text-xs text-adm-danger">{error}</p>}
 
       {value && (
         <div className="mt-2 flex items-center gap-3">
@@ -84,9 +84,9 @@ export function UploadField({
           <button
             type="button"
             onClick={() => onChange("")}
-            className="flex items-center gap-1 text-xs text-slate-400 hover:text-red-600"
+            className="flex items-center gap-1 text-xs text-adm-faint hover:text-adm-danger"
           >
-            <X className="h-3.5 w-3.5" /> Clear
+            <X className="h-3.5 w-3.5 text-adm-accent" /> Clear
           </button>
         </div>
       )}

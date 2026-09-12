@@ -63,9 +63,9 @@ export function ResourceManager({
       <PageBody>
         {error && <Notice kind="error">{error}</Notice>}
 
-        <div className="overflow-x-auto rounded-2xl border border-slate-200 bg-white">
+        <div className="overflow-x-auto rounded-2xl border border-adm-line bg-adm-surface">
           <table className="w-full text-sm">
-            <thead className="bg-slate-50 text-left text-xs text-slate-500">
+            <thead className="bg-adm-raised text-left text-xs text-adm-muted">
               <tr>
                 {columns.map((c) => (
                   <th key={c} className="px-5 py-3 font-medium capitalize">
@@ -81,14 +81,14 @@ export function ResourceManager({
                 return (
                   <tr
                     key={row.id}
-                    className={`border-t border-slate-100 ${href ? "transition-colors hover:bg-slate-50" : ""}`}
+                    className={`border-t border-adm-line-soft ${href ? "transition-colors hover:bg-adm-raised" : ""}`}
                   >
                     {columns.map((c, ci) => (
-                      <td key={c} className="px-5 py-3 text-slate-700">
+                      <td key={c} className="px-5 py-3 text-adm-ink-2">
                         {href && ci === 0 ? (
                           <Link
                             href={href}
-                            className="font-medium text-slate-800 underline-offset-2 hover:text-blue-600 hover:underline"
+                            className="font-medium text-adm-ink underline-offset-2 hover:text-adm-accent hover:underline"
                           >
                             <Cell value={row[c]} field={fields.find((f) => f.name === c)} />
                           </Link>
@@ -101,17 +101,17 @@ export function ResourceManager({
                       {href && (
                         <Link
                           href={href}
-                          className="mr-1 inline-flex items-center gap-1 rounded-md px-2 py-1 text-xs font-medium text-slate-500 hover:bg-slate-100 hover:text-blue-600"
+                          className="mr-1 inline-flex items-center gap-1 rounded-md px-2 py-1 text-xs font-medium text-adm-muted hover:bg-adm-raised hover:text-adm-accent"
                         >
                           {rowLinkLabel}
-                          <ArrowRight className="h-3.5 w-3.5" />
+                          <ArrowRight className="h-3.5 w-3.5 text-adm-accent" />
                         </Link>
                       )}
                       <button
                         onClick={() => setEditing(row)}
-                        className="mr-1 rounded-md p-1.5 text-slate-400 hover:bg-slate-100 hover:text-blue-600"
+                        className="mr-1 rounded-md p-1.5 hover:bg-adm-raised"
                       >
-                        <Pencil className="h-4 w-4" />
+                        <Pencil className="h-4 w-4 text-adm-accent" />
                       </button>
                       <DeleteButton endpoint={endpoint} id={row.id} onDone={reload} />
                     </td>
@@ -120,7 +120,7 @@ export function ResourceManager({
               })}
               {!loading && !rows.length && (
                 <tr>
-                  <td colSpan={columns.length + 1} className="px-5 py-6 text-center text-slate-400">
+                  <td colSpan={columns.length + 1} className="px-5 py-6 text-center text-adm-faint">
                     Nothing yet — click New.
                   </td>
                 </tr>
@@ -151,14 +151,14 @@ export function ResourceManager({
 }
 
 function Cell({ value, field }: { value: unknown; field?: FieldDef }) {
-  if (value == null || value === "") return <span className="text-slate-300">—</span>;
+  if (value == null || value === "") return <span className="text-adm-faint">—</span>;
   if (field?.type === "image" || field?.type === "video") {
-    return <span className="font-mono text-xs text-slate-500">{String(value)}</span>;
+    return <span className="font-mono text-xs text-adm-muted">{String(value)}</span>;
   }
   if (field?.type === "status") {
     return (
       <span className={`rounded-full px-2 py-0.5 text-xs ${
-        value === "PUBLISHED" ? "bg-green-50 text-green-700" : "bg-amber-50 text-amber-700"
+        value === "PUBLISHED" ? "bg-adm-ok-soft text-adm-ok" : "bg-adm-warn-soft text-adm-warn"
       }`}>
         {String(value)}
       </span>
@@ -191,9 +191,9 @@ function DeleteButton({
           setBusy(false);
         }
       }}
-      className="rounded-md p-1.5 text-slate-400 hover:bg-red-50 hover:text-red-600 disabled:opacity-50"
+      className="group rounded-md p-1.5 hover:bg-adm-danger-soft disabled:opacity-50"
     >
-      <Trash2 className="h-4 w-4" />
+      <Trash2 className="h-4 w-4 text-adm-accent transition-colors group-hover:text-adm-danger" />
     </button>
   );
 }

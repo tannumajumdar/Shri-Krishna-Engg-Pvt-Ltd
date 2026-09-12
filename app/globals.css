@@ -35,6 +35,46 @@
     --scroll-thumb-hover: 59 90 175; /* navy-500 */
   }
 
+  /* -------------------------------------------------------------------
+   * Admin panel palette.
+   *
+   * The panel is a work tool with one fixed theme — it does not follow the
+   * public site's light/dark switch, because an operator should not have the
+   * contrast of a data table change under them. Scoped to .admin-root so
+   * none of it can leak onto the marketing pages, and built on the same
+   * navy/brand scale as the site so the two still look related.
+   * ------------------------------------------------------------------- */
+  .admin-root {
+    --adm-bg: 7 15 34; /* navy-950 — page ground */
+    --adm-surface: 12 25 54; /* navy-900 — cards, tables, sidebar */
+    --adm-raised: 17 34 80; /* navy-800 — table heads, chips */
+    --adm-hover: 21 41 95;
+    --adm-line: 33 52 100;
+    --adm-line-soft: 23 40 82;
+
+    --adm-ink: 237 242 250;
+    --adm-ink-2: 197 209 232;
+    --adm-muted: 148 166 201;
+    --adm-faint: 109 129 168;
+
+    /* The lime of the logo K carries every primary action, the way it does
+       on the public site. Navy text on it, never white — white on this green
+       fails contrast badly. */
+    --adm-accent: 140 198 63; /* brand-500 */
+    --adm-accent-hi: 158 209 79; /* brand-400 */
+    --adm-accent-ink: 7 15 34; /* navy-950 */
+    --adm-accent-soft: 26 48 32;
+
+    --adm-danger: 240 138 130;
+    --adm-danger-soft: 58 29 28;
+    --adm-ok: 158 209 79;
+    --adm-ok-soft: 30 51 19;
+    --adm-warn: 224 163 60;
+    --adm-warn-soft: 58 43 18;
+
+    color-scheme: dark;
+  }
+
   @media (min-width: 1024px) {
     :root {
       --nav-h: 88px;

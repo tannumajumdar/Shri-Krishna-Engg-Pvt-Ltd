@@ -80,6 +80,33 @@ const config: Config = {
           800: "#486A1C",
           900: "#3A5617",
         },
+        /* Admin panel surface scale. The panel is a single dark theme that
+           does not follow the public site's light/dark switch, so its tokens
+           live apart from --surface/--ink and are defined once on .admin-root
+           in globals.css. Channel triplets, like the rest of this file, so
+           bg-adm-line/60 and friends still work. */
+        adm: {
+          bg: "rgb(var(--adm-bg) / <alpha-value>)",
+          surface: "rgb(var(--adm-surface) / <alpha-value>)",
+          raised: "rgb(var(--adm-raised) / <alpha-value>)",
+          hover: "rgb(var(--adm-hover) / <alpha-value>)",
+          line: "rgb(var(--adm-line) / <alpha-value>)",
+          "line-soft": "rgb(var(--adm-line-soft) / <alpha-value>)",
+          ink: "rgb(var(--adm-ink) / <alpha-value>)",
+          "ink-2": "rgb(var(--adm-ink-2) / <alpha-value>)",
+          muted: "rgb(var(--adm-muted) / <alpha-value>)",
+          faint: "rgb(var(--adm-faint) / <alpha-value>)",
+          accent: "rgb(var(--adm-accent) / <alpha-value>)",
+          "accent-hi": "rgb(var(--adm-accent-hi) / <alpha-value>)",
+          "accent-ink": "rgb(var(--adm-accent-ink) / <alpha-value>)",
+          "accent-soft": "rgb(var(--adm-accent-soft) / <alpha-value>)",
+          danger: "rgb(var(--adm-danger) / <alpha-value>)",
+          "danger-soft": "rgb(var(--adm-danger-soft) / <alpha-value>)",
+          ok: "rgb(var(--adm-ok) / <alpha-value>)",
+          "ok-soft": "rgb(var(--adm-ok-soft) / <alpha-value>)",
+          warn: "rgb(var(--adm-warn) / <alpha-value>)",
+          "warn-soft": "rgb(var(--adm-warn-soft) / <alpha-value>)",
+        },
       },
       fontFamily: {
         sans: ["var(--font-body)", "system-ui", "sans-serif"],

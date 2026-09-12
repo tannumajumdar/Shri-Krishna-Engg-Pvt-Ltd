@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowUp, Mail, MapPin, Phone } from "lucide-react";
+import { ArrowUp, LogIn, Mail, MapPin, Phone } from "lucide-react";
 import { Logo } from "@/components/ui/Logo";
 import { SocialIcon, type SocialName } from "@/components/ui/SocialIcon";
 import {
@@ -158,10 +158,25 @@ export function Footer({
             © {year} {company.legalName} All rights reserved.
           </p>
 
-          <div className="flex items-center gap-6">
-            <p className="text-[12.5px] text-white/30">
+          <div className="flex items-center gap-5 sm:gap-6">
+            <p className="hidden text-[12.5px] text-white/30 sm:block">
               CIN · Registered in India
             </p>
+
+            {/* Staff sign-in. Moved down from the navbar, which should carry
+                only what a visitor came for. */}
+            <a
+              href="/admin"
+              className="group inline-flex items-center gap-1.5 text-[12.5px] font-medium text-white/45 transition-colors duration-300 hover:text-accent-400"
+            >
+              <LogIn
+                className="h-3.5 w-3.5 text-accent-400 transition-transform duration-500 ease-brand group-hover:translate-x-0.5"
+                strokeWidth={1.75}
+                aria-hidden="true"
+              />
+              Admin Login
+            </a>
+
             <a
               href="#home"
               aria-label="Back to top"

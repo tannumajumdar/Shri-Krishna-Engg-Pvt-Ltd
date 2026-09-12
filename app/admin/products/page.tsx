@@ -66,24 +66,24 @@ export default function ProductsPage() {
 
         {categoryFilter && (
           <div className="mb-4 flex items-center gap-2">
-            <span className="inline-flex items-center gap-2 rounded-full bg-[#0C1936] px-3 py-1.5 text-xs font-medium text-white">
+            <span className="inline-flex items-center gap-2 rounded-full bg-adm-accent px-3 py-1.5 text-xs font-medium text-adm-accent-ink">
               Category: {filteredName}
-              <span className="rounded-full bg-white/20 px-1.5 text-[10px]">
+              <span className="rounded-full bg-adm-accent-ink/15 px-1.5 text-[10px]">
                 {rows.length}
               </span>
             </span>
             <Link
               href="/admin/products"
-              className="inline-flex items-center gap-1 rounded-full border border-slate-300 px-3 py-1.5 text-xs font-medium text-slate-600 hover:bg-slate-50"
+              className="inline-flex items-center gap-1 rounded-full border border-adm-line px-3 py-1.5 text-xs font-medium text-adm-muted hover:bg-adm-raised"
             >
               <X className="h-3 w-3" /> Clear filter
             </Link>
           </div>
         )}
 
-        <div className="overflow-x-auto rounded-2xl border border-slate-200 bg-white">
+        <div className="overflow-x-auto rounded-2xl border border-adm-line bg-adm-surface">
           <table className="w-full text-sm">
-            <thead className="bg-slate-50 text-left text-xs text-slate-500">
+            <thead className="bg-adm-raised text-left text-xs text-adm-muted">
               <tr>
                 <th className="px-5 py-3 font-medium">Name</th>
                 <th className="px-5 py-3 font-medium">Category</th>
@@ -94,18 +94,18 @@ export default function ProductsPage() {
             </thead>
             <tbody>
               {rows.map((p) => (
-                <tr key={p.id} className="border-t border-slate-100">
-                  <td className="px-5 py-3 font-medium text-slate-800">{p.name}</td>
-                  <td className="px-5 py-3 text-slate-600">{p.category?.name ?? "—"}</td>
-                  <td className="px-5 py-3 text-slate-500">{p.images.length}</td>
+                <tr key={p.id} className="border-t border-adm-line-soft">
+                  <td className="px-5 py-3 font-medium text-adm-ink">{p.name}</td>
+                  <td className="px-5 py-3 text-adm-muted">{p.category?.name ?? "—"}</td>
+                  <td className="px-5 py-3 text-adm-muted">{p.images.length}</td>
                   <td className="px-5 py-3">
                     <span className={`rounded-full px-2 py-0.5 text-xs ${
-                      p.status === "PUBLISHED" ? "bg-green-50 text-green-700" : "bg-amber-50 text-amber-700"
+                      p.status === "PUBLISHED" ? "bg-adm-ok-soft text-adm-ok" : "bg-adm-warn-soft text-adm-warn"
                     }`}>{p.status}</span>
                   </td>
                   <td className="px-5 py-3 text-right">
-                    <button onClick={() => setEditing(p)} className="mr-1 rounded-md p-1.5 text-slate-400 hover:bg-slate-100 hover:text-blue-600">
-                      <Pencil className="h-4 w-4" />
+                    <button onClick={() => setEditing(p)} className="mr-1 rounded-md p-1.5 hover:bg-adm-raised">
+                      <Pencil className="h-4 w-4 text-adm-accent" />
                     </button>
                     <button
                       onClick={async () => {
@@ -113,15 +113,15 @@ export default function ProductsPage() {
                         await api.del(`/api/products/${p.id}`);
                         reload();
                       }}
-                      className="rounded-md p-1.5 text-slate-400 hover:bg-red-50 hover:text-red-600"
+                      className="group rounded-md p-1.5 hover:bg-adm-danger-soft"
                     >
-                      <Trash2 className="h-4 w-4" />
+                      <Trash2 className="h-4 w-4 text-adm-accent transition-colors group-hover:text-adm-danger" />
                     </button>
                   </td>
                 </tr>
               ))}
               {!loading && !rows.length && (
-                <tr><td colSpan={5} className="px-5 py-6 text-center text-slate-400">No products yet</td></tr>
+                <tr><td colSpan={5} className="px-5 py-6 text-center text-adm-faint">No products yet</td></tr>
               )}
             </tbody>
           </table>
@@ -263,9 +263,9 @@ function GalleryEditor({
           <button
             type="button"
             onClick={() => onChange(images.filter((_, j) => j !== i))}
-            className="shrink-0 rounded-md p-2 text-slate-400 hover:bg-red-50 hover:text-red-600"
+            className="group shrink-0 rounded-md p-2 hover:bg-adm-danger-soft"
           >
-            <Trash2 className="h-4 w-4" />
+            <Trash2 className="h-4 w-4 text-adm-accent transition-colors group-hover:text-adm-danger" />
           </button>
         </div>
       ))}

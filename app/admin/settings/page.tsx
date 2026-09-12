@@ -70,15 +70,15 @@ export default function SettingsPage() {
         {/* -------------------------- profile ----------------------------- */}
         <form
           onSubmit={save}
-          className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm"
+          className="rounded-2xl border border-adm-line bg-adm-surface p-6 shadow-sm"
         >
           <div className="mb-5 flex items-center gap-3">
-            <span className="grid h-10 w-10 place-items-center rounded-xl bg-[#0C1936] text-white">
+            <span className="grid h-10 w-10 place-items-center rounded-xl bg-adm-accent text-adm-accent-ink">
               <UserCog className="h-5 w-5" strokeWidth={1.75} />
             </span>
             <div>
-              <h2 className="text-sm font-semibold text-slate-900">My Profile</h2>
-              <p className="text-xs text-slate-500">
+              <h2 className="text-sm font-semibold text-adm-ink">My Profile</h2>
+              <p className="text-xs text-adm-muted">
                 Change your login email and password
               </p>
             </div>
@@ -104,8 +104,8 @@ export default function SettingsPage() {
             />
           </Field>
 
-          <div className="my-5 border-t border-slate-100 pt-5">
-            <p className="mb-3 text-xs font-semibold uppercase tracking-wider text-slate-400">
+          <div className="my-5 border-t border-adm-line-soft pt-5">
+            <p className="mb-3 text-xs font-semibold uppercase tracking-wider text-adm-faint">
               Change password (optional)
             </p>
             <Field label="New password" error={fieldErrors.newPassword}>
@@ -129,7 +129,7 @@ export default function SettingsPage() {
             </Field>
           </div>
 
-          <div className="rounded-xl bg-amber-50 p-4">
+          <div className="rounded-xl bg-adm-warn-soft p-4">
             <Field label="Current password (required to save changes)" error={fieldErrors.currentPassword}>
               <input
                 type="password"
@@ -146,8 +146,8 @@ export default function SettingsPage() {
         </form>
 
         {/* --------------------------- account ---------------------------- */}
-        <div className="mt-6 rounded-2xl border border-slate-200 bg-white p-6 text-sm text-slate-600">
-          <h2 className="mb-2 text-sm font-semibold text-slate-700">Account</h2>
+        <div className="mt-6 rounded-2xl border border-adm-line bg-adm-surface p-6 text-sm text-adm-muted">
+          <h2 className="mb-2 text-sm font-semibold text-adm-ink-2">Account</h2>
           <dl className="space-y-2">
             <Row label="Role" value={me?.role} />
             <Row
@@ -155,10 +155,10 @@ export default function SettingsPage() {
               value={me ? new Date(me.createdAt).toLocaleDateString() : undefined}
             />
           </dl>
-          <p className="mt-4 border-t border-slate-100 pt-4 text-xs text-slate-500">
-            Database URL and JWT secret live in <code className="rounded bg-slate-100 px-1">.env</code> on the
+          <p className="mt-4 border-t border-adm-line-soft pt-4 text-xs text-adm-muted">
+            Database URL and JWT secret live in <code className="rounded bg-adm-raised px-1">.env</code> on the
             server and are never sent to the browser. Uploaded files are stored under{" "}
-            <code className="rounded bg-slate-100 px-1">/public/uploads</code>.
+            <code className="rounded bg-adm-raised px-1">/public/uploads</code>.
           </p>
         </div>
       </PageBody>
@@ -169,8 +169,8 @@ export default function SettingsPage() {
 function Row({ label, value }: { label: string; value?: string }) {
   return (
     <div className="flex justify-between">
-      <dt className="text-slate-500">{label}</dt>
-      <dd className="font-medium text-slate-800">{value ?? "—"}</dd>
+      <dt className="text-adm-muted">{label}</dt>
+      <dd className="font-medium text-adm-ink">{value ?? "—"}</dd>
     </div>
   );
 }

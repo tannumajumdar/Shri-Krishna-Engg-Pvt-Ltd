@@ -18,14 +18,14 @@ export function PageHeader({
   action?: ReactNode;
 }) {
   return (
-    <div className="sticky top-0 z-30 border-b border-slate-200 bg-white">
+    <div className="sticky top-0 z-30 border-b border-adm-line bg-adm-surface">
       <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-8 py-5">
         <div className="min-w-0">
-          <h1 className="truncate text-lg font-semibold text-slate-900">
+          <h1 className="truncate text-lg font-semibold text-adm-ink">
             {title}
           </h1>
           {subtitle && (
-            <p className="mt-0.5 truncate text-sm text-slate-500">{subtitle}</p>
+            <p className="mt-0.5 truncate text-sm text-adm-muted">{subtitle}</p>
           )}
         </div>
         {action && <div className="shrink-0">{action}</div>}
@@ -65,9 +65,9 @@ export function Button({
   variant?: "primary" | "ghost" | "danger";
 }) {
   const styles = {
-    primary: "bg-[#0C1936] text-white hover:bg-[#16294F] shadow-sm",
-    ghost: "border border-slate-300 text-slate-700 hover:bg-slate-50",
-    danger: "text-red-600 hover:bg-red-50",
+    primary: "bg-adm-accent text-adm-accent-ink hover:bg-adm-accent-hi shadow-sm",
+    ghost: "border border-adm-line text-adm-ink-2 hover:bg-adm-raised",
+    danger: "text-adm-danger hover:bg-adm-danger-soft",
   }[variant];
   return (
     <button
@@ -90,7 +90,7 @@ export function Notice({
   return (
     <div
       className={`rounded-lg px-3 py-2 text-sm ${
-        kind === "error" ? "bg-red-50 text-red-700" : "bg-green-50 text-green-700"
+        kind === "error" ? "bg-adm-danger-soft text-adm-danger" : "bg-adm-ok-soft text-adm-ok"
       }`}
     >
       {children}
@@ -119,13 +119,13 @@ export function Modal({
 
   if (!open) return null;
   return (
-    <div className="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto bg-slate-900/40 p-6">
-      <div className="mt-10 w-full max-w-lg rounded-2xl bg-white shadow-xl">
-        <div className="flex items-center justify-between border-b border-slate-200 px-6 py-4">
-          <h2 className="text-sm font-semibold text-slate-900">{title}</h2>
+    <div className="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto bg-[#040A16]/75 p-6">
+      <div className="mt-10 w-full max-w-lg rounded-2xl bg-adm-surface shadow-xl">
+        <div className="flex items-center justify-between border-b border-adm-line px-6 py-4">
+          <h2 className="text-sm font-semibold text-adm-ink">{title}</h2>
           <button
             onClick={onClose}
-            className="text-slate-400 transition hover:text-slate-700"
+            className="text-adm-faint transition hover:text-adm-ink-2"
           >
             ✕
           </button>
@@ -147,17 +147,17 @@ export function Field({
 }) {
   return (
     <label className="mb-4 block">
-      <span className="mb-1 block text-xs font-medium text-slate-600">
+      <span className="mb-1 block text-xs font-medium text-adm-muted">
         {label}
       </span>
       {children}
-      {error && <span className="mt-1 block text-xs text-red-600">{error}</span>}
+      {error && <span className="mt-1 block text-xs text-adm-danger">{error}</span>}
     </label>
   );
 }
 
 export const inputClass =
-  "w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 outline-none transition focus:border-[#1541A8] focus:ring-4 focus:ring-[#1541A8]/10";
+  "w-full rounded-lg border border-adm-line bg-adm-raised px-3 py-2 text-sm text-adm-ink placeholder:text-adm-faint outline-none transition focus:border-adm-accent focus:ring-4 focus:ring-adm-accent/20";
 
 /** Loads data from the API with loading/error states. */
 export function useResource<T>(path: string, deps: unknown[] = []) {
