@@ -15,7 +15,7 @@ import {
   type Product,
   type ProductCategory,
 } from "@/lib/site";
-import { slugify } from "@/lib/utils";
+import { cn, slugify } from "@/lib/utils";
 
 /** The service a visitor is enquiring about, carried up to the modal. */
 type Enquiring = { product: Product; categoryName: string };
@@ -97,7 +97,7 @@ export function ProductShowcase({
           <Reveal>
             <p className="flex flex-wrap items-center justify-center gap-x-3 gap-y-2 text-center text-[11px] uppercase tracking-label text-white/35">
               <span className="h-px w-10 bg-white/20" />
-              Hover to pause marquee · Click left/right buttons to scroll · {cats.reduce((n, c) => n + c.products.length, 0)} total services
+              Drag or swipe the row · Hover to pause · Arrows to step · {cats.reduce((n, c) => n + c.products.length, 0)} total services
               <span className="h-px w-10 bg-white/20" />
             </p>
           </Reveal>
@@ -129,42 +129,140 @@ function CategoryRow({
   onEnquire: (product: Product) => void;
 }) {
   const scrollRef = useRef<HTMLDivElement>(null);
-  const [isPaused, setIsPaused] = useState(false);
-  const pauseTimerRef = useRef<NodeJS.Timeout | null>(null);
+  const [hovered, setHovered] = useState(false);
+  const [onScreen, setOnScreen] = useState(true);
+  const [dragging, setDragging] = useState(false);
+  const isPaused = hovered || !onScreen;
+  /* Wall-clock stamp; the drift stays off until the visitor stops steering. */
+  const resumeAtRef = useRef(0);
+  const dragRef = useRef({ active: false, startX: 0, startScroll: 0, moved: 0 });
+  /* Last position this component set itself. A scroll event landing on this
+     value is our own drift echoing back, not the visitor — without the check
+     the drift would hold itself off forever and the row never moves. */
+  const selfScrollRef = useRef(-1);
 
-  // Auto-scrolling marquee effect (pauses when user hovers or clicks buttons)
+  const holdOff = (ms: number) => {
+    resumeAtRef.current = performance.now() + ms;
+  };
+
+  /**
+   * The row is three identical copies of the product set, so subtracting one
+   * set width once past the second copy lands on pixel-identical content —
+   * the visitor never sees the wrap. The old code reset scrollLeft to 0 at the
+   * far end, which snapped the row back in plain sight.
+   */
+  const wrapScroll = (el: HTMLDivElement) => {
+    const set = el.scrollWidth / 3;
+    if (set <= 0) return;
+    if (el.scrollLeft >= set * 2) el.scrollLeft -= set;
+    else if (el.scrollLeft < 1) el.scrollLeft += set;
+    selfScrollRef.current = el.scrollLeft;
+  };
+
+  /* Auto-drift. requestAnimationFrame with a fractional accumulator, not a
+     setInterval stepping whole pixels — that was both jerky and frame-rate
+     dependent. */
   useEffect(() => {
-    if (isPaused) return;
-    const interval = setInterval(() => {
-      if (scrollRef.current) {
-        const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current;
-        if (scrollLeft + clientWidth >= scrollWidth - 10) {
-          scrollRef.current.scrollLeft = 0;
-        } else {
-          scrollRef.current.scrollLeft += 1;
-        }
+    const el = scrollRef.current;
+    if (!el) return;
+
+    let raf = 0;
+    let last = performance.now();
+    let carry = 0;
+    const SPEED = 62; // px per second
+
+    const tick = (now: number) => {
+      raf = requestAnimationFrame(tick);
+      const dt = Math.min(now - last, 64) / 1000;
+      last = now;
+
+      if (isPaused || dragRef.current.active || now < resumeAtRef.current) return;
+
+      carry += SPEED * dt;
+      const step = Math.floor(carry);
+      if (step >= 1) {
+        carry -= step;
+        el.scrollLeft += step;
+        selfScrollRef.current = el.scrollLeft;
+        wrapScroll(el);
       }
-    }, 28);
-    return () => clearInterval(interval);
+    };
+
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
   }, [isPaused]);
+
+  /* Idle while the row is off screen. */
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+    const io = new IntersectionObserver(([e]) => setOnScreen(e.isIntersecting), {
+      threshold: 0,
+    });
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+
+  /* Mouse drag. Touch already scrolls this container natively, so only the
+     mouse needs help — hijacking touch here would fight the browser. */
+  const onPointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
+    if (e.pointerType !== "mouse" || e.button !== 0) return;
+    const el = scrollRef.current;
+    if (!el) return;
+    dragRef.current = {
+      active: true,
+      startX: e.clientX,
+      startScroll: el.scrollLeft,
+      moved: 0,
+    };
+    setDragging(true);
+    el.setPointerCapture(e.pointerId);
+  };
+
+  const onPointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
+    const d = dragRef.current;
+    const el = scrollRef.current;
+    if (!d.active || !el) return;
+    const dx = e.clientX - d.startX;
+    d.moved = Math.max(d.moved, Math.abs(dx));
+    el.scrollLeft = d.startScroll - dx;
+    selfScrollRef.current = el.scrollLeft;
+    wrapScroll(el);
+    // wrapScroll may have shifted the origin under us; keep the grab anchored.
+    d.startScroll = el.scrollLeft + dx;
+  };
+
+  const endDrag = (e: React.PointerEvent<HTMLDivElement>) => {
+    const d = dragRef.current;
+    if (!d.active) return;
+    d.active = false;
+    setDragging(false);
+    holdOff(1500);
+    const el = scrollRef.current;
+    if (el?.hasPointerCapture(e.pointerId)) el.releasePointerCapture(e.pointerId);
+  };
+
+  /* A native swipe or trackpad scroll should also hold the drift off — but
+     only when the position is not the one the drift itself just wrote. */
+  const onManualScroll = () => {
+    const el = scrollRef.current;
+    if (!el || dragRef.current.active) return;
+    if (Math.abs(el.scrollLeft - selfScrollRef.current) < 1.5) return;
+    selfScrollRef.current = el.scrollLeft;
+    holdOff(1500);
+  };
 
   const handleScroll = (direction: "left" | "right", e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
 
     // Pause auto-marquee temporarily so it doesn't interrupt smooth button scroll
-    setIsPaused(true);
-    if (pauseTimerRef.current) clearTimeout(pauseTimerRef.current);
+    holdOff(3500);
 
     if (scrollRef.current) {
       const scrollAmount = direction === "left" ? -360 : 360;
       scrollRef.current.scrollBy({ left: scrollAmount, behavior: "smooth" });
     }
-
-    // Resume marquee after 3.5 seconds of inactivity
-    pauseTimerRef.current = setTimeout(() => {
-      setIsPaused(false);
-    }, 3500);
   };
 
   // Triple the products array to ensure plenty of continuous scroll length
@@ -224,13 +322,33 @@ function CategoryRow({
       {/* Marquee Track with Left & Right scroll interaction */}
       <div
         className="container relative mt-6 lg:mt-8"
-        onMouseEnter={() => setIsPaused(true)}
-        onMouseLeave={() => setIsPaused(false)}
+        onMouseEnter={() => setHovered(true)}
+        onMouseLeave={() => setHovered(false)}
       >
         <div
           ref={scrollRef}
-          className="flex gap-4 overflow-x-auto scroll-smooth pb-4 pt-1 lg:gap-5"
-          style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+          className={cn(
+            "flex gap-4 overflow-x-auto overscroll-x-contain pb-4 pt-1 lg:gap-5",
+            // scroll-smooth would fight the per-frame drift; the buttons ask
+            // for smooth behaviour themselves via scrollBy.
+            dragging ? "cursor-grabbing select-none" : "cursor-grab",
+          )}
+          style={{ scrollbarWidth: "none", msOverflowStyle: "none", touchAction: "pan-y" }}
+          onPointerDown={onPointerDown}
+          onPointerMove={onPointerMove}
+          onPointerUp={endDrag}
+          onPointerCancel={endDrag}
+          onScroll={onManualScroll}
+          onDragStart={(e) => e.preventDefault()}
+          /* Swallow the click that ends a real drag, so letting go over a card
+             does not open it. A plain click never moves far enough. */
+          onClickCapture={(e) => {
+            if (dragRef.current.moved > 6) {
+              e.preventDefault();
+              e.stopPropagation();
+              dragRef.current.moved = 0;
+            }
+          }}
         >
           {marqueeProducts.map((product, pIdx) => (
             <ProductCard

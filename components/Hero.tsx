@@ -5,6 +5,7 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import { VideoBackground } from "@/components/VideoBackground";
 import { Button } from "@/components/ui/Button";
 import { company, media } from "@/lib/site";
+import { parallaxRange, useParallaxEnabled } from "@/lib/use-parallax";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
@@ -28,8 +29,9 @@ export function Hero({
     target: ref,
     offset: ["start start", "end start"],
   });
-  const mediaY = useTransform(scrollYProgress, [0, 1], ["0%", "22%"]);
-  const contentY = useTransform(scrollYProgress, [0, 1], ["0%", "-14%"]);
+  const parallax = useParallaxEnabled();
+  const mediaY = useTransform(scrollYProgress, [0, 1], parallaxRange(parallax, ["0%", "22%"], "0%"));
+  const contentY = useTransform(scrollYProgress, [0, 1], parallaxRange(parallax, ["0%", "-14%"], "0%"));
   const contentOpacity = useTransform(scrollYProgress, [0, 0.65], [1, 0]);
 
   return (

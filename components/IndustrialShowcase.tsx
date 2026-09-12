@@ -5,6 +5,7 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import { VideoBackground } from "@/components/VideoBackground";
 import { RevealHeading, Reveal } from "@/components/ui/Reveal";
 import { media } from "@/lib/site";
+import { parallaxRange, useParallaxEnabled } from "@/lib/use-parallax";
 
 const CAPABILITIES = [
   "Mechanical",
@@ -27,9 +28,12 @@ export function IndustrialShowcase() {
     offset: ["start end", "end start"],
   });
 
-  const y = useTransform(scrollYProgress, [0, 1], ["-14%", "14%"]);
-  const scale = useTransform(scrollYProgress, [0, 0.5, 1], [1.06, 1, 1.06]);
-  const textY = useTransform(scrollYProgress, [0, 1], ["18%", "-18%"]);
+  const parallax = useParallaxEnabled();
+  const y = useTransform(scrollYProgress, [0, 1], parallaxRange(parallax, ["-14%", "14%"], "0%"));
+  // Scaling a decoded video frame is the single most expensive thing on this
+  // page, so it stays pinned at 1 wherever parallax is off.
+  const scale = useTransform(scrollYProgress, [0, 0.5, 1], parallaxRange(parallax, [1.06, 1, 1.06], 1));
+  const textY = useTransform(scrollYProgress, [0, 1], parallaxRange(parallax, ["18%", "-18%"], "0%"));
 
   return (
     <section

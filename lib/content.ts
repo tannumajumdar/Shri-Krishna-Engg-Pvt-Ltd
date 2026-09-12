@@ -16,13 +16,43 @@ import * as fallback from "@/lib/site";
  * so the page always renders. Failures are logged, not surfaced.
  */
 
+/**
+ * A page render fires a dozen or so of these. When the database is unreachable
+ * every one of them waits out the connection-pool timeout independently, so a
+ * ten-second outage becomes a half-minute page and a screenful of identical
+ * stack traces. The first failure trips a short breaker: until it expires the
+ * rest return their static fallback immediately.
+ */
+const BREAKER_MS = Number(process.env.DB_BREAKER_MS ?? 5_000);
+let downUntil = 0;
+let reportedOutage = false;
+
+function markUp() {
+  downUntil = 0;
+  reportedOutage = false;
+}
+
+function markDown(label: string, err: unknown) {
+  downUntil = Date.now() + BREAKER_MS;
+  // Full detail once per outage; a single line for everything after it, so the
+  // real cause stays readable instead of scrolling past twenty copies.
+  if (reportedOutage) {
+    console.error(`[content] ${label} fell back to static (database still down)`);
+    return;
+  }
+  reportedOutage = true;
+  console.error(`[content] ${label} fell back to static:`, err);
+}
+
 async function safe<T>(fn: () => Promise<T>, fb: T, label: string): Promise<T> {
+  if (Date.now() < downUntil) return fb;
   try {
     const value = await fn();
+    markUp();
     if (Array.isArray(value) && value.length === 0) return fb;
     return value ?? fb;
   } catch (err) {
-    console.error(`[content] ${label} fell back to static:`, err);
+    markDown(label, err);
     return fb;
   }
 }

@@ -1,3 +1,4 @@
+import { existsSync } from "node:fs";
 import { PrismaClient } from "@/lib/generated/prisma/client";
 import { PrismaMariaDb } from "@prisma/adapter-mariadb";
 
@@ -15,6 +16,15 @@ import { PrismaMariaDb } from "@prisma/adapter-mariadb";
  * open a new connection pool on every edit.
  */
 
+const warned = new Set<string>();
+
+/** connectionConfig() runs per pool creation; do not repeat ourselves. */
+function warnOnce(message: string) {
+  if (warned.has(message)) return;
+  warned.add(message);
+  console.warn(message);
+}
+
 /**
  * Turn DATABASE_URL into the discrete fields the adapter wants. An empty
  * password (local root) is legitimate, so treat "" as a real value.
@@ -24,6 +34,13 @@ import { PrismaMariaDb } from "@prisma/adapter-mariadb";
  * timeout rather than a refusal, since nothing ever answers. Passing
  * `?socket=/path/to/mysql.sock` in DATABASE_URL (or setting MYSQL_SOCKET_PATH)
  * switches the driver to that socket; host/port are then irrelevant.
+ *
+ * That socket path is host-specific, and the same DATABASE_URL gets used on a
+ * developer's Windows machine where `/var/lib/mysql/mysql.sock` cannot exist.
+ * A missing socket does not fail fast — the pool just retries until it times
+ * out, so every single query costs the full acquire timeout. So the path is
+ * only honoured if it is actually there; otherwise we fall back to host/port,
+ * which the server also accepts.
  */
 export function connectionConfig() {
   const url = process.env.DATABASE_URL;
@@ -32,11 +49,19 @@ export function connectionConfig() {
   }
 
   const parsed = new URL(url);
-  const socketPath =
+  const configuredSocket =
     parsed.searchParams.get("socket") ??
     parsed.searchParams.get("socketPath") ??
     process.env.MYSQL_SOCKET_PATH ??
     null;
+
+  const socketPath = configuredSocket && existsSync(configuredSocket) ? configuredSocket : null;
+  if (configuredSocket && !socketPath) {
+    warnOnce(
+      `[prisma] socket ${configuredSocket} does not exist on this host — ` +
+        `connecting over ${parsed.hostname}:${parsed.port || 3306} instead.`,
+    );
+  }
 
   const common = {
     user: decodeURIComponent(parsed.username),
@@ -49,6 +74,15 @@ export function connectionConfig() {
     connectionLimit: Number(process.env.DB_POOL_LIMIT ?? 2),
     // Do not sit on idle connections that count against the same cap.
     idleTimeout: 30,
+    // A page render issues a dozen or so queries. With an unreachable database
+    // the default 10s acquire timeout turns that into a half-minute page, so
+    // give up quickly in development; production keeps the headroom because a
+    // pool of 2 legitimately makes callers queue.
+    acquireTimeout: Number(
+      process.env.DB_ACQUIRE_TIMEOUT_MS ??
+        (process.env.NODE_ENV === "production" ? 10_000 : 3_000),
+    ),
+    connectTimeout: Number(process.env.DB_CONNECT_TIMEOUT_MS ?? 5_000),
     allowPublicKeyRetrieval: true,
   };
 

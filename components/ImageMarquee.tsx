@@ -41,6 +41,13 @@ const RATIO_CLASS: Record<NonNullable<MarqueeItem["ratio"]>, string> = {
   wide: "aspect-[16/10]",
 };
 
+/** How quickly a flick dies away, per second. 0.06 keeps roughly a second of glide. */
+const FRICTION = 0.06;
+/** Below this the throw is over and the automatic drift takes back over. */
+const MIN_FLICK = 12;
+/** Grace period after the pointer lifts, so the row does not lurch. */
+const RESUME_DELAY = 900;
+
 type ImageMarqueeProps = {
   items: MarqueeItem[];
   /** Travel in px/second at desktop width. Scaled down on small screens. */
@@ -57,7 +64,7 @@ type ImageMarqueeProps = {
 
 export function ImageMarquee({
   items,
-  speed = 55,
+  speed = 78,
   direction = "left",
   pauseOnHover = true,
   heightClass = "h-[210px] sm:h-[260px] lg:h-[320px]",
@@ -116,7 +123,7 @@ export function ImageMarquee({
 
     const sync = () => {
       setReduceMotion(motionMq.matches);
-      setSpeedScale(smallMq.matches ? 0.6 : midMq.matches ? 0.8 : 1);
+      setSpeedScale(smallMq.matches ? 0.7 : midMq.matches ? 0.85 : 1);
     };
 
     sync();
@@ -141,14 +148,82 @@ export function ImageMarquee({
     return () => io.disconnect();
   }, []);
 
+  /* --- manual scrolling -------------------------------------------------- */
+  /* The row is a transform loop, not a scroll container, so dragging has to
+     move `baseX` directly. Kept in a ref: a pointermove fires far too often to
+     drive React state, and none of it needs to re-render. */
+  const drag = useRef({ active: false, lastX: 0, lastT: 0, velocity: 0, resumeAt: 0 });
+  const [dragging, setDragging] = useState(false);
+
+  const onPointerDown = (e: React.PointerEvent) => {
+    // Leave the middle/right buttons alone, and never swallow a link click.
+    if (e.button !== 0) return;
+    drag.current = {
+      active: true,
+      lastX: e.clientX,
+      lastT: performance.now(),
+      velocity: 0,
+      resumeAt: 0,
+    };
+    setDragging(true);
+    e.currentTarget.setPointerCapture(e.pointerId);
+  };
+
+  const onPointerMove = (e: React.PointerEvent) => {
+    const d = drag.current;
+    if (!d.active) return;
+    const now = performance.now();
+    const dx = e.clientX - d.lastX;
+    const dt = Math.max(now - d.lastT, 1);
+    // px/second, smoothed a little so one jittery sample cannot fling the row.
+    d.velocity = d.velocity * 0.7 + ((dx / dt) * 1000) * 0.3;
+    d.lastX = e.clientX;
+    d.lastT = now;
+    baseX.set(baseX.get() + dx);
+  };
+
+  const endDrag = (e: React.PointerEvent) => {
+    const d = drag.current;
+    if (!d.active) return;
+    d.active = false;
+    d.resumeAt = performance.now() + RESUME_DELAY;
+    setDragging(false);
+    if (e.currentTarget.hasPointerCapture(e.pointerId)) {
+      e.currentTarget.releasePointerCapture(e.pointerId);
+    }
+  };
+
+  /* Trackpads and horizontal wheels nudge the row too — but only when the
+     gesture is actually sideways, so vertical page scrolling still works. */
+  const onWheel = (e: React.WheelEvent) => {
+    if (Math.abs(e.deltaX) <= Math.abs(e.deltaY)) return;
+    baseX.set(baseX.get() - e.deltaX);
+    drag.current.velocity = 0;
+    drag.current.resumeAt = performance.now() + RESUME_DELAY;
+  };
+
   /* --- the loop --------------------------------------------------------- */
   const paused = (pauseOnHover && hovered) || !onScreen || reduceMotion;
 
   useAnimationFrame((_, delta) => {
-    if (paused || period <= 0) return;
+    if (period <= 0) return;
     // Clamp the step: a backgrounded tab returns one huge delta, which would
     // otherwise teleport the row.
     const dt = Math.min(delta, 64) / 1000;
+    const d = drag.current;
+
+    if (d.active) return; // the pointer is driving
+
+    // Let a flick coast out before the automatic drift resumes.
+    if (Math.abs(d.velocity) > MIN_FLICK) {
+      baseX.set(baseX.get() + d.velocity * dt);
+      d.velocity *= Math.pow(FRICTION, dt);
+      return;
+    }
+    d.velocity = 0;
+
+    // framer's `time` is loop-relative; resumeAt is a wall clock stamp.
+    if (paused || performance.now() < d.resumeAt) return;
     const dir = direction === "left" ? -1 : 1;
     baseX.set(baseX.get() + dir * speed * speedScale * dt);
   });
@@ -179,9 +254,30 @@ export function ImageMarquee({
   return (
     <div
       ref={viewportRef}
-      className={cn("mask-edges relative overflow-hidden", className)}
+      className={cn(
+        "mask-edges relative overflow-hidden select-none",
+        dragging ? "cursor-grabbing" : "cursor-grab",
+        className,
+      )}
+      /* pan-y hands vertical page scrolling back to the browser, so a swipe
+         down the page still works while a sideways swipe drags the row. */
+      style={{ touchAction: "pan-y" }}
       onPointerEnter={() => setHovered(true)}
       onPointerLeave={() => setHovered(false)}
+      onPointerDown={onPointerDown}
+      onPointerMove={onPointerMove}
+      onPointerUp={endDrag}
+      onPointerCancel={endDrag}
+      onWheel={onWheel}
+      /* Otherwise the browser starts its own image-drag mid-swipe. */
+      onDragStart={(e) => e.preventDefault()}
+      /* A drag that ends on a tile must not also open its link. */
+      onClickCapture={(e) => {
+        if (Math.abs(drag.current.velocity) > MIN_FLICK) {
+          e.preventDefault();
+          e.stopPropagation();
+        }
+      }}
     >
       <motion.div
         ref={trackRef}

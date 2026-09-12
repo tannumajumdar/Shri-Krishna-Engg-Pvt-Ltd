@@ -4,6 +4,7 @@ import { useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { Mail, MapPin, Phone, type LucideIcon } from "lucide-react";
 import { VideoBackground } from "@/components/VideoBackground";
+import { parallaxRange, useParallaxEnabled } from "@/lib/use-parallax";
 import { Button } from "@/components/ui/Button";
 import { Reveal, RevealHeading } from "@/components/ui/Reveal";
 import { contact, media } from "@/lib/site";
@@ -50,7 +51,8 @@ export function CTA({
     target: ref,
     offset: ["start end", "end start"],
   });
-  const y = useTransform(scrollYProgress, [0, 1], ["-12%", "12%"]);
+  const parallax = useParallaxEnabled();
+  const y = useTransform(scrollYProgress, [0, 1], parallaxRange(parallax, ["-12%", "12%"], "0%"));
 
   return (
     <section

@@ -59,13 +59,13 @@ export function Infrastructure({ items }: { items?: Facility[] } = {}) {
           <ImageMarquee
             items={topRow}
             direction="left"
-            speed={38}
+            speed={56}
             heightClass="h-[190px] sm:h-[240px] lg:h-[300px]"
           />
           <ImageMarquee
             items={bottomRow}
             direction="right"
-            speed={30}
+            speed={45}
             heightClass="h-[150px] sm:h-[190px] lg:h-[240px]"
           />
         </div>
