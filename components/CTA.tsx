@@ -3,7 +3,7 @@
 import { useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { Phone } from "lucide-react";
-import { VideoBackground } from "@/components/VideoBackground";
+import { MediaImage } from "@/components/ui/MediaImage";
 import { parallaxRange, useParallaxEnabled } from "@/lib/use-parallax";
 import { Button } from "@/components/ui/Button";
 import { Reveal } from "@/components/ui/Reveal";
@@ -12,10 +12,18 @@ import { contact, media } from "@/lib/site";
 /** Set down the right edge — what the work is meant to leave behind. */
 const OUTCOMES = ["Safer", "Stronger", "Cleaner", "Greener", "Together"];
 
+/**
+ * The closing band.
+ *
+ * A still photograph, not footage: the design frames this as one held image of
+ * a crew on site, and a moving background under a two-word headline competes
+ * with it. The image comes from the CTA media section, so replacing it is an
+ * upload in /admin rather than a code change.
+ */
 export function CTA({
-  video,
+  image,
 }: {
-  video?: { src: string; poster: string };
+  image?: string;
 } = {}) {
   const ref = useRef<HTMLElement>(null);
 
@@ -30,17 +38,29 @@ export function CTA({
     <section id="contact" ref={ref} className="on-dark relative overflow-hidden bg-navy-950">
       {/* Over-sized so the parallax shift never exposes a plate edge. */}
       <motion.div style={{ y }} className="absolute -inset-y-[12%] inset-x-0">
-        <VideoBackground
-          src={video?.src ?? media.ctaVideo}
-          poster={video?.poster ?? media.ctaPoster}
-          overlayOpacity={0.72}
-          objectPosition="object-[50%_50%]"
-          grid
+        <MediaImage
+          src={image || media.ctaPoster}
+          alt=""
+          className="h-full w-full"
+          /* Framed low and right: the stock plant shot this falls back to is
+             mostly sky at the top, and the structure only enters at the foot.
+             A photograph uploaded for this section should be framed centre. */
+          imgClassName="object-[62%_78%]"
+          sizes="100vw"
         />
+
+        {/* Contrast stack, heavier than elsewhere: the headline sits directly
+            over the photograph with no plate behind it. */}
+        <div className="absolute inset-0 bg-navy-950/70" aria-hidden="true" />
+        <div
+          className="absolute inset-0 bg-gradient-to-b from-navy-950/85 via-transparent to-navy-950/90"
+          aria-hidden="true"
+        />
+        <div className="absolute inset-0 bg-grid-fine opacity-[0.35]" aria-hidden="true" />
       </motion.div>
 
       <div
-        className="absolute inset-0 bg-gradient-to-r from-navy-950/90 via-navy-950/40 to-transparent"
+        className="absolute inset-0 bg-gradient-to-r from-navy-950/92 via-navy-950/45 to-transparent"
         aria-hidden="true"
       />
 

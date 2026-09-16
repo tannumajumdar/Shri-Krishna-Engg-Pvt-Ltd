@@ -13,7 +13,7 @@ import { Footer } from "@/components/Footer";
 import { WhatsAppFloat } from "@/components/WhatsAppFloat";
 import { media as staticMedia } from "@/lib/site";
 import {
-  getSectionVideo,
+  getSectionImages,
   getProductCategories,
   getIndustries,
   getInfrastructure,
@@ -36,8 +36,8 @@ export const revalidate = 60;
 
 export default async function Page() {
   const [
-    heroVideo,
-    ctaVideo,
+    heroSlides,
+    ctaImage,
     productCategories,
     industries,
     infrastructure,
@@ -46,8 +46,8 @@ export default async function Page() {
     contact,
     socials,
   ] = await Promise.all([
-    getSectionVideo("HERO", { src: staticMedia.heroVideo, poster: staticMedia.heroPoster }),
-    getSectionVideo("CTA", { src: staticMedia.ctaVideo, poster: staticMedia.ctaPoster }),
+    getSectionImages("HERO", staticMedia.heroSlides),
+    getSectionImages("CTA", [staticMedia.ctaPoster]),
     getProductCategories(),
     getIndustries(),
     getInfrastructure(),
@@ -61,7 +61,7 @@ export default async function Page() {
     <>
       <Navbar />
       <main id="main">
-        <Hero video={heroVideo} />
+        <Hero slides={heroSlides} />
         <StatsBar items={statistics} />
         <About stats={statistics} />
         <Capabilities categories={productCategories} />
@@ -70,7 +70,7 @@ export default async function Page() {
         <FeaturedProjects items={infrastructure} />
         <Infrastructure items={infrastructure} />
         <WhyChooseUs items={features} />
-        <CTA video={ctaVideo} />
+        <CTA image={ctaImage[0]} />
       </main>
       <Footer contact={contact} socials={socials} />
       <WhatsAppFloat />

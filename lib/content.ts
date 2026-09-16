@@ -92,6 +92,23 @@ export async function getSectionVideo(
   return { src: video.fileUrl, poster: video.poster ?? fb.poster };
 }
 
+/**
+ * Still imagery for a section, in order.
+ *
+ * Prefers IMAGE rows, so a photograph uploaded in /admin -> Media under the
+ * section name appears with no code change. Falls back to the poster frame of
+ * any video already on that section, and then to the supplied stills — which
+ * is what a fresh clone with no database gets.
+ */
+export async function getSectionImages(section: string, fb: readonly string[]) {
+  const items = await getMedia(section);
+  const images = items.filter((m) => m.type === "IMAGE").map((m) => m.fileUrl);
+  if (images.length) return images;
+
+  const poster = items.find((m) => m.type === "VIDEO")?.poster;
+  return poster ? [poster, ...fb.filter((s) => s !== poster)] : [...fb];
+}
+
 /* ------------------------------- products -------------------------------- */
 
 export async function getProductCategories() {

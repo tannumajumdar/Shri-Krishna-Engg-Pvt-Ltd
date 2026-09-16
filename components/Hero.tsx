@@ -19,11 +19,12 @@ const PILLARS = ["PEOPLE", "EXPERIENCE", "EXECUTION", "RESULTS"];
 const DWELL = 6500;
 
 export function Hero({
-  /** Kept for API compatibility with the page's DB-driven media; the hero is
-   *  a still carousel now, so only the poster is used, as slide one. */
-  video,
+  /** Stills to run through, in order. Supplied by the page from the HERO
+   *  media section, so uploading photographs in /admin changes the carousel
+   *  with no code edit. Falls back to the built-in set. */
+  slides: slidesProp,
 }: {
-  video?: { src: string; poster: string };
+  slides?: readonly string[];
 } = {}) {
   const ref = useRef<HTMLElement>(null);
 
@@ -37,10 +38,7 @@ export function Hero({
   const contentY = useTransform(scrollYProgress, [0, 1], parallaxRange(parallax, ["0%", "-12%"], "0%"));
   const contentOpacity = useTransform(scrollYProgress, [0, 0.7], [1, 0]);
 
-  /* A DB-managed poster, when there is one, takes slide one. */
-  const slides = video?.poster
-    ? [video.poster, ...media.heroSlides.filter((s) => s !== video.poster)].slice(0, 3)
-    : media.heroSlides;
+  const slides = (slidesProp?.length ? slidesProp : media.heroSlides).slice(0, 3);
 
   const [index, setIndex] = useState(0);
   const [paused, setPaused] = useState(false);
