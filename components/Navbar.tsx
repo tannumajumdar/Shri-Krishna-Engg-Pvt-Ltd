@@ -25,9 +25,11 @@ export function Navbar() {
   /* Transparent over the hero, solid once the hero starts leaving. */
   useMotionValueEvent(scrollY, "change", (v) => setSolid(v > 80));
 
-  /* Highlight whichever section owns the upper third of the viewport. */
+  /* Highlight whichever section owns the upper third of the viewport. Two
+     labels can share an anchor (Careers and Contact both land on #contact),
+     so the ids are de-duplicated before they are observed. */
   useEffect(() => {
-    const ids = navLinks.map((l) => l.href.slice(1));
+    const ids = [...new Set(navLinks.map((l) => l.href.slice(1)))];
     const sections = ids
       .map((id) => document.getElementById(id))
       .filter((el): el is HTMLElement => Boolean(el));
@@ -83,7 +85,7 @@ export function Navbar() {
 
           {/* ---------------------------- desktop nav ---------------------- */}
           <nav
-            className="hidden items-center gap-1 lg:flex"
+            className="hidden items-center gap-0.5 xl:flex"
             aria-label="Primary"
           >
             {navLinks.map((link) => {
@@ -91,11 +93,11 @@ export function Navbar() {
               const isActive = active === id;
               return (
                 <a
-                  key={link.href}
+                  key={link.label}
                   href={link.href}
                   aria-current={isActive ? "true" : undefined}
                   className={cn(
-                    "relative rounded-full px-4 py-2 text-[13.5px] font-medium transition-colors duration-300",
+                    "relative rounded-md px-3 py-2 text-[12.5px] font-medium transition-colors duration-300",
                     onDark
                       ? isActive
                         ? "text-white"
@@ -136,7 +138,7 @@ export function Navbar() {
               className="hidden sm:inline-flex"
               withArrow
             >
-              Enquire Now
+              Get A Quote
             </Button>
 
             <button
@@ -145,7 +147,7 @@ export function Navbar() {
               aria-label="Open menu"
               aria-expanded={open}
               className={cn(
-                "grid h-11 w-11 place-items-center rounded-full border transition-colors duration-300 lg:hidden",
+                "grid h-11 w-11 place-items-center rounded-md border transition-colors duration-300 xl:hidden",
                 onDark
                   ? "border-white/25 text-white hover:bg-white/10"
                   : "border-hairline text-ink hover:bg-surface-2",
@@ -170,7 +172,7 @@ export function Navbar() {
       <AnimatePresence>
         {open && (
           <motion.div
-            className="fixed inset-0 z-[60] lg:hidden"
+            className="fixed inset-0 z-[60] xl:hidden"
             initial="hidden"
             animate="show"
             exit="hidden"
@@ -216,7 +218,7 @@ export function Navbar() {
               <div className="relative flex flex-1 flex-col justify-center gap-1 px-6">
                 {navLinks.map((link, i) => (
                   <motion.a
-                    key={link.href}
+                    key={link.label}
                     href={link.href}
                     onClick={() => setOpen(false)}
                     initial={{ opacity: 0, x: 24 }}
@@ -247,7 +249,7 @@ export function Navbar() {
                   withArrow
                   onClick={() => setOpen(false)}
                 >
-                  Enquire Now
+                  Get A Quote
                 </Button>
                 <div className="space-y-1 text-[13px] text-white/55">
                   <a

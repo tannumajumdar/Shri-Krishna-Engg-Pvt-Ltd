@@ -77,10 +77,11 @@ export const socials = [
 export const navLinks = [
   { label: "Home", href: "#home" },
   { label: "About", href: "#about" },
-  { label: "Products", href: "#products" },
+  { label: "Capabilities", href: "#capabilities" },
   { label: "Industries", href: "#industries" },
+  { label: "Projects", href: "#projects" },
   { label: "Infrastructure", href: "#infrastructure" },
-  { label: "Quality", href: "#quality" },
+  { label: "Careers", href: "#contact" },
   { label: "Contact", href: "#contact" },
 ] as const;
 
@@ -95,6 +96,12 @@ export const media = {
 
   heroVideo: "/media/hero-video.mp4",
   heroPoster: "/media/hero-poster.jpg",
+  /* The hero runs as a three-slide still carousel. Order is the slide order. */
+  heroSlides: [
+    "/media/hero-poster.jpg",
+    "/media/industry-poster.jpg",
+    "/media/products-poster.jpg",
+  ],
   about: "/media/about.jpg",
   aboutSecondary: "/media/about-secondary.jpg",
   productsVideo: "/media/products-video.mp4",

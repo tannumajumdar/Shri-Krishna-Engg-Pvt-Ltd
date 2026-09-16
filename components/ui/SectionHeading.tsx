@@ -40,7 +40,17 @@ export function SectionHeading({
     >
       <div className={align === "center" ? "" : "max-w-2xl"}>
         <Reveal>
-          <p className={cn("eyebrow", dark ? "text-white/50" : "text-ink-faint")}>
+          <p
+            className={cn(
+              "flex items-center gap-3 text-[11px] font-semibold uppercase tracking-label",
+              align === "center" && "justify-center",
+              dark ? "text-white/50" : "text-ink-faint",
+            )}
+          >
+            <span
+              className={cn("h-px w-10", dark ? "bg-accent-400" : "bg-accent-500")}
+              aria-hidden="true"
+            />
             {eyebrow}
           </p>
         </Reveal>
@@ -50,7 +60,7 @@ export function SectionHeading({
           delay={0.06}
           text={title}
           className={cn(
-            "mt-6 font-display text-display-sm font-light",
+            "mt-5 font-display text-display-sm font-semibold uppercase leading-[1.05] tracking-tight",
             dark ? "text-white" : "text-ink",
           )}
         />
@@ -59,7 +69,7 @@ export function SectionHeading({
           <Reveal delay={0.14}>
             <p
               className={cn(
-                "mt-6 max-w-xl text-pretty text-[15px] leading-relaxed",
+                "mt-6 max-w-xl text-pretty text-[13.5px] leading-relaxed",
                 align === "center" && "mx-auto",
                 dark ? "text-white/60" : "text-ink-muted",
               )}

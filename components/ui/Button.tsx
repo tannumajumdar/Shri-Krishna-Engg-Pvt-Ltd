@@ -8,7 +8,7 @@ type Variant = "solid" | "outline" | "light" | "ghost";
 type Size = "sm" | "md" | "lg";
 
 const base =
-  "group/btn relative inline-flex items-center justify-center gap-2.5 overflow-hidden rounded-full font-medium " +
+  "group/btn relative inline-flex items-center justify-center gap-2.5 overflow-hidden rounded-md font-medium " +
   "transition-[color,background-color,border-color,box-shadow,transform] duration-500 ease-brand " +
   "active:scale-[0.985] disabled:pointer-events-none disabled:opacity-50";
 

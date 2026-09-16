@@ -1,12 +1,13 @@
 import { Navbar } from "@/components/Navbar";
 import { Hero } from "@/components/Hero";
+import { StatsBar } from "@/components/StatsBar";
 import { About } from "@/components/About";
-import { ProductShowcase } from "@/components/ProductShowcase";
-import { IndustrialShowcase } from "@/components/IndustrialShowcase";
+import { Capabilities } from "@/components/Capabilities";
+import { ExecutionProcess } from "@/components/ExecutionProcess";
 import { Industries } from "@/components/Industries";
+import { FeaturedProjects } from "@/components/FeaturedProjects";
 import { Infrastructure } from "@/components/Infrastructure";
 import { WhyChooseUs } from "@/components/WhyChooseUs";
-import { QualitySection } from "@/components/QualitySection";
 import { CTA } from "@/components/CTA";
 import { Footer } from "@/components/Footer";
 import { WhatsAppFloat } from "@/components/WhatsAppFloat";
@@ -18,7 +19,6 @@ import {
   getInfrastructure,
   getStatistics,
   getFeatures,
-  getQualityPoints,
   getContact,
   getSocialLinks,
 } from "@/lib/content";
@@ -37,28 +37,22 @@ export const revalidate = 60;
 export default async function Page() {
   const [
     heroVideo,
-    productsVideo,
-    qualityVideo,
     ctaVideo,
     productCategories,
     industries,
     infrastructure,
     statistics,
     features,
-    qualityPoints,
     contact,
     socials,
   ] = await Promise.all([
     getSectionVideo("HERO", { src: staticMedia.heroVideo, poster: staticMedia.heroPoster }),
-    getSectionVideo("PRODUCTS", { src: staticMedia.productsVideo, poster: staticMedia.productsPoster }),
-    getSectionVideo("QUALITY", { src: staticMedia.qualityVideo, poster: staticMedia.qualityPoster }),
     getSectionVideo("CTA", { src: staticMedia.ctaVideo, poster: staticMedia.ctaPoster }),
     getProductCategories(),
     getIndustries(),
     getInfrastructure(),
     getStatistics(),
     getFeatures(),
-    getQualityPoints(),
     getContact(),
     getSocialLinks(),
   ]);
@@ -68,17 +62,14 @@ export default async function Page() {
       <Navbar />
       <main id="main">
         <Hero video={heroVideo} />
+        <StatsBar items={statistics} />
         <About stats={statistics} />
-        <ProductShowcase
-          categories={productCategories}
-          video={productsVideo}
-          whatsapp={contact.whatsapp}
-        />
-        <IndustrialShowcase />
+        <Capabilities categories={productCategories} />
+        <ExecutionProcess />
         <Industries items={industries} />
+        <FeaturedProjects items={infrastructure} />
         <Infrastructure items={infrastructure} />
         <WhyChooseUs items={features} />
-        <QualitySection points={qualityPoints} video={qualityVideo} />
         <CTA video={ctaVideo} />
       </main>
       <Footer contact={contact} socials={socials} />

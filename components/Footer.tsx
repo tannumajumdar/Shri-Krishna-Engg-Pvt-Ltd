@@ -1,17 +1,15 @@
 "use client";
 
-import { ArrowUp, LogIn, Mail, MapPin, Phone } from "lucide-react";
+import { LogIn, Mail, MapPin, Phone } from "lucide-react";
+import { Button } from "@/components/ui/Button";
 import { Logo } from "@/components/ui/Logo";
 import { SocialIcon, type SocialName } from "@/components/ui/SocialIcon";
 import {
   company,
   contact,
-  navLinks,
-  products,
   productCategories,
   socials,
 } from "@/lib/site";
-import { slugify } from "@/lib/utils";
 
 type FooterContact = {
   address: readonly string[];
@@ -22,6 +20,16 @@ type FooterContact = {
   hours: string;
 };
 type FooterSocial = { label: string; href: string; icon: string };
+
+/** Company column. Careers and the journey pages are anchors for now. */
+const COMPANY_LINKS = [
+  { label: "About Us", href: "#about" },
+  { label: "Leadership", href: "#about" },
+  { label: "Our Journey", href: "#about" },
+  { label: "Quality & Safety", href: "#why" },
+  { label: "Careers", href: "#contact" },
+  { label: "Contact", href: "#contact" },
+];
 
 export function Footer({
   contact: contactProp,
@@ -36,10 +44,7 @@ export function Footer({
 
   return (
     <footer className="on-dark relative overflow-hidden border-t border-white/10 bg-navy-950 text-white">
-      <div
-        className="absolute inset-0 bg-grid-fine bg-grid-fine opacity-20"
-        aria-hidden="true"
-      />
+      <div className="absolute inset-0 bg-grid-fine opacity-20" aria-hidden="true" />
 
       <div className="container relative">
         {/* ------------------------------ main --------------------------- */}
@@ -48,10 +53,8 @@ export function Footer({
           <div className="lg:col-span-4">
             <Logo onDark />
 
-            <p className="mt-7 max-w-xs text-pretty text-[13.5px] leading-relaxed text-white/50">
-              Established in 2006, delivering mechanical, fabrication, erection,
-              civil and transportation services for India&apos;s heavy industry —
-              executed by our own crews from our base at BALCO, Korba.
+            <p className="mt-6 text-[10px] font-semibold uppercase tracking-label text-white/35">
+              Engineering for a stronger tomorrow
             </p>
 
             <ul className="mt-8 flex items-center gap-2.5">
@@ -60,7 +63,7 @@ export function Footer({
                   <a
                     href={social.href}
                     aria-label={social.label}
-                    className="grid h-10 w-10 place-items-center rounded-full border border-white/15 text-white/60 transition-all duration-500 ease-brand hover:-translate-y-0.5 hover:border-white/40 hover:bg-white/10 hover:text-white"
+                    className="grid h-9 w-9 place-items-center rounded-md border border-white/15 text-white/60 transition-all duration-500 ease-brand hover:-translate-y-0.5 hover:border-accent-400/60 hover:bg-white/10 hover:text-accent-400"
                   >
                     <SocialIcon name={social.icon as SocialName} className="h-4 w-4" />
                   </a>
@@ -69,24 +72,24 @@ export function Footer({
             </ul>
           </div>
 
-          {/* quick links */}
-          <nav className="lg:col-span-2" aria-label="Quick links">
+          {/* company */}
+          <nav className="lg:col-span-2" aria-label="Company">
             <h2 className="text-[10px] font-semibold uppercase tracking-label text-white/35">
               Company
             </h2>
             <ul className="mt-6 space-y-3">
-              {navLinks.map((link) => (
-                <li key={link.href}>
+              {COMPANY_LINKS.map((link) => (
+                <li key={link.label}>
                   <FooterLink href={link.href}>{link.label}</FooterLink>
                 </li>
               ))}
             </ul>
           </nav>
 
-          {/* services */}
-          <nav className="lg:col-span-3" aria-label="Services">
+          {/* capabilities */}
+          <nav className="lg:col-span-3" aria-label="Our capabilities">
             <h2 className="text-[10px] font-semibold uppercase tracking-label text-white/35">
-              Services
+              Our Capabilities
             </h2>
             <ul className="mt-6 space-y-3">
               {productCategories.map((cat) => (
@@ -100,17 +103,17 @@ export function Footer({
           {/* contact */}
           <div className="lg:col-span-3">
             <h2 className="text-[10px] font-semibold uppercase tracking-label text-white/35">
-              Contact
+              Contact Us
             </h2>
 
-            <address className="mt-6 space-y-5 not-italic">
+            <address className="mt-6 space-y-4 not-italic">
               <div className="flex gap-3">
                 <MapPin
-                  className="mt-0.5 h-4 w-4 shrink-0 text-white/35"
+                  className="mt-0.5 h-4 w-4 shrink-0 text-accent-400"
                   strokeWidth={1.6}
                   aria-hidden="true"
                 />
-                <p className="text-[13.5px] leading-relaxed text-white/55">
+                <p className="text-[13px] leading-relaxed text-white/55">
                   {_contact.address.map((line) => (
                     <span key={line} className="block">
                       {line}
@@ -121,13 +124,13 @@ export function Footer({
 
               <div className="flex items-center gap-3">
                 <Phone
-                  className="h-4 w-4 shrink-0 text-white/35"
+                  className="h-4 w-4 shrink-0 text-accent-400"
                   strokeWidth={1.6}
                   aria-hidden="true"
                 />
                 <a
                   href={_contact.phoneHref}
-                  className="text-[13.5px] text-white/55 transition-colors hover:text-white"
+                  className="text-[13px] text-white/55 transition-colors hover:text-white"
                 >
                   {_contact.phone}
                 </a>
@@ -135,39 +138,43 @@ export function Footer({
 
               <div className="flex items-center gap-3">
                 <Mail
-                  className="h-4 w-4 shrink-0 text-white/35"
+                  className="h-4 w-4 shrink-0 text-accent-400"
                   strokeWidth={1.6}
                   aria-hidden="true"
                 />
                 <a
                   href={_contact.emailHref}
-                  className="break-all text-[13.5px] text-white/55 transition-colors hover:text-white"
+                  className="break-all text-[13px] text-white/55 transition-colors hover:text-white"
                 >
                   {_contact.email}
                 </a>
               </div>
             </address>
 
-            <p className="mt-6 text-[12.5px] text-white/35">{_contact.hours}</p>
+            <div className="mt-7">
+              <Button href="#contact" variant="light" size="sm" withArrow>
+                Get A Quote
+              </Button>
+            </div>
           </div>
         </div>
 
         {/* ----------------------------- bottom -------------------------- */}
-        <div className="flex flex-col items-center justify-between gap-5 border-t border-white/10 py-7 sm:flex-row">
-          <p className="text-center text-[12.5px] text-white/40 sm:text-left">
-            © {year} {company.legalName} All rights reserved.
+        <div className="flex flex-col items-center justify-between gap-4 border-t border-white/10 py-6 sm:flex-row">
+          <p className="text-center text-[12px] text-white/40 sm:text-left">
+            © {year} {company.legalName}. All rights reserved.
           </p>
 
-          <div className="flex items-center gap-5 sm:gap-6">
-            <p className="hidden text-[12.5px] text-white/30 sm:block">
-              CIN · Registered in India
+          <div className="flex items-center gap-5">
+            <p className="hidden text-[12px] text-white/30 sm:block">
+              Engineering a Stronger Tomorrow.
             </p>
 
-            {/* Staff sign-in. Moved down from the navbar, which should carry
-                only what a visitor came for. */}
+            {/* Staff sign-in. Lives here rather than the navbar, which should
+                carry only what a visitor came for. */}
             <a
               href="/admin"
-              className="group inline-flex items-center gap-1.5 text-[12.5px] font-medium text-white/45 transition-colors duration-300 hover:text-accent-400"
+              className="group inline-flex items-center gap-1.5 text-[12px] font-medium text-white/45 transition-colors duration-300 hover:text-accent-400"
             >
               <LogIn
                 className="h-3.5 w-3.5 text-accent-400 transition-transform duration-500 ease-brand group-hover:translate-x-0.5"
@@ -176,29 +183,8 @@ export function Footer({
               />
               Admin Login
             </a>
-
-            <a
-              href="#home"
-              aria-label="Back to top"
-              className="group grid h-10 w-10 place-items-center rounded-full border border-white/15 text-white/60 transition-all duration-500 ease-brand hover:border-white/40 hover:bg-white/10 hover:text-white"
-            >
-              <ArrowUp
-                className="h-4 w-4 transition-transform duration-500 ease-brand group-hover:-translate-y-0.5"
-                strokeWidth={1.75}
-              />
-            </a>
           </div>
         </div>
-      </div>
-
-      {/* oversized wordmark, sunk into the footer edge */}
-      <div
-        className="pointer-events-none select-none overflow-hidden"
-        aria-hidden="true"
-      >
-        <p className="mask-b translate-y-[18%] whitespace-nowrap text-center font-display text-[clamp(1.5rem,6.1vw,7.5rem)] font-semibold leading-none tracking-tightest text-white/[0.045]">
-          SHREE KRISHNA ENGINEERING BALCO
-        </p>
       </div>
     </footer>
   );
@@ -214,7 +200,7 @@ function FooterLink({
   return (
     <a
       href={href}
-      className="group inline-flex items-center gap-2 text-[13.5px] text-white/55 transition-colors duration-300 hover:text-white"
+      className="group inline-flex items-center gap-2 text-[13px] text-white/55 transition-colors duration-300 hover:text-white"
     >
       <span className="h-px w-0 bg-accent-400 transition-all duration-500 ease-brand group-hover:w-3" />
       <span className="transition-transform duration-500 ease-brand group-hover:translate-x-0.5">
