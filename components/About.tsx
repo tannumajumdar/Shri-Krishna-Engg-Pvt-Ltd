@@ -20,7 +20,7 @@ export function About({
    *  stats bar directly above this section. */
   stats,
 }: {
-  stats?: { value: number; suffix: string; label: string; detail?: string }[];
+  stats?: { value: string; suffix: string; label: string; detail?: string }[];
 } = {}) {
   void stats;
 

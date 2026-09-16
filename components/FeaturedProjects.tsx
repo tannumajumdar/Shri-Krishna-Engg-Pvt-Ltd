@@ -8,12 +8,18 @@ import { Reveal } from "@/components/ui/Reveal";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { facilities as staticFacilities, type Facility } from "@/lib/site";
 
-/** The trade each featured job sits under, in the order the tiles appear. */
-const DISCIPLINES = [
-  "Plant Operations & Maintenance",
-  "Mechanical & Structural Execution",
-  "Fabrication & Erection",
-  "Industrial Maintenance",
+/**
+ * The four jobs the design puts forward, in order.
+ *
+ * Only the first carries a site name over its discipline; the rest are named
+ * by the work itself, which is how the design reads them. Imagery comes from
+ * the facility record by position.
+ */
+const FEATURED: { title: string; sub?: string }[] = [
+  { title: "BALCO Rolled Products", sub: "Plant Operations & Maintenance" },
+  { title: "Mechanical & Structural Execution" },
+  { title: "Fabrication & Erection" },
+  { title: "Industrial Maintenance" },
 ];
 
 /**
@@ -66,11 +72,11 @@ export function FeaturedProjects({ items }: { items?: readonly Facility[] } = {}
         >
           {projects.map((project, i) => (
             <Reveal key={project.src} delay={i * 0.07} className="shrink-0">
-              <article className="group/proj relative w-[280px] overflow-hidden rounded-md sm:w-[320px]">
-                <div className="relative aspect-[4/5] overflow-hidden">
+              <article className="group/proj relative w-[260px] overflow-hidden rounded-md sm:w-[300px]">
+                <div className="relative aspect-[4/3] overflow-hidden">
                   <MediaImage
                     src={project.src}
-                    alt={project.caption}
+                    alt={FEATURED[i % FEATURED.length].title}
                     className="h-full w-full"
                     imgClassName="transition-transform duration-[1400ms] ease-brand group-hover/proj:scale-[1.07]"
                     sizes="320px"
@@ -85,12 +91,14 @@ export function FeaturedProjects({ items }: { items?: readonly Facility[] } = {}
                   />
 
                   <div className="absolute inset-x-0 bottom-0 p-5">
-                    <h3 className="text-pretty font-display text-[15px] font-semibold uppercase leading-snug tracking-tight text-white">
-                      {project.caption}
+                    <h3 className="text-pretty font-display text-[14px] font-semibold uppercase leading-snug tracking-tight text-white">
+                      {FEATURED[i % FEATURED.length].title}
                     </h3>
-                    <p className="mt-1.5 text-[12px] leading-snug text-white/55">
-                      {DISCIPLINES[i % DISCIPLINES.length]}
-                    </p>
+                    {FEATURED[i % FEATURED.length].sub && (
+                      <p className="mt-1.5 text-[11.5px] leading-snug text-white/55">
+                        {FEATURED[i % FEATURED.length].sub}
+                      </p>
+                    )}
                     <span
                       className="mt-3 block h-[2px] w-0 bg-accent-400 transition-all duration-700 ease-brand group-hover/proj:w-10"
                       aria-hidden="true"

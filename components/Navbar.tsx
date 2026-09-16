@@ -125,11 +125,10 @@ export function Navbar() {
 
           {/* ------------------------------ actions ------------------------ */}
           <div className="flex items-center gap-2 sm:gap-3">
-            <ThemeToggle onDark={onDark} className="h-10 w-10" />
-
-            {/* Admin sign-in used to sit here. It is for staff, not visitors,
-                so it lives in the footer now — the navbar is for the one thing
-                a visitor came to do. */}
+            {/* The design leaves this bar to the logo, the links and one
+                action. Admin sign-in moved to the footer; the theme toggle
+                lives in the mobile sheet, which is the only place the design
+                gives it room. */}
 
             <Button
               href="#contact"

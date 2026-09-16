@@ -186,14 +186,16 @@ export function getStatistics() {
         where: { status: "PUBLISHED" },
         orderBy: [{ sortOrder: "asc" }, { createdAt: "asc" }],
       });
+      // Kept as written, not coerced to a number: the bar shows figures like
+      // "24x7" alongside "250", and Number() would flatten those to 0.
       return rows.map((r) => ({
-        value: Number(r.value) || 0,
+        value: String(r.value ?? ""),
         suffix: r.suffix ?? "",
         label: r.title,
         detail: "",
       }));
     },
-    fallback.stats.map((s) => ({ ...s })),
+    fallback.stats.map((s) => ({ ...s, value: String(s.value) })),
     "statistics",
   );
 }

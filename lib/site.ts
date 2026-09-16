@@ -299,11 +299,13 @@ export const facilities: Facility[] = [
 
 /* --------------------------------- stats -------------------------------- */
 
+/* Values are strings, not numbers: the bar carries "24x7" next to "250", and
+   nothing here is ever used in arithmetic. */
 export const stats = [
-  { value: 19, suffix: "+", label: "Years of Excellence", detail: "Established in 2006" },
-  { value: 250, suffix: "+", label: "Skilled Workforce", detail: "Trades & operators" },
-  { value: 500, suffix: "+", label: "Projects Delivered", detail: "Mechanical to civil" },
-  { value: 6, suffix: "", label: "Service Verticals", detail: "Under one roof" },
+  { value: "19", suffix: "+", label: "Years Experience", detail: "Established in 2006" },
+  { value: "250", suffix: "+", label: "Skilled Workforce", detail: "Trades & operators" },
+  { value: "24×7", suffix: "", label: "Plant Support", detail: "Round-the-clock response" },
+  { value: "28", suffix: "", label: "Service Capabilities", detail: "Across six verticals" },
 ] as const;
 
 /* ------------------------------- features ------------------------------- */

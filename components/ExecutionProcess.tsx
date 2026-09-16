@@ -37,7 +37,11 @@ export function ExecutionProcess() {
         <SectionHeading
           eyebrow="Our Execution Process"
           title="From groundwork to running plant."
-          intro="One partner. One accountable team."
+          action={
+            <p className="text-[13.5px] leading-relaxed text-ink-faint lg:max-w-[16rem] lg:text-right">
+              One partner. One accountable team.
+            </p>
+          }
         />
 
         <div className="relative mt-16 lg:mt-20">

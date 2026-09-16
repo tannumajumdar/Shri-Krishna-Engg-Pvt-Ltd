@@ -4,7 +4,7 @@ import { CalendarClock, Users, Clock4, Layers } from "lucide-react";
 import { Reveal } from "@/components/ui/Reveal";
 import { stats as staticStats } from "@/lib/site";
 
-type Stat = { value: number; suffix: string; label: string; detail?: string };
+type Stat = { value: string; suffix: string; label: string; detail?: string };
 
 /* The bar carries four figures and no more — it sits directly under the hero,
    and a fifth would push the About heading below the fold on a laptop. */
