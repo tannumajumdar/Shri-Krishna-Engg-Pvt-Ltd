@@ -1,5 +1,6 @@
 "use client";
 
+import { usePathname } from "next/navigation";
 import { LogIn, Mail, MapPin, Phone } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { Logo } from "@/components/ui/Logo";
@@ -31,6 +32,17 @@ const COMPANY_LINKS = [
   { label: "Contact", href: "#contact" },
 ];
 
+/**
+ * Away from the landing page none of these sections exist, so a bare "#about"
+ * would scroll nowhere. Same rule as the navbar: prefix with "/" off-landing.
+ */
+function useSectionHref() {
+  const pathname = usePathname();
+  const onLanding = pathname === "/";
+  return (href: string) =>
+    !onLanding && href.startsWith("#") ? `/${href}` : href;
+}
+
 export function Footer({
   contact: contactProp,
   socials: socialsProp,
@@ -41,6 +53,7 @@ export function Footer({
   const _contact = contactProp ?? contact;
   const _socials = socialsProp ?? socials;
   const year = new Date().getFullYear();
+  const sectionHref = useSectionHref();
 
   return (
     <footer className="on-dark relative overflow-hidden border-t border-white/10 bg-navy-950 text-white">
@@ -80,7 +93,7 @@ export function Footer({
             <ul className="mt-6 space-y-3">
               {COMPANY_LINKS.map((link) => (
                 <li key={link.label}>
-                  <FooterLink href={link.href}>{link.label}</FooterLink>
+                  <FooterLink href={sectionHref(link.href)}>{link.label}</FooterLink>
                 </li>
               ))}
             </ul>
@@ -152,7 +165,7 @@ export function Footer({
             </address>
 
             <div className="mt-7">
-              <Button href="#contact" variant="light" size="sm" withArrow>
+              <Button href={sectionHref("#contact")} variant="light" size="sm" withArrow>
                 Get A Quote
               </Button>
             </div>

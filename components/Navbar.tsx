@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
 import {
   AnimatePresence,
   motion,
@@ -16,8 +17,23 @@ import { cn } from "@/lib/utils";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
+/**
+ * The navbar sits on the products pages too, where none of the landing-page
+ * sections exist — a bare "#about" there scrolls nowhere and the link reads as
+ * broken. Away from the landing page, section links become "/#about" so they
+ * navigate home first and land on the section.
+ */
+function useSectionHref() {
+  const pathname = usePathname();
+  const onLanding = pathname === "/";
+  return (href: string) =>
+    !onLanding && href.startsWith("#") ? `/${href}` : href;
+}
+
 export function Navbar() {
   const { scrollY, scrollYProgress } = useScroll();
+  const pathname = usePathname();
+  const sectionHref = useSectionHref();
   const [solid, setSolid] = useState(false);
   const [open, setOpen] = useState(false);
   const [active, setActive] = useState<string>("home");
@@ -27,8 +43,10 @@ export function Navbar() {
 
   /* Highlight whichever section owns the upper third of the viewport. Two
      labels can share an anchor (Careers and Contact both land on #contact),
-     so the ids are de-duplicated before they are observed. */
+     so the ids are de-duplicated before they are observed. Only the landing
+     page has these sections at all. */
   useEffect(() => {
+    if (pathname !== "/") return;
     const ids = [...new Set(navLinks.map((l) => l.href.slice(1)))];
     const sections = ids
       .map((id) => document.getElementById(id))
@@ -48,7 +66,7 @@ export function Navbar() {
 
     sections.forEach((s) => io.observe(s));
     return () => io.disconnect();
-  }, []);
+  }, [pathname]);
 
   /* Lock the page behind the mobile sheet. */
   useEffect(() => {
@@ -79,7 +97,7 @@ export function Navbar() {
         )}
       >
         <div className="container flex h-[var(--nav-h)] items-center justify-between gap-6">
-          <a href="#home" aria-label={`${company.name} — home`}>
+          <a href={sectionHref("#home")} aria-label={`${company.name} — home`}>
             <Logo onDark={onDark} />
           </a>
 
@@ -94,7 +112,7 @@ export function Navbar() {
               return (
                 <a
                   key={link.label}
-                  href={link.href}
+                  href={sectionHref(link.href)}
                   aria-current={isActive ? "true" : undefined}
                   className={cn(
                     "relative rounded-md px-3 py-2 text-[12.5px] font-medium transition-colors duration-300",
@@ -131,7 +149,7 @@ export function Navbar() {
                 gives it room. */}
 
             <Button
-              href="#contact"
+              href={sectionHref("#contact")}
               size="sm"
               variant={onDark ? "light" : "solid"}
               className="hidden sm:inline-flex"
@@ -218,7 +236,7 @@ export function Navbar() {
                 {navLinks.map((link, i) => (
                   <motion.a
                     key={link.label}
-                    href={link.href}
+                    href={sectionHref(link.href)}
                     onClick={() => setOpen(false)}
                     initial={{ opacity: 0, x: 24 }}
                     animate={{ opacity: 1, x: 0 }}
@@ -241,7 +259,7 @@ export function Navbar() {
 
               <div className="relative space-y-4 px-6 pb-10">
                 <Button
-                  href="#contact"
+                  href={sectionHref("#contact")}
                   variant="light"
                   size="lg"
                   className="w-full"
