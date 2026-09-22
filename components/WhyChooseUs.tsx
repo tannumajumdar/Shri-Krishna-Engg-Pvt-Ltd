@@ -9,6 +9,7 @@ import {
   type LucideIcon,
 } from "lucide-react";
 import { Reveal } from "@/components/ui/Reveal";
+import { SectionHeading } from "@/components/ui/SectionHeading";
 import { type Feature } from "@/lib/site";
 
 type Reason = { title: string; detail: string; icon: LucideIcon };
@@ -41,26 +42,16 @@ export function WhyChooseUs({
   return (
     <section id="why" className="bg-surface-2 py-20 lg:py-28">
       <div className="container">
-        <div className="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between lg:gap-16">
-          <Reveal className="max-w-2xl">
-            <span className="mb-5 flex items-center gap-3 text-[11px] font-semibold uppercase tracking-label text-ink-faint">
-              <span className="h-px w-10 bg-accent-500" />
-              Why Krishna
-            </span>
-            <h2 className="font-display text-display-sm font-semibold uppercase leading-[1.05] tracking-tight text-ink">
-              Trusted where
-              <br />
-              performance matters.
-            </h2>
-          </Reveal>
-
-          <Reveal delay={0.1} className="lg:max-w-xs lg:pb-2">
-            <p className="text-[13.5px] leading-relaxed text-ink-faint">
+        <SectionHeading
+          eyebrow="Why Krishna"
+          title="Trusted where performance matters."
+          action={
+            <p className="text-[13.5px] leading-relaxed text-ink-faint lg:max-w-xs">
               Our relationships are built through on-time delivery, safety and
               consistent execution.
             </p>
-          </Reveal>
-        </div>
+          }
+        />
 
         {/* A five-across rule-separated row, not five cards: these are entries
             in one list, and boxing each would make them read as alternatives

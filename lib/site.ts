@@ -74,16 +74,133 @@ export const socials = [
   { label: "YouTube", href: "#", icon: "youtube" },
 ] as const;
 
-export const navLinks = [
-  { label: "Home", href: "#home" },
-  { label: "About", href: "#about" },
-  { label: "Capabilities", href: "#capabilities" },
-  { label: "Industries", href: "#industries" },
-  { label: "Projects", href: "#projects" },
-  { label: "Infrastructure", href: "#infrastructure" },
-  { label: "Careers", href: "#contact" },
-  { label: "Contact", href: "#contact" },
-] as const;
+/**
+ * Primary navigation.
+ *
+ * A link with `groups` opens a menu. One group renders as a plain list; two or
+ * more render as a mega panel with a heading per column. `href` on the parent
+ * is still where it goes when clicked or followed without JavaScript, so every
+ * menu has a landing place of its own and nothing depends on the dropdown.
+ *
+ * Industries deliberately has no menu: the six sectors are one row on the
+ * landing page, not six pages, so a menu listing them would be six links to
+ * the same anchor.
+ */
+export type NavGroup = {
+  /** Column heading in a mega panel; omitted when there is only one group. */
+  heading?: string;
+  items: { label: string; href: string }[];
+};
+
+export type NavLink = {
+  label: string;
+  href: string;
+  groups?: NavGroup[];
+};
+
+export const navLinks: NavLink[] = [
+  { label: "Home", href: "/" },
+  {
+    label: "About Us",
+    href: "/about",
+    groups: [
+      {
+        heading: "Company Profile",
+        items: [
+          { label: "Who We Are", href: "/about" },
+          { label: "Execution Process", href: "/about#process" },
+          { label: "Why Shree Krishna", href: "/about#why" },
+        ],
+      },
+      {
+        heading: "Our Work",
+        items: [
+          { label: "Featured Projects", href: "/projects" },
+          { label: "Infrastructure", href: "/projects#infrastructure" },
+        ],
+      },
+      {
+        heading: "Reach Us",
+        items: [
+          { label: "Contact", href: "/contact" },
+          { label: "Careers", href: "/contact#careers" },
+        ],
+      },
+    ],
+  },
+  {
+    label: "Capabilities",
+    href: "/services",
+    groups: [
+      {
+        items: [
+          { label: "Mechanical Works", href: "/services#mechanical" },
+          { label: "Fabrication", href: "/services#fabrication" },
+          { label: "Erection & Commissioning", href: "/services#erection" },
+          { label: "Civil Works", href: "/services#civil" },
+          { label: "Transportation & Logistics", href: "/services#transportation" },
+          { label: "Plant Operations & Maintenance", href: "/services#om" },
+          { label: "All Services", href: "/services" },
+        ],
+      },
+    ],
+  },
+  { label: "Industries", href: "/industries" },
+  { label: "Projects", href: "/projects" },
+  {
+    label: "Media",
+    href: "/gallery",
+    groups: [
+      {
+        items: [
+          { label: "Gallery", href: "/gallery" },
+          { label: "Infrastructure", href: "/projects#infrastructure" },
+        ],
+      },
+    ],
+  },
+  { label: "Contact", href: "/contact" },
+];
+
+/**
+ * Hero copy, one slide per capability.
+ *
+ * The hero now runs through the six things the company does, so each slide
+ * needs a line of its own. Keyed by the category id so it survives the
+ * categories being reordered or renamed in the admin; anything without an
+ * entry falls back to the category name, which always reads sensibly.
+ *
+ * `accent` is the closing phrase, set in the brand green.
+ */
+/**
+ * Hero background per capability.
+ *
+ * Kept apart from the capability's own product photograph on purpose: the
+ * service cards and the products pages keep the company's real site
+ * photography, which is what a buyer should see there. These are only the
+ * full-bleed backdrops, where the in-house frames were too small to hold up.
+ *
+ * Sourced from Pexels, whose licence allows commercial use without
+ * attribution. Swap any of these for a real photograph the moment a
+ * high-resolution one exists — it will always read better.
+ */
+export const capabilityHeroImages: Record<string, string> = {
+  mechanical: "/media/hero/mechanical.jpg",
+  fabrication: "/media/hero/fabrication.jpg",
+  erection: "/media/hero/erection.jpg",
+  civil: "/media/hero/civil.jpg",
+  transportation: "/media/hero/transportation.jpg",
+  om: "/media/hero/om.jpg",
+};
+
+export const capabilityHeadlines: Record<string, { lead: string; accent: string }> = {
+  mechanical: { lead: "Precision that keeps", accent: "plant running." },
+  fabrication: { lead: "Built to drawing,", accent: "ready to erect." },
+  erection: { lead: "From foundation", accent: "to first run." },
+  civil: { lead: "Groundwork the plant", accent: "stands on." },
+  transportation: { lead: "Heavy loads,", accent: "moved safely." },
+  om: { lead: "Your plant, running", accent: "round the clock." },
+};
 
 /* ------------------------------- media ---------------------------------- */
 

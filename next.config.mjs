@@ -5,6 +5,17 @@ const nextConfig = {
   // Netlify automatically handles Next.js serverless functions and requires standard output.
   output: process.env.NEXT_OUTPUT === "standalone" ? "standalone" : undefined,
 
+  // The public route was renamed products -> services, because every record
+  // under it is a service. Anything already linking to the old path keeps
+  // working; 308 so search engines move the ranking across rather than
+  // splitting it between two URLs.
+  async redirects() {
+    return [
+      { source: "/products", destination: "/services", permanent: true },
+      { source: "/products/:slug", destination: "/services/:slug", permanent: true },
+    ];
+  },
+
   // The Next static handler sends max-age=0 for files under public/, so every
   // page view re-validates the background footage before it can start playing.
   async headers() {

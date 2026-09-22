@@ -278,7 +278,7 @@ function CategoryRow({
         <Reveal>
           <div className="flex flex-col gap-4 border-t border-white/10 pt-7 sm:flex-row sm:items-baseline sm:justify-between sm:gap-10">
             <div className="flex items-baseline gap-4 sm:gap-5">
-              <span className="font-mono text-[11px] leading-none text-brand-400 font-bold">
+              <span className="font-mono text-[11px] leading-none text-accent-400 font-bold">
                 {String(index + 1).padStart(2, "0")}
               </span>
               <div>
@@ -301,7 +301,7 @@ function CategoryRow({
                 type="button"
                 onClick={(e) => handleScroll("left", e)}
                 aria-label="Scroll Left"
-                className="relative z-30 grid h-10 w-10 place-items-center rounded-full border border-white/25 bg-navy-900 text-white shadow-lift transition-all duration-300 hover:border-brand-400 hover:bg-brand-500 hover:text-navy-950 active:scale-90 cursor-pointer pointer-events-auto select-none"
+                className="relative z-30 grid h-10 w-10 place-items-center rounded-full border border-white/25 bg-navy-900 text-white transition-all duration-300 hover:border-accent-400 hover:bg-accent-500 hover:text-navy-950 active:scale-90 cursor-pointer pointer-events-auto select-none"
               >
                 <ChevronLeft className="h-5 w-5 pointer-events-none" strokeWidth={2.2} />
               </button>
@@ -310,7 +310,7 @@ function CategoryRow({
                 type="button"
                 onClick={(e) => handleScroll("right", e)}
                 aria-label="Scroll Right"
-                className="relative z-30 grid h-10 w-10 place-items-center rounded-full border border-white/25 bg-navy-900 text-white shadow-lift transition-all duration-300 hover:border-brand-400 hover:bg-brand-500 hover:text-navy-950 active:scale-90 cursor-pointer pointer-events-auto select-none"
+                className="relative z-30 grid h-10 w-10 place-items-center rounded-full border border-white/25 bg-navy-900 text-white transition-all duration-300 hover:border-accent-400 hover:bg-accent-500 hover:text-navy-950 active:scale-90 cursor-pointer pointer-events-auto select-none"
               >
                 <ChevronRight className="h-5 w-5 pointer-events-none" strokeWidth={2.2} />
               </button>
@@ -372,7 +372,7 @@ function ProductCard({
   onEnquire: () => void;
 }) {
   return (
-    <article className="group/card flex h-full w-[260px] shrink-0 flex-col overflow-hidden rounded-xl border border-white/10 bg-navy-900 transition-colors duration-500 ease-brand hover:border-brand-400/40 sm:w-[290px] lg:w-[320px]">
+    <article className="group/card flex h-full w-[260px] shrink-0 flex-col overflow-hidden rounded-md border border-white/10 bg-navy-900 transition-colors duration-500 ease-brand hover:border-accent-400/40 sm:w-[290px] lg:w-[320px]">
       <div className="relative aspect-[16/10] overflow-hidden">
         <MediaImage
           src={product.image}
@@ -402,8 +402,8 @@ function ProductCard({
         <div className="mt-auto pt-4 flex gap-2">
           {/* Read More → individual product page */}
           <a
-            href={`/products/${slugify(product.name)}`}
-            className="flex flex-1 items-center justify-center gap-1.5 rounded-lg border border-white/15 py-2.5 text-[13px] font-medium text-white/80 transition-all duration-300 ease-brand hover:border-brand-400/50 hover:text-brand-400"
+            href={`/services/${slugify(product.name)}`}
+            className="flex flex-1 items-center justify-center gap-1.5 rounded-lg border border-white/15 py-2.5 text-[13px] font-medium text-white/80 transition-all duration-300 ease-brand hover:border-accent-400/50 hover:text-accent-400"
           >
             Read More
             <ArrowRight className="h-3.5 w-3.5" strokeWidth={2} aria-hidden="true" />

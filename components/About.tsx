@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/Button";
 import { Reveal } from "@/components/ui/Reveal";
 import { company, media } from "@/lib/site";
 import { parallaxRange, useParallaxEnabled } from "@/lib/use-parallax";
+import { cn } from "@/lib/utils";
 
 /** The three facts that place the company, shown under the portrait. */
 const MARKERS = [
@@ -19,10 +20,19 @@ export function About({
   /** Kept so the page can pass DB statistics; the figures now live in the
    *  stats bar directly above this section. */
   stats,
+  /**
+   * "teaser" is the landing page: the heading, the opening paragraph and a
+   * link onward. "full" is /about, where the PageHero already carries the
+   * heading — repeating it here would print the same sentence twice on one
+   * screen — so this drops it and runs the whole story instead.
+   */
+  variant = "teaser",
 }: {
   stats?: { value: string; suffix: string; label: string; detail?: string }[];
+  variant?: "teaser" | "full";
 } = {}) {
   void stats;
+  const full = variant === "full";
 
   const imageRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
@@ -38,40 +48,51 @@ export function About({
         <div className="grid gap-14 lg:grid-cols-12 lg:gap-16">
           {/* ------------------------------- copy ------------------------- */}
           <div className="lg:col-span-6 xl:col-span-7">
-            <Reveal>
-              <span className="mb-5 flex items-center gap-3 text-[11px] font-semibold uppercase tracking-label text-ink-faint">
-                <span className="h-px w-10 bg-accent-500" />
-                About {company.name}
-              </span>
-              <h2 className="max-w-xl font-display text-display-sm font-semibold uppercase leading-[1.05] tracking-tight text-ink">
-                Engineering experience built on the shop floor.
-              </h2>
-            </Reveal>
+            {!full && (
+              <Reveal>
+                <span className="mb-5 flex items-center gap-3 text-[11px] font-semibold uppercase tracking-label text-ink-faint">
+                  <span className="h-px w-10 bg-accent-500" />
+                  About {company.name}
+                </span>
+                <h2 className="max-w-xl font-display text-display-sm font-semibold uppercase leading-[1.05] tracking-tight text-ink">
+                  Engineering experience built on the shop floor.
+                </h2>
+              </Reveal>
+            )}
 
             <Reveal delay={0.1}>
-              <div className="mt-8 max-w-xl space-y-5 text-[14px] leading-relaxed text-ink-muted">
+              <div className={cn("max-w-xl space-y-5 text-[14px] leading-relaxed text-ink-muted", !full && "mt-8")}>
                 <p>
                   Established in {company.established} in the BALCO industrial belt at Korba,
                   {" "}{company.name} has grown into a dependable engineering and
                   plant-services partner for aluminium and heavy-industry operations.
                 </p>
-                <p>
-                  Our capabilities extend across mechanical engineering, structural
-                  fabrication, equipment erection, civil works, transportation and plant
-                  operations &amp; maintenance.
-                </p>
-                <p>
-                  With our own trained workforce, fabrication capability and transportation
-                  resources, we provide single-point responsibility from foundation to
-                  commissioning — and beyond.
-                </p>
+                {full && (
+                  <>
+                    <p>
+                      Our capabilities extend across mechanical engineering, structural
+                      fabrication, equipment erection, civil works, transportation and plant
+                      operations &amp; maintenance.
+                    </p>
+                    <p>
+                      With our own trained workforce, fabrication capability and
+                      transportation resources, we provide single-point responsibility from
+                      foundation to commissioning — and beyond.
+                    </p>
+                  </>
+                )}
               </div>
             </Reveal>
 
             <Reveal delay={0.18}>
               <div className="mt-9">
-                <Button href="#capabilities" variant="solid" size="md" withArrow>
-                  Discover Our Story
+                <Button
+                  href={full ? "/services" : "/about"}
+                  variant="solid"
+                  size="md"
+                  withArrow
+                >
+                  {full ? "See What We Do" : "Discover Our Story"}
                 </Button>
               </div>
             </Reveal>

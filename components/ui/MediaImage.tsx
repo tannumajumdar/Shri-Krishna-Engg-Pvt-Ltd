@@ -10,6 +10,12 @@ type MediaImageProps = {
   className?: string;
   /** Applied to the <img> itself — object-position overrides etc. */
   imgClassName?: string;
+  /**
+   * Inline styles for the <img>. Exists for values Tailwind cannot generate
+   * ahead of time: a per-instance object-position is computed at runtime, and
+   * an arbitrary class built by interpolation is never in the stylesheet.
+   */
+  imgStyle?: React.CSSProperties;
   priority?: boolean;
   sizes?: string;
 };
@@ -26,6 +32,7 @@ export function MediaImage({
   alt,
   className,
   imgClassName,
+  imgStyle,
   priority = false,
   sizes,
 }: MediaImageProps) {
@@ -53,6 +60,7 @@ export function MediaImage({
           ref={imgRef}
           src={src}
           alt={alt}
+          style={imgStyle}
           sizes={sizes}
           loading={priority ? "eager" : "lazy"}
           decoding="async"

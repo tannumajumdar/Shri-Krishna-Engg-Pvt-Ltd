@@ -27,7 +27,7 @@ export function Infrastructure({ items }: { items?: Facility[] } = {}) {
   return (
     <section
       id="infrastructure"
-      className="on-dark relative overflow-hidden bg-navy-900 py-24 lg:py-32"
+      className="on-dark relative overflow-hidden bg-navy-900 py-20 lg:py-28"
     >
       <div
         className="absolute inset-0 bg-grid-fine bg-grid-fine opacity-25"

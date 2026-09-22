@@ -60,7 +60,7 @@ export function CTA({
       </motion.div>
 
       <div
-        className="absolute inset-0 bg-gradient-to-r from-navy-950/92 via-navy-950/45 to-transparent"
+        className="absolute inset-0 bg-gradient-to-r from-navy-950/90 via-navy-950/45 to-transparent"
         aria-hidden="true"
       />
 

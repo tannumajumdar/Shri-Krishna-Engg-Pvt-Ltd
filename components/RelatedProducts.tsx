@@ -34,8 +34,8 @@ export function RelatedProducts({
             return (
               <Reveal key={product.name} delay={i * 0.08}>
                 <Link
-                  href={`/products/${slug}`}
-                  className="group flex h-full flex-col overflow-hidden rounded-xl border border-white/10 bg-navy-900 transition-all duration-500 hover:border-brand-500/50 hover:shadow-lift"
+                  href={`/services/${slug}`}
+                  className="group flex h-full flex-col overflow-hidden rounded-md border border-white/10 bg-navy-900 transition-all duration-500 hover:border-accent-500/50 hover:"
                 >
                   <div className="relative aspect-[4/3] overflow-hidden">
                     <MediaImage
@@ -44,16 +44,16 @@ export function RelatedProducts({
                       className="h-full w-full transition-transform duration-500 group-hover:scale-105"
                     />
                     {product.spec && (
-                      <div className="absolute left-3 top-3 rounded-full border border-white/10 bg-navy-950/80 px-3 py-1 font-mono text-xs text-brand-400 backdrop-blur-sm">
+                      <div className="absolute left-3 top-3 rounded-full border border-white/10 bg-navy-950/80 px-3 py-1 font-mono text-xs text-accent-400 backdrop-blur-sm">
                         {product.spec}
                       </div>
                     )}
                   </div>
                   <div className="flex flex-1 flex-col p-5">
-                    <h3 className="text-lg font-semibold text-white transition-colors group-hover:text-brand-400">
+                    <h3 className="text-lg font-semibold text-white transition-colors group-hover:text-accent-400">
                       {product.name}
                     </h3>
-                    <div className="mt-auto flex items-center gap-1 pt-4 text-sm font-medium text-brand-400">
+                    <div className="mt-auto flex items-center gap-1 pt-4 text-sm font-medium text-accent-400">
                       <span>Read More</span>
                       <ArrowRight className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-1" />
                     </div>

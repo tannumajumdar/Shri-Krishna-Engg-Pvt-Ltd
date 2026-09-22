@@ -1,6 +1,5 @@
 "use client";
 
-import { usePathname } from "next/navigation";
 import { LogIn, Mail, MapPin, Phone } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { Logo } from "@/components/ui/Logo";
@@ -22,26 +21,23 @@ type FooterContact = {
 };
 type FooterSocial = { label: string; href: string; icon: string };
 
-/** Company column. Careers and the journey pages are anchors for now. */
-const COMPANY_LINKS = [
-  { label: "About Us", href: "#about" },
-  { label: "Leadership", href: "#about" },
-  { label: "Our Journey", href: "#about" },
-  { label: "Quality & Safety", href: "#why" },
-  { label: "Careers", href: "#contact" },
-  { label: "Contact", href: "#contact" },
-];
-
 /**
- * Away from the landing page none of these sections exist, so a bare "#about"
- * would scroll nowhere. Same rule as the navbar: prefix with "/" off-landing.
+ * Company column.
+ *
+ * Every entry now lands somewhere of its own. It used to carry "Leadership"
+ * and "Our Journey" pointing at the same #about anchor and "Careers" pointing
+ * at #contact — three labels promising pages that did not exist. Labels that
+ * had nothing behind them are gone rather than re-pointed at a near-enough
+ * anchor.
  */
-function useSectionHref() {
-  const pathname = usePathname();
-  const onLanding = pathname === "/";
-  return (href: string) =>
-    !onLanding && href.startsWith("#") ? `/${href}` : href;
-}
+const COMPANY_LINKS = [
+  { label: "About Us", href: "/about" },
+  { label: "Execution Process", href: "/about#process" },
+  { label: "Why Shree Krishna", href: "/about#why" },
+  { label: "Projects", href: "/projects" },
+  { label: "Careers", href: "/contact#careers" },
+  { label: "Contact", href: "/contact" },
+];
 
 export function Footer({
   contact: contactProp,
@@ -53,7 +49,6 @@ export function Footer({
   const _contact = contactProp ?? contact;
   const _socials = socialsProp ?? socials;
   const year = new Date().getFullYear();
-  const sectionHref = useSectionHref();
 
   return (
     <footer className="on-dark relative overflow-hidden border-t border-white/10 bg-navy-950 text-white">
@@ -93,7 +88,7 @@ export function Footer({
             <ul className="mt-6 space-y-3">
               {COMPANY_LINKS.map((link) => (
                 <li key={link.label}>
-                  <FooterLink href={sectionHref(link.href)}>{link.label}</FooterLink>
+                  <FooterLink href={link.href}>{link.label}</FooterLink>
                 </li>
               ))}
             </ul>
@@ -107,7 +102,7 @@ export function Footer({
             <ul className="mt-6 space-y-3">
               {productCategories.map((cat) => (
                 <li key={cat.id}>
-                  <FooterLink href={`/products#${cat.id}`}>{cat.name}</FooterLink>
+                  <FooterLink href={`/services#${cat.id}`}>{cat.name}</FooterLink>
                 </li>
               ))}
             </ul>
@@ -165,7 +160,7 @@ export function Footer({
             </address>
 
             <div className="mt-7">
-              <Button href={sectionHref("#contact")} variant="light" size="sm" withArrow>
+              <Button href="/contact" variant="light" size="sm" withArrow>
                 Get A Quote
               </Button>
             </div>

@@ -3,7 +3,9 @@
 import { useRef, useState } from "react";
 import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
 import { MediaImage } from "@/components/ui/MediaImage";
+import { Button } from "@/components/ui/Button";
 import { Reveal } from "@/components/ui/Reveal";
+import { SectionHeading } from "@/components/ui/SectionHeading";
 import { productCategories as staticCategories, type ProductCategory } from "@/lib/site";
 import { cn } from "@/lib/utils";
 
@@ -31,7 +33,7 @@ export function Capabilities({
     if (!el) return;
     // One plate plus its gap, so a click always lands on a card edge.
     const plate = el.firstElementChild as HTMLElement | null;
-    const amount = plate ? plate.offsetWidth + 20 : 300;
+    const amount = plate ? plate.offsetWidth + 24 : 340;
     el.scrollBy({ left: dir * amount, behavior: "smooth" });
   };
 
@@ -43,38 +45,40 @@ export function Capabilities({
       <div className="absolute inset-0 bg-grid-fine opacity-[0.35]" aria-hidden="true" />
 
       <div className="container relative">
-        <div className="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between lg:gap-16">
-          <Reveal className="max-w-2xl">
-            <span className="mb-5 flex items-center gap-3 text-[11px] font-semibold uppercase tracking-label text-accent-400">
-              <span className="h-px w-10 bg-accent-400" />
-              Our Capabilities
-            </span>
-            <h2 className="font-display text-display-sm font-semibold uppercase leading-[1.05] tracking-tight text-white">
-              One engineering partner.
-              <br />
-              Six core capabilities.
-            </h2>
-          </Reveal>
-
-          <Reveal delay={0.1} className="lg:max-w-xs lg:pb-2">
-            <p className="text-[13.5px] leading-relaxed text-white/55">
-              From fabrication to plant operations, we deliver end-to-end solutions
-              for critical industrial projects.
-            </p>
-            <div className="mt-6 flex items-center gap-2">
-              <StepButton label="Scroll left" onClick={() => step(-1)}>
-                <ChevronLeft className="h-4 w-4" strokeWidth={2} />
-              </StepButton>
-              <StepButton label="Scroll right" onClick={() => step(1)}>
-                <ChevronRight className="h-4 w-4" strokeWidth={2} />
-              </StepButton>
+        <SectionHeading
+          tone="dark"
+          eyebrow="Our Capabilities"
+          title="One engineering partner. Six core capabilities."
+          action={
+            <div className="lg:max-w-xs">
+              <p className="text-[13.5px] leading-relaxed text-white/55">
+                From fabrication to plant operations, we deliver end-to-end solutions
+                for critical industrial projects.
+              </p>
+              <div className="mt-6 flex items-center gap-3">
+                <Button href="/services" variant="outline" size="sm" withArrow>
+                  All Services
+                </Button>
+                <div className="flex items-center gap-2">
+                  <StepButton label="Scroll left" onClick={() => step(-1)}>
+                    <ChevronLeft className="h-4 w-4" strokeWidth={2} />
+                  </StepButton>
+                  <StepButton label="Scroll right" onClick={() => step(1)}>
+                    <ChevronRight className="h-4 w-4" strokeWidth={2} />
+                  </StepButton>
+                </div>
+              </div>
             </div>
-          </Reveal>
-        </div>
+          }
+        />
 
+        {/* Plate width is chosen against the 1400px container cap so the fifth
+            plate overhangs by more than Reveal's 80px viewport inset. Any less
+            and that plate never enters view, so the row reads as a closed set
+            of four with dead space beside it. */}
         <div
           ref={scrollRef}
-          className="mt-14 flex gap-5 overflow-x-auto overscroll-x-contain pb-2 lg:mt-16"
+          className="mt-14 flex gap-6 overflow-x-auto overscroll-x-contain pb-2 lg:mt-16"
           style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
         >
           {cats.map((cat, i) => (
@@ -93,13 +97,13 @@ function CapabilityPlate({ category, index }: { category: ProductCategory; index
   return (
     <Reveal delay={index * 0.06} className="shrink-0">
       <a
-        href={`/products#${category.id}`}
+        href={`/services#${category.id}`}
         onPointerEnter={() => setHovered(true)}
         onPointerLeave={() => setHovered(false)}
         className={cn(
-          "group/plate relative flex w-[220px] flex-col overflow-hidden rounded-md",
+          "group/plate relative flex w-[270px] flex-col overflow-hidden rounded-md",
           "border border-white/10 bg-navy-900 transition-colors duration-500 ease-brand",
-          "hover:border-accent-400/50 sm:w-[240px]",
+          "hover:border-accent-400/50 sm:w-[288px] lg:w-[296px]",
         )}
       >
         <div className="relative aspect-[4/3] overflow-hidden">
@@ -108,7 +112,7 @@ function CapabilityPlate({ category, index }: { category: ProductCategory; index
             alt={category.name}
             className="h-full w-full"
             imgClassName="transition-transform duration-[1400ms] ease-brand group-hover/plate:scale-[1.08]"
-            sizes="240px"
+            sizes="(min-width: 1024px) 296px, (min-width: 640px) 288px, 270px"
           />
           <div
             className="absolute inset-0 bg-gradient-to-t from-navy-900 via-navy-900/20 to-transparent"
@@ -116,17 +120,17 @@ function CapabilityPlate({ category, index }: { category: ProductCategory; index
           />
         </div>
 
-        <div className="flex flex-1 flex-col p-4">
-          <span className="font-mono text-[12px] font-semibold leading-none text-accent-400">
+        <div className="flex flex-1 flex-col p-5">
+          <span className="font-mono text-[13px] font-semibold leading-none text-accent-400">
             {String(index + 1).padStart(2, "0")}
           </span>
-          <h3 className="mt-2.5 text-pretty font-display text-[14px] font-medium leading-snug text-white">
+          <h3 className="mt-3 text-pretty font-display text-[17px] font-medium leading-snug text-white">
             {category.name}
           </h3>
 
           <ArrowRight
             className={cn(
-              "mt-4 h-4 w-4 text-accent-400 transition-transform duration-500 ease-brand",
+              "mt-5 h-[18px] w-[18px] text-accent-400 transition-transform duration-500 ease-brand",
               hovered && "translate-x-1",
             )}
             strokeWidth={2}

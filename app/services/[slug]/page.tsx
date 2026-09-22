@@ -210,8 +210,8 @@ export default async function ProductDetailPage({ params }: Props) {
           <ProductBreadcrumb
             items={[
               { label: "Home", href: "/" },
-              { label: "Services", href: "/products" },
-              { label: product.category, href: `/products#${product.categorySlug}` },
+              { label: "Services", href: "/services" },
+              { label: product.category, href: `/services#${product.categorySlug}` },
               { label: product.name },
             ]}
           />
@@ -220,14 +220,14 @@ export default async function ProductDetailPage({ params }: Props) {
           <div className="mt-8 grid grid-cols-1 items-start gap-12 lg:grid-cols-2 lg:gap-16">
             {/* ---- Image Showcase ---- */}
             <Reveal className="w-full">
-              <div className="sticky top-32 overflow-hidden rounded-2xl border border-white/10 bg-navy-900 shadow-2xl">
+              <div className="sticky top-32 overflow-hidden rounded-md border border-white/10 bg-navy-900 shadow-2xl">
                 <MediaImage
                   src={product.image}
                   alt={product.name}
                   className="aspect-square w-full md:aspect-[4/3] lg:aspect-square"
                 />
                 <div className="p-4 bg-navy-900/90 border-t border-white/10 flex items-center justify-between">
-                  <span className="font-mono text-xs text-brand-400 font-semibold">
+                  <span className="font-mono text-xs text-accent-400 font-semibold">
                     Shree Krishna Engineering Balco
                   </span>
                   <span className="font-mono text-xs text-white/50">
@@ -240,8 +240,8 @@ export default async function ProductDetailPage({ params }: Props) {
             {/* ---- Header Details & CTAs ---- */}
             <div className="flex flex-col">
               <Reveal>
-                <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-brand-500/30 bg-brand-500/10 px-3.5 py-1 text-xs font-semibold text-brand-400">
-                  <span className="h-1.5 w-1.5 rounded-full bg-brand-400 animate-pulse" />
+                <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-accent-500/30 bg-accent-500/10 px-3.5 py-1 text-xs font-semibold text-accent-400">
+                  <span className="h-1.5 w-1.5 rounded-full bg-accent-400 animate-pulse" />
                   {product.category}
                 </div>
                 <h1 className="font-display text-3xl font-bold leading-tight text-white md:text-4xl lg:text-[2.6rem]">
@@ -275,7 +275,7 @@ export default async function ProductDetailPage({ params }: Props) {
                 <div className="mt-8 grid grid-cols-2 gap-3 border-y border-white/10 py-6 sm:grid-cols-2">
                   <div className="flex items-center gap-3">
                     <div className="grid h-10 w-10 shrink-0 place-items-center rounded-lg border border-white/15 bg-white/[0.04]">
-                      <Award className="h-5 w-5 text-brand-400" />
+                      <Award className="h-5 w-5 text-accent-400" />
                     </div>
                     <div>
                       <p className="font-mono text-[10px] uppercase text-white/40">Track Record</p>
@@ -284,7 +284,7 @@ export default async function ProductDetailPage({ params }: Props) {
                   </div>
                   <div className="flex items-center gap-3">
                     <div className="grid h-10 w-10 shrink-0 place-items-center rounded-lg border border-white/15 bg-white/[0.04]">
-                      <Clock className="h-5 w-5 text-brand-400" />
+                      <Clock className="h-5 w-5 text-accent-400" />
                     </div>
                     <div>
                       <p className="font-mono text-[10px] uppercase text-white/40">Availability</p>
@@ -293,7 +293,7 @@ export default async function ProductDetailPage({ params }: Props) {
                   </div>
                   <div className="flex items-center gap-3">
                     <div className="grid h-10 w-10 shrink-0 place-items-center rounded-lg border border-white/15 bg-white/[0.04]">
-                      <Wrench className="h-5 w-5 text-brand-400" />
+                      <Wrench className="h-5 w-5 text-accent-400" />
                     </div>
                     <div>
                       <p className="font-mono text-[10px] uppercase text-white/40">Execution</p>
@@ -302,7 +302,7 @@ export default async function ProductDetailPage({ params }: Props) {
                   </div>
                   <div className="flex items-center gap-3">
                     <div className="grid h-10 w-10 shrink-0 place-items-center rounded-lg border border-white/15 bg-white/[0.04]">
-                      <ShieldCheck className="h-5 w-5 text-brand-400" />
+                      <ShieldCheck className="h-5 w-5 text-accent-400" />
                     </div>
                     <div>
                       <p className="font-mono text-[10px] uppercase text-white/40">Compliance</p>
@@ -318,7 +318,7 @@ export default async function ProductDetailPage({ params }: Props) {
           <div className="mt-16 border-t border-white/10 pt-14">
             <Reveal>
               <div className="max-w-3xl">
-                <span className="font-mono text-xs uppercase tracking-wider text-brand-400 font-semibold">
+                <span className="font-mono text-xs uppercase tracking-wider text-accent-400 font-semibold">
                   Comprehensive Overview
                 </span>
                 <h2 className="mt-2 font-display text-2xl font-bold text-white sm:text-3xl">
@@ -340,12 +340,12 @@ export default async function ProductDetailPage({ params }: Props) {
           <div className="mt-14 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
             {product.keyHighlights?.map((item, i) => (
               <Reveal key={i} delay={i * 0.08}>
-                <div className="h-full rounded-xl border border-white/10 bg-navy-900/60 p-5 transition-all duration-300 hover:border-brand-500/40 hover:bg-navy-900">
-                  <div className="grid h-10 w-10 place-items-center rounded-lg border border-white/15 bg-brand-500/10 mb-4">
-                    {item.iconType === "precision" && <Wrench className="h-5 w-5 text-brand-400" />}
-                    {item.iconType === "crew" && <Award className="h-5 w-5 text-brand-400" />}
-                    {item.iconType === "clock" && <Clock className="h-5 w-5 text-brand-400" />}
-                    {item.iconType === "quality" && <ShieldCheck className="h-5 w-5 text-brand-400" />}
+                <div className="h-full rounded-md border border-white/10 bg-navy-900/60 p-5 transition-all duration-300 hover:border-accent-500/40 hover:bg-navy-900">
+                  <div className="grid h-10 w-10 place-items-center rounded-lg border border-white/15 bg-accent-500/10 mb-4">
+                    {item.iconType === "precision" && <Wrench className="h-5 w-5 text-accent-400" />}
+                    {item.iconType === "crew" && <Award className="h-5 w-5 text-accent-400" />}
+                    {item.iconType === "clock" && <Clock className="h-5 w-5 text-accent-400" />}
+                    {item.iconType === "quality" && <ShieldCheck className="h-5 w-5 text-accent-400" />}
                   </div>
                   <h3 className="font-display text-base font-bold text-white">
                     {item.title}
@@ -364,7 +364,7 @@ export default async function ProductDetailPage({ params }: Props) {
               <Reveal>
                 <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
                   <div>
-                    <span className="font-mono text-xs uppercase tracking-wider text-brand-400 font-semibold">
+                    <span className="font-mono text-xs uppercase tracking-wider text-accent-400 font-semibold">
                       Technical Specs
                     </span>
                     <h2 className="mt-1 font-display text-2xl font-bold text-white sm:text-3xl">
@@ -378,9 +378,9 @@ export default async function ProductDetailPage({ params }: Props) {
               </Reveal>
 
               <Reveal delay={0.1}>
-                <div className="mt-8 overflow-hidden rounded-xl border border-white/10 bg-navy-900/70 shadow-xl">
+                <div className="mt-8 overflow-hidden rounded-md border border-white/10 bg-navy-900/70 shadow-xl">
                   <table className="w-full text-left text-sm text-white/80">
-                    <thead className="border-b border-white/10 bg-white/[0.03] text-xs uppercase tracking-wider font-mono text-brand-400">
+                    <thead className="border-b border-white/10 bg-white/[0.03] text-xs uppercase tracking-wider font-mono text-accent-400">
                       <tr>
                         <th className="px-6 py-4">Specification Parameter</th>
                         <th className="px-6 py-4">Execution Standard & Value</th>
@@ -411,7 +411,7 @@ export default async function ProductDetailPage({ params }: Props) {
           {product.applications && (
             <div className="mt-16 border-t border-white/10 pt-14">
               <Reveal>
-                <span className="font-mono text-xs uppercase tracking-wider text-brand-400 font-semibold">
+                <span className="font-mono text-xs uppercase tracking-wider text-accent-400 font-semibold">
                   Industry Footprint
                 </span>
                 <h2 className="mt-1 font-display text-2xl font-bold text-white sm:text-3xl">
@@ -424,9 +424,9 @@ export default async function ProductDetailPage({ params }: Props) {
                   {product.applications.map((app: string, i: number) => (
                     <div
                       key={i}
-                      className="flex items-start gap-3 rounded-xl border border-white/10 bg-navy-900/50 p-4 transition-colors hover:border-white/20"
+                      className="flex items-start gap-3 rounded-md border border-white/10 bg-navy-900/50 p-4 transition-colors hover:border-white/20"
                     >
-                      <CheckCircle2 className="h-5 w-5 shrink-0 text-brand-400 mt-0.5" />
+                      <CheckCircle2 className="h-5 w-5 shrink-0 text-accent-400 mt-0.5" />
                       <span className="text-sm font-medium text-white/90">{app}</span>
                     </div>
                   ))}
@@ -438,7 +438,7 @@ export default async function ProductDetailPage({ params }: Props) {
           {/* ---- 4-Step Execution Workflow ---- */}
           <div className="mt-16 border-t border-white/10 pt-14">
             <Reveal>
-              <span className="font-mono text-xs uppercase tracking-wider text-brand-400 font-semibold">
+              <span className="font-mono text-xs uppercase tracking-wider text-accent-400 font-semibold">
                 Execution Workflow
               </span>
               <h2 className="mt-1 font-display text-2xl font-bold text-white sm:text-3xl">
@@ -448,8 +448,8 @@ export default async function ProductDetailPage({ params }: Props) {
 
             <div className="mt-8 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
               <Reveal delay={0.05}>
-                <div className="h-full rounded-xl border border-white/10 bg-navy-900/40 p-5">
-                  <span className="font-mono text-xs font-bold text-brand-400">STEP 01</span>
+                <div className="h-full rounded-md border border-white/10 bg-navy-900/40 p-5">
+                  <span className="font-mono text-xs font-bold text-accent-400">STEP 01</span>
                   <h3 className="mt-2 font-display text-lg font-bold text-white">Site Survey & Risk Study</h3>
                   <p className="mt-2 text-xs leading-relaxed text-white/60">
                     Comprehensive site inspection, GA drawing verification, work permit (PTW) and EHS risk assessment.
@@ -458,8 +458,8 @@ export default async function ProductDetailPage({ params }: Props) {
               </Reveal>
 
               <Reveal delay={0.1}>
-                <div className="h-full rounded-xl border border-white/10 bg-navy-900/40 p-5">
-                  <span className="font-mono text-xs font-bold text-brand-400">STEP 02</span>
+                <div className="h-full rounded-md border border-white/10 bg-navy-900/40 p-5">
+                  <span className="font-mono text-xs font-bold text-accent-400">STEP 02</span>
                   <h3 className="mt-2 font-display text-lg font-bold text-white">Tooling & Rigging Setup</h3>
                   <p className="mt-2 text-xs leading-relaxed text-white/60">
                     Mobilization of calibrated tools, laser aligners, cranes, certified welders, and safety gear.
@@ -468,8 +468,8 @@ export default async function ProductDetailPage({ params }: Props) {
               </Reveal>
 
               <Reveal delay={0.15}>
-                <div className="h-full rounded-xl border border-white/10 bg-navy-900/40 p-5">
-                  <span className="font-mono text-xs font-bold text-brand-400">STEP 03</span>
+                <div className="h-full rounded-md border border-white/10 bg-navy-900/40 p-5">
+                  <span className="font-mono text-xs font-bold text-accent-400">STEP 03</span>
                   <h3 className="mt-2 font-display text-lg font-bold text-white">Precision Execution</h3>
                   <p className="mt-2 text-xs leading-relaxed text-white/60">
                     Turnkey fabrication, alignment, grouting, overhauling or erection to strict tolerances.
@@ -478,8 +478,8 @@ export default async function ProductDetailPage({ params }: Props) {
               </Reveal>
 
               <Reveal delay={0.2}>
-                <div className="h-full rounded-xl border border-white/10 bg-navy-900/40 p-5">
-                  <span className="font-mono text-xs font-bold text-brand-400">STEP 04</span>
+                <div className="h-full rounded-md border border-white/10 bg-navy-900/40 p-5">
+                  <span className="font-mono text-xs font-bold text-accent-400">STEP 04</span>
                   <h3 className="mt-2 font-display text-lg font-bold text-white">NDT & Quality Handover</h3>
                   <p className="mt-2 text-xs leading-relaxed text-white/60">
                     Final load testing, vibration analysis, quality sign-off report, and customer handover.
@@ -490,10 +490,10 @@ export default async function ProductDetailPage({ params }: Props) {
           </div>
 
           {/* ---- Direct Quote Callout Band ---- */}
-          <div className="mt-16 rounded-2xl border border-brand-500/30 bg-gradient-to-br from-navy-900 via-navy-900 to-navy-950 p-8 shadow-2xl lg:p-12">
+          <div className="mt-16 rounded-md border border-accent-500/30 bg-gradient-to-br from-navy-900 via-navy-900 to-navy-950 p-8 shadow-2xl lg:p-12">
             <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
               <div>
-                <span className="font-mono text-xs uppercase tracking-wider text-brand-400 font-semibold">
+                <span className="font-mono text-xs uppercase tracking-wider text-accent-400 font-semibold">
                   Ready to Execute Your Project?
                 </span>
                 <h3 className="mt-2 font-display text-2xl font-bold text-white sm:text-3xl">

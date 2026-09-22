@@ -3,11 +3,8 @@ import { Hero } from "@/components/Hero";
 import { StatsBar } from "@/components/StatsBar";
 import { About } from "@/components/About";
 import { Capabilities } from "@/components/Capabilities";
-import { ExecutionProcess } from "@/components/ExecutionProcess";
 import { Industries } from "@/components/Industries";
 import { FeaturedProjects } from "@/components/FeaturedProjects";
-import { Infrastructure } from "@/components/Infrastructure";
-import { WhyChooseUs } from "@/components/WhyChooseUs";
 import { CTA } from "@/components/CTA";
 import { Footer } from "@/components/Footer";
 import { WhatsAppFloat } from "@/components/WhatsAppFloat";
@@ -18,7 +15,6 @@ import {
   getIndustries,
   getInfrastructure,
   getStatistics,
-  getFeatures,
   getContact,
   getSocialLinks,
 } from "@/lib/content";
@@ -36,23 +32,19 @@ export const revalidate = 60;
 
 export default async function Page() {
   const [
-    heroSlides,
     ctaImage,
     productCategories,
     industries,
     infrastructure,
     statistics,
-    features,
     contact,
     socials,
   ] = await Promise.all([
-    getSectionImages("HERO", staticMedia.heroSlides),
     getSectionImages("CTA", [staticMedia.ctaPoster]),
     getProductCategories(),
     getIndustries(),
     getInfrastructure(),
     getStatistics(),
-    getFeatures(),
     getContact(),
     getSocialLinks(),
   ]);
@@ -60,16 +52,20 @@ export default async function Page() {
   return (
     <>
       <Navbar />
+      {/* A landing page, not the whole site on one scroll. Each block is a
+          teaser that hands off to the page carrying the full story: About to
+          /about, Capabilities to /services, Industries to /industries and
+          Projects to /projects. Execution Process and Why Krishna moved to
+          /about; the infrastructure gallery moved to /projects, where it had
+          been showing the same records as Featured Projects directly above
+          it. */}
       <main id="main">
-        <Hero slides={heroSlides} />
+        <Hero categories={productCategories} />
         <StatsBar items={statistics} />
         <About stats={statistics} />
         <Capabilities categories={productCategories} />
-        <ExecutionProcess />
         <Industries items={industries} />
         <FeaturedProjects items={infrastructure} />
-        <Infrastructure items={infrastructure} />
-        <WhyChooseUs items={features} />
         <CTA image={ctaImage[0]} />
       </main>
       <Footer contact={contact} socials={socials} />

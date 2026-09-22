@@ -119,7 +119,7 @@ export function ServiceEnquiryModal({
         onClick={onClose}
       />
 
-      <div className="relative w-full max-w-md overflow-hidden rounded-2xl bg-white shadow-2xl">
+      <div className="relative w-full max-w-md overflow-hidden rounded-md bg-white shadow-2xl">
         {/* header */}
         <div className="flex items-start justify-between gap-4 border-b border-slate-100 bg-slate-50 px-6 py-4">
           <div>
@@ -206,7 +206,7 @@ export function ServiceEnquiryModal({
         {/* ------------------------ step: confirm ----------------------- */}
         {step === "confirm" && (
           <div className="px-6 py-6">
-            <div className="rounded-xl border border-slate-200 bg-slate-50 p-4">
+            <div className="rounded-md border border-slate-200 bg-slate-50 p-4">
               <p className="text-[13.5px] font-medium text-navy-900">
                 WhatsApp has opened with your enquiry.
               </p>
